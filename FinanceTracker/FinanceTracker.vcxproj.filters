@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Repositories">
+      <UniqueIdentifier>{8a7b3cb1-fdaf-4353-bf71-533002e5ec0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Repositories">
+      <UniqueIdentifier>{9e652250-e9cd-4854-8221-caa1f1b4b556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{880657e2-d445-4e22-a76f-ea5ab4faf56d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{b5bd107f-3d6e-4bbc-8474-ee349adf3386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{633689a4-ef13-4803-adcf-8626f4076519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{6d959278-9c85-4813-b29c-9d403bd58cf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menu">
+      <UniqueIdentifier>{d8a43e3d-9c1a-4f0e-822b-5972dd5affa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Menu">
+      <UniqueIdentifier>{5018f125-9e61-414b-b471-a0118bec315f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Reports">
+      <UniqueIdentifier>{c81b9068-c473-4296-84e4-2594e2a2f635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Reports">
+      <UniqueIdentifier>{ec8d55bf-a5b5-429c-ac0d-907631f1e344}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountRepository.cpp">
+      <Filter>Source Files\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="CategoryRepository.cpp">
+      <Filter>Source Files\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="IncomingTransactionRepository.cpp">
+      <Filter>Source Files\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="SpendingTransactionRepository.cpp">
+      <Filter>Source Files\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="Account.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Category.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ConversionHelpers.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="IncomingTransaction.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="MyString.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SpendingTransaction.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelBase.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Counter.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="CounterRepository.cpp">
+      <Filter>Source Files\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountsMenu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="CategoriesMenu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="IncomeMenu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="SpendingMenu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="CounterService.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportsMenu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportingPeriod.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeHelper.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SpendingReport.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="Report.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportCell.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportData.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportRow.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="CategoryRating.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="CategoryReport.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="SpendingRating.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportDataSource.cpp">
+      <Filter>Source Files\Reports</Filter>
+    </ClCompile>
+    <ClCompile Include="DependencyRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Repository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="SpendingTransactionRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomingTransactionRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="CategoryRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="Account.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Category.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomingTransaction.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="SpendingTransaction.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializable.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MyString.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ConversionHelpers.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountType.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelBase.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Counter.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="CounterRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountsMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="CategoriesMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomeMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="TransactionRepository.h">
+      <Filter>Header Files\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="SpendingMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="CounterService.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportsMenu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="SpendingReport.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeHelper.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Report.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportCell.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportRow.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportData.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="CategoryRating.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="CategoryReport.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="SpendingRating.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportDataSource.h">
+      <Filter>Header Files\Reports</Filter>
+    </ClInclude>
+    <ClInclude Include="DIContainer.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DependencyRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
