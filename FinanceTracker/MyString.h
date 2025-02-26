@@ -6,7 +6,8 @@
 class MyString final
 {
 private:
-    static constexpr size_t DEFAULT_SIZE = 81;
+    static constexpr size_t DEFAULT_SIZE = 15;
+    static constexpr size_t REALLOCATION_STEP = 15;
 	static constexpr int DEFAULT_PRECISION = 2;
 	static constexpr size_t DOUBLE_BUFFER_SIZE = 20;
     static constexpr size_t TIME_BUFFER_SIZE = 25;

@@ -21,15 +21,14 @@ void MyString::Copy(const MyString& other)
 
 void MyString::Move(MyString& other) noexcept
 {
-	char* chars = mChars;
-	const size_t capacity = mCapacity;
+	delete[] mChars;
 
 	mChars = other.mChars;
 	mCapacity = other.mCapacity;
 
-	other.mCapacity = capacity;
-	other.mChars = chars;
-	other.mChars[0] = '\0';
+	other.mChars = nullptr;
+	other.mCapacity = 0;
+	other.AllocateChars(DEFAULT_SIZE);
 }
 
 MyString::MyString() : MyString(DEFAULT_SIZE)
@@ -115,7 +114,7 @@ void MyString::Append(const char* str, const size_t maxLength)
 
 	if (mCapacity < newLength + 1) // +1 for '\0'
 	{
-		const size_t newCapacity = max(mCapacity * 2, newLength + 1);
+		const size_t newCapacity = max(mCapacity + REALLOCATION_STEP, newLength + 1);
 		const auto newChars = new char[newCapacity];
 
 		memcpy(newChars, mChars, oldLength + 1); // +1 to include '\0'
