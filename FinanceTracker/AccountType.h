@@ -1,6 +1,7 @@
 #pragma once
+#include <cstdint>
 
-enum AccountType : char
+enum AccountType : uint8_t
 {
 	NONE = 0,
 	CREDIT_CARD = 1,

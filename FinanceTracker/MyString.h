@@ -13,7 +13,7 @@ private:
     static constexpr size_t TIME_BUFFER_SIZE = 25;
     static constexpr size_t INT_BUFFER_SIZE = 12;
 
-    char* mChars = nullptr;
+    std::unique_ptr<char[]> mChars = nullptr;
     size_t mCapacity = 0;
 
     void AllocateChars(size_t size);
@@ -50,6 +50,4 @@ public:
     MyString& operator=(const MyString& other);
     MyString& operator=(MyString&& other) noexcept;
     bool operator==(const MyString& other) const;
-
-    ~MyString();
 };

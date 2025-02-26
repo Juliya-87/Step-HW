@@ -6,9 +6,8 @@ void MyString::AllocateChars(const size_t size)
 {
 	if (mChars == nullptr || mCapacity < size)
 	{
+		mChars = make_unique<char[]>(size);
 		mCapacity = size;
-		delete[] mChars;
-		mChars = new char[mCapacity];
 		mChars[0] = '\0';
 	}
 }
@@ -16,18 +15,14 @@ void MyString::AllocateChars(const size_t size)
 void MyString::Copy(const MyString& other)
 {
 	AllocateChars(other.mCapacity);
-	strcpy_s(mChars, other.mCapacity, other.mChars);
+	strcpy_s(mChars.get(), other.mCapacity, other.mChars.get());
 }
 
 void MyString::Move(MyString& other) noexcept
 {
-	delete[] mChars;
-
-	mChars = other.mChars;
+	mChars = std::move(other.mChars);
 	mCapacity = other.mCapacity;
 
-	other.mChars = nullptr;
-	other.mCapacity = 0;
 	other.AllocateChars(DEFAULT_SIZE);
 }
 
@@ -49,25 +44,25 @@ MyString::MyString(const char* str)
 
 	size_t strLength = strlen(str) + 1; // length including '\0'
 	AllocateChars(strLength);
-	memcpy(mChars, str, strLength);
+	memcpy(mChars.get(), str, strLength);
 }
 
 MyString::MyString(const int value)
 {
 	AllocateChars(INT_BUFFER_SIZE);
-	_itoa_s(value, mChars, mCapacity, 10);
+	_itoa_s(value, mChars.get(), mCapacity, 10);
 }
 
 MyString::MyString(const time_t value, const char* format)
 {
 	AllocateChars(TIME_BUFFER_SIZE);
-	TimeToString(mChars, mCapacity, value, format);
+	TimeToString(mChars.get(), mCapacity, value, format);
 }
 
 MyString::MyString(const double value, const int precision)
 {
 	AllocateChars(DOUBLE_BUFFER_SIZE);
-	DoubleToString(mChars, mCapacity, value, precision);
+	DoubleToString(mChars.get(), mCapacity, value, precision);
 }
 
 MyString::MyString(const MyString& other)
@@ -87,12 +82,12 @@ size_t MyString::GetCapacity() const
 
 size_t MyString::GetLength() const
 {
-	return strlen(mChars);
+	return strlen(mChars.get());
 }
 
 const char* MyString::GetCStr() const
 {
-	return mChars;
+	return mChars.get();
 }
 
 void MyString::Assign(const char* str, const size_t maxLength)
@@ -109,22 +104,21 @@ void MyString::Append(const char* str, const size_t maxLength)
 	}
 
 	const size_t strLength = min(maxLength, strlen(str));
-	const size_t oldLength = strlen(mChars);
+	const size_t oldLength = strlen(mChars.get());
 	const size_t newLength = oldLength + strLength;
 
 	if (mCapacity < newLength + 1) // +1 for '\0'
 	{
 		const size_t newCapacity = max(mCapacity + REALLOCATION_STEP, newLength + 1);
-		const auto newChars = new char[newCapacity];
+		auto newChars = make_unique<char[]>(newCapacity);
 
-		memcpy(newChars, mChars, oldLength + 1); // +1 to include '\0'
+		memcpy(newChars.get(), mChars.get(), oldLength + 1); // +1 to include '\0'
 
-		delete[] mChars;
-		mChars = newChars;
+		mChars = std::move(newChars);
 		mCapacity = newCapacity;
 	}
 
-	memcpy(mChars + oldLength, str, strLength);
+	memcpy(mChars.get() + oldLength, str, strLength);
 	mChars[newLength] = '\0';
 }
 
@@ -189,11 +183,5 @@ MyString& MyString::operator=(MyString&& other) noexcept
 
 bool MyString::operator==(const MyString& other) const
 {
-	return strcmp(mChars, other.mChars) == 0;
-}
-
-MyString::~MyString()
-{
-	delete[] mChars;
-	mChars = nullptr;
+	return strcmp(mChars.get(), other.mChars.get()) == 0;
 }
