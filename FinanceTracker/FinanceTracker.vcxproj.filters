@@ -147,6 +147,9 @@
     <ClCompile Include="DependencyRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StringTokenExtractor.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Repository.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="DependencyRegistry.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringTokenExtractor.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

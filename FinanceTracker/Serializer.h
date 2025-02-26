@@ -3,19 +3,22 @@
 #include "Serializable.h"
 
 template <typename T>
+concept is_serializable = std::is_base_of_v<Serializable, T>;
+
+template <is_serializable T>
 class Serializer final
 {
 public:
 	static MyString Serialize(T* object)
 	{
-		return static_cast<Serializable*>(object)->ToString();
+		return object->ToString();
 	}
 
 	static T* Deserialize(MyString& str)
 	{
-		auto object = static_cast<Serializable*>(new T());
+		auto object = new T();
 		object->Parse(str);
 
-		return static_cast<T*>(object);
+		return object;
 	}
 };

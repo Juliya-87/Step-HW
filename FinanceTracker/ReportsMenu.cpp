@@ -4,22 +4,26 @@
 
 using namespace std;
 
-void ReportsMenu::PrintReport(const Report* report)
+void ReportsMenu::PrintReport(const shared_ptr<Report>& report)
 {
-	int period;
-	int action;
+	if (!report)
+	{
+		Console::WriteLine("Invalid report.");
+		return;
+	}
 
+	int period;
 	Console::Write("Enter period (1 - Day, 2 - Week, 3 - Month): ");
 	Console::ReadLine(period);
 
-	if (period < 1 || period > 3)
+	const auto reportingPeriod = IntToReportingPeriod(period);
+	if (reportingPeriod == UNDEFINED)
 	{
 		Console::WriteLine("Incorrect choice. Try again.");
 		return;
 	}
 
-	const auto reportingPeriod = static_cast<ReportingPeriod>(period);
-
+	int action;
 	Console::Write("Enter action (1 - Print, 2 - Export): ");
 	Console::ReadLine(action);
 
@@ -55,10 +59,10 @@ void ReportsMenu::ShowMenu() const
 
 		switch (choice)
 		{
-		case 1: PrintReport(mSpendingReport.get()); break;
-		case 2: PrintReport(mCategoryReport.get()); break;
-		case 3: PrintReport(mSpendingRating.get()); break;
-		case 4: PrintReport(mCategoryRating.get()); break;
+		case 1: PrintReport(mSpendingReport); break;
+		case 2: PrintReport(mCategoryReport); break;
+		case 3: PrintReport(mSpendingRating); break;
+		case 4: PrintReport(mCategoryRating); break;
 		case 0: return;
 		default: Console::WriteLine("Incorrect choice. Try again."); continue;
 		}

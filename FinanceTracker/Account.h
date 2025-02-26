@@ -10,10 +10,6 @@ private:
 	double mBalance = 0;
 	AccountType mType = NONE;
 
-protected:
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
-
 public:
 	Account() = default;
 	Account(int id, const MyString& name, AccountType type);
@@ -25,4 +21,7 @@ public:
 	void ChangeType(AccountType type);
 	void IncreaseBalance(double balance);
 	void DecreaseBalance(double balance);
+
+	void Parse(MyString& str) override;
+	MyString ToString() const override;
 };

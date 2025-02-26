@@ -1,23 +1,27 @@
 #include "Account.h"
 
+#include "StringTokenExtractor.h"
+
+using namespace std;
+
 void Account::Parse(MyString& str)
 {
 	ModelBase::Parse(str);
-
-	char* chars = str.GetCStr();
-	char* context = nullptr;
+		
+	StringTokenExtractor splitter(str, DELIMITER);
+	MyString token;
 	char* endPtr = nullptr;
 
-	char* token = strtok_s(chars, DELIMITER, &context);
-	mName = MyString(token);
+	splitter.GetNextToken(token);
+	mName = token;
 
-	token = strtok_s(nullptr, DELIMITER, &context);
-	mBalance = strtod(token, &endPtr);
+	splitter.GetNextToken(token);
+	mBalance = strtod(token.GetCStr(), &endPtr);
 
-	token = strtok_s(nullptr, DELIMITER, &context);
-	mType = static_cast<AccountType>(strtol(token, &endPtr, 10));
+	splitter.GetNextToken(token);
+	mType = IntToAccountType(strtol(token.GetCStr(), &endPtr, 10));
 
-	str = MyString(context);
+	str = splitter.GetRemaining();
 }
 
 MyString Account::ToString() const

@@ -33,13 +33,18 @@ public:
 
 	size_t GetCapacity() const;
     size_t GetLength() const;
-    char* GetCStr() const;
+    const char* GetCStr() const;
 
-    void Append(const char* str);
+    void Assign(const char* str, size_t maxLength = SIZE_MAX);
+
+    void Append(const char* str, size_t maxLength = SIZE_MAX);
+    void Append(char ch);
     void Append(int value);
     void Append(const MyString& str);
     void Append(time_t value, const char* format = DEFAULT_TIME_FORMAT);
     void Append(double value, int precision = DEFAULT_PRECISION);
+
+    void Clear();
 
     MyString& operator=(const MyString& other);
     MyString& operator=(MyString&& other) noexcept;

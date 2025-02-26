@@ -3,6 +3,9 @@
 #include "Repository.h"
 
 template <typename T>
+concept is_model_base = std::is_base_of_v<ModelBase, T>;
+
+template <is_model_base T>
 class ModelRepository : public Repository<T>
 {
 public:
@@ -12,8 +15,7 @@ public:
 
 		for (T* item : items)
 		{
-			const int itemId = static_cast<ModelBase*>(item)->GetId();
-			if (itemId == id)
+			if (item->GetId() == id)
 			{
 				return item;
 			}

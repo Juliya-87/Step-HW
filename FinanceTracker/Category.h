@@ -6,10 +6,6 @@ class Category final : public ModelBase
 private:
 	MyString mName;
 
-protected:
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
-
 public:
 	Category() = default;
 	Category(int id, const MyString& name);
@@ -17,4 +13,7 @@ public:
 	const MyString& GetName() const;
 
 	void Rename(const MyString& name);
+
+	void Parse(MyString& str) override;
+	MyString ToString() const override;
 };

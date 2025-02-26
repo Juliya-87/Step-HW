@@ -1,21 +1,22 @@
 #include "Counter.h"
 
 #include <cstdlib>
-#include <cstring>
+
+#include "StringTokenExtractor.h"
 
 void Counter::Parse(MyString& str)
 {
-	char* chars = str.GetCStr();
-	char* context = nullptr;
+	StringTokenExtractor splitter(str, DELIMITER);
+	MyString token;
 	char* endPtr = nullptr;
 
-	char* token = strtok_s(chars, DELIMITER, &context);
-	mName = MyString(token);
+	splitter.GetNextToken(token);
+	mName = token;
 
-	token = strtok_s(nullptr, DELIMITER, &context);
-	mValue = strtol(token, &endPtr, 10);
+	splitter.GetNextToken(token);
+	mValue = strtol(token.GetCStr(), &endPtr, 10);
 
-	str = MyString(context);
+	str = splitter.GetRemaining();
 }
 
 MyString Counter::ToString() const

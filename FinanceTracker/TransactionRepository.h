@@ -3,6 +3,9 @@
 #include "Transaction.h"
 
 template <typename T>
+concept is_transaction = std::is_base_of_v<Transaction, T>;
+
+template <is_transaction T>
 class TransactionRepository : public ModelRepository<T>
 {
 private:
@@ -19,7 +22,7 @@ protected:
 			return;
 		}
 
-		const auto transaction = static_cast<Transaction*>(item);
+		const auto transaction = item;
 		const int accountId = transaction->GetAccountId();
 		Account* account = accountRepository->GetById(accountId);
 		transaction->InitAccount(account);

@@ -33,7 +33,8 @@ void AccountsMenu::Add() const
 		", 3 - ", AccountTypeToString(WALLET), "): ");
 	Console::ReadLine(type);
 
-	if (type < 1 || type > 3)
+	const AccountType accountType = IntToAccountType(type);
+	if (accountType == NONE)
 	{
 		Console::WriteLine("Incorrect choice of the type. Try again.");
 		return;
@@ -41,7 +42,7 @@ void AccountsMenu::Add() const
 
 	const int id = mCounterService->GetNextAccountId();
 
-	const auto newAccount = new Account(id, name, static_cast<AccountType>(type));
+	const auto newAccount = new Account(id, name, accountType);
 	mAccountRepository->AddOrUpdate(newAccount);
 	mAccountRepository->Save();
 
@@ -83,7 +84,8 @@ void AccountsMenu::ChangeType() const
 		", 3 - ", AccountTypeToString(WALLET), "): ");
 	Console::ReadLine(newType);
 
-	if (newType < 1 || newType > 3)
+	const AccountType newAccountType = IntToAccountType(newType);
+	if (newAccountType == NONE)
 	{
 		Console::WriteLine("Incorrect choice of the type. Try again.");
 		return;
@@ -97,7 +99,7 @@ void AccountsMenu::ChangeType() const
 		return;
 	}
 
-	account->ChangeType(static_cast<AccountType>(newType));
+	account->ChangeType(newAccountType);
 	mAccountRepository->AddOrUpdate(account);
 	mAccountRepository->Save();
 

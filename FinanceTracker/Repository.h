@@ -7,7 +7,7 @@
 #include "MyString.h"
 #include "Serializer.h"
 
-template <typename T>
+template <is_serializable T>
 class Repository
 {
 private:

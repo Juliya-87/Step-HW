@@ -21,13 +21,14 @@ void MyString::Copy(const MyString& other)
 
 void MyString::Move(MyString& other) noexcept
 {
-	delete[] mChars;
+	char* chars = mChars;
+	const size_t capacity = mCapacity;
 
 	mChars = other.mChars;
 	mCapacity = other.mCapacity;
 
-	other.mCapacity = DEFAULT_SIZE;
-	other.mChars = new char[other.mCapacity];
+	other.mCapacity = capacity;
+	other.mChars = chars;
 	other.mChars[0] = '\0';
 }
 
@@ -42,8 +43,14 @@ MyString::MyString(const size_t size)
 
 MyString::MyString(const char* str)
 {
-	AllocateChars(strlen(str) + 1);
-	strcpy_s(mChars, mCapacity, str);
+	if (!str || !*str) {
+		AllocateChars(1);
+		return;
+	}
+
+	size_t strLength = strlen(str) + 1; // length including '\0'
+	AllocateChars(strLength);
+	memcpy(mChars, str, strLength);
 }
 
 MyString::MyString(const int value)
@@ -55,13 +62,13 @@ MyString::MyString(const int value)
 MyString::MyString(const time_t value, const char* format)
 {
 	AllocateChars(TIME_BUFFER_SIZE);
-	TimeToString(mChars, static_cast<int>(mCapacity), value, format);
+	TimeToString(mChars, mCapacity, value, format);
 }
 
 MyString::MyString(const double value, const int precision)
 {
 	AllocateChars(DOUBLE_BUFFER_SIZE);
-	DoubleToString(mChars, static_cast<int>(mCapacity), value, precision);
+	DoubleToString(mChars, mCapacity, value, precision);
 }
 
 MyString::MyString(const MyString& other)
@@ -84,30 +91,47 @@ size_t MyString::GetLength() const
 	return strlen(mChars);
 }
 
-char* MyString::GetCStr() const
+const char* MyString::GetCStr() const
 {
 	return mChars;
 }
 
-void MyString::Append(const char* str)
+void MyString::Assign(const char* str, const size_t maxLength)
 {
-	const size_t newLength = strlen(mChars) + strlen(str) + 1;
+	Clear();
+	Append(str, maxLength);
+}
 
-	if (mCapacity < newLength)
+void MyString::Append(const char* str, const size_t maxLength)
+{
+	if (!str || !*str || !maxLength)
 	{
-		mCapacity *= 2;
-		if (mCapacity < newLength)
-		{
-			mCapacity = newLength;
-		}
-
-		const auto newChars = new char[mCapacity];
-		strcpy_s(newChars, mCapacity, mChars);
-		delete[] mChars;
-		mChars = newChars;
+		return;
 	}
 
-	strcat_s(mChars, mCapacity, str);
+	const size_t strLength = min(maxLength, strlen(str));
+	const size_t oldLength = strlen(mChars);
+	const size_t newLength = oldLength + strLength;
+
+	if (mCapacity < newLength + 1) // +1 for '\0'
+	{
+		const size_t newCapacity = max(mCapacity * 2, newLength + 1);
+		const auto newChars = new char[newCapacity];
+
+		memcpy(newChars, mChars, oldLength + 1); // +1 to include '\0'
+
+		delete[] mChars;
+		mChars = newChars;
+		mCapacity = newCapacity;
+	}
+
+	memcpy(mChars + oldLength, str, strLength);
+	mChars[newLength] = '\0';
+}
+
+void MyString::Append(const char ch)
+{
+	Append(&ch, 1);
 }
 
 void MyString::Append(const int value)
@@ -137,6 +161,11 @@ void MyString::Append(const double value, const int precision)
 	DoubleToString(buff, sizeof(buff), value, precision);
 
 	Append(buff);
+}
+
+void MyString::Clear()
+{
+	mChars[0] = '\0';
 }
 
 MyString& MyString::operator=(const MyString& other)

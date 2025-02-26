@@ -160,6 +160,7 @@
     <ClCompile Include="SpendingReport.cpp" />
     <ClCompile Include="SpendingTransaction.cpp" />
     <ClCompile Include="SpendingTransactionRepository.cpp" />
+    <ClCompile Include="StringTokenExtractor.cpp" />
     <ClCompile Include="TimeHelper.cpp" />
     <ClCompile Include="Transaction.cpp" />
   </ItemGroup>
@@ -201,6 +202,7 @@
     <ClInclude Include="SpendingReport.h" />
     <ClInclude Include="SpendingTransaction.h" />
     <ClInclude Include="SpendingTransactionRepository.h" />
+    <ClInclude Include="StringTokenExtractor.h" />
     <ClInclude Include="TimeHelper.h" />
     <ClInclude Include="Transaction.h" />
     <ClInclude Include="TransactionRepository.h" />

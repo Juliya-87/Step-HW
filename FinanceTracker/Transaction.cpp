@@ -1,6 +1,7 @@
 #include "Transaction.h"
 
 #include "ConversionHelpers.h"
+#include "StringTokenExtractor.h"
 
 Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelBase(id), mNotes(notes)
 {
@@ -47,23 +48,23 @@ void Transaction::Parse(MyString& str)
 {
 	ModelBase::Parse(str);
 
-	char* chars = str.GetCStr();
-	char* context = nullptr;
+	StringTokenExtractor splitter(str, DELIMITER);
+	MyString token;
 	char* endPtr = nullptr;
 
-	char* token = strtok_s(chars, DELIMITER, &context);
-	mAmount = strtod(token, &endPtr);
+	splitter.GetNextToken(token);
+	mAmount = strtod(token.GetCStr(), &endPtr);
 
-	token = strtok_s(nullptr, DELIMITER, &context);
-	mAccountId = strtol(token, &endPtr, 10);
+	splitter.GetNextToken(token);
+	mAccountId = strtol(token.GetCStr(), &endPtr, 10);
 
-	token = strtok_s(nullptr, DELIMITER, &context);
-	mNotes = MyString(token);
+	splitter.GetNextToken(token);
+	mNotes = token;
 
-	token = strtok_s(nullptr, DELIMITER, &context);
-	ParseTime(mTransactionTime, token);
+	splitter.GetNextToken(token);
+	ParseTime(mTransactionTime, token.GetCStr());
 
-	str = MyString(context);
+	str = splitter.GetRemaining();
 }
 
 MyString Transaction::ToString() const

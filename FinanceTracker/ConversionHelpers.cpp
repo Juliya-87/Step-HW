@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-void TimeToString(char* buffer, const int bufferSize, const time_t time, const char* format)
+void TimeToString(char* buffer, const size_t bufferSize, const time_t time, const char* format)
 {
 	tm timeInfo = {};
 
@@ -35,9 +35,31 @@ const char* AccountTypeToString(const AccountType type)
 	}
 }
 
-void DoubleToString(char* buffer, const int bufferSize, const double value, const int precision)
+void DoubleToString(char* buffer, const size_t bufferSize, const double value, const int precision)
 {
 	char format[10];
 	(void)sprintf_s(format, sizeof(format), "%%.%df", precision);
 	(void)sprintf_s(buffer, bufferSize, format, value);
+}
+
+ReportingPeriod IntToReportingPeriod(const int value)
+{
+	switch (value)
+	{
+	case 1: return DAY;
+	case 2: return WEEK;
+	case 3: return MONTH;
+	default: return UNDEFINED;
+	}
+}
+
+AccountType IntToAccountType(const int value)
+{
+	switch (value)
+	{
+	case 1: return CREDIT_CARD;
+	case 2: return DEBIT_CARD;
+	case 3: return WALLET;
+	default: return NONE;
+	}
 }

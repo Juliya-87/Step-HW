@@ -1,6 +1,6 @@
 #include "Category.h"
 
-#include <cstring>
+#include "StringTokenExtractor.h"
 
 Category::Category(const int id, const MyString& name) : ModelBase(id), mName(name)
 {
@@ -20,13 +20,13 @@ void Category::Parse(MyString& str)
 {
 	ModelBase::Parse(str);
 
-	char* chars = str.GetCStr();
-	char* context = nullptr;
+	StringTokenExtractor splitter(str, DELIMITER);
+	MyString token;
 
-	char* token = strtok_s(chars, DELIMITER, &context);
-	mName = MyString(token);
+	splitter.GetNextToken(token);
+	mName = std::move(token);
 
-	str = MyString(context);
+	str = splitter.GetRemaining();
 }
 
 MyString Category::ToString() const

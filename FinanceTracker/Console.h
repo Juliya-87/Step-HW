@@ -44,24 +44,24 @@ public:
 		delete[] line;
 	}
 
-	template<class... Args>
+	template <typename... Args>
 	static void WriteLine(Args... args)
 	{
 		(std::cout << ... << args) << "\n";
 	}
 
-	template<class... Args>
+	template <typename... Args>
 	static void Write(Args... args)
 	{
 		(std::cout << ... << args);
 	}
 
-	template<class T>
+	template <typename T>
 	static void WriteAligned(T value, const std::streamsize width, const bool isLeftAligned)
 	{
 		std::ios_base&(*alignment)(std::ios_base& iosBase) = isLeftAligned ? std::left : std::right;
 
-		if (width > 0) {
+		if (width) {
 			std::cout << std::setw(width) << alignment << value;
 		}
 		else {

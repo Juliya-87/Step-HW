@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <typeindex>
 
+template <typename T>
+concept is_class = std::is_class_v<T>;
+
 class DIContainer
 {
 private:
@@ -11,28 +14,29 @@ private:
 	std::unordered_map<std::type_index, std::shared_ptr<void>> instances;
 
 public:
-	template <typename T, typename... Dependencies>
+	template <is_class T, is_class... Dependencies>
 	void Register()
 	{
-		const std::type_index typeIndex = typeid(T);
-		factories[typeIndex] = [this]() { return std::make_shared<T>(Resolve<Dependencies>()...); };
+		factories[typeid(T)] = [this]() { return std::make_shared<T>(Resolve<Dependencies>()...); };
 	}
 
-	template <typename T>
+	template <is_class T>
 	std::shared_ptr<T> Resolve()
 	{
 		const std::type_index typeIndex = typeid(T);
-		const auto it = instances.find(typeIndex);
-		if (it != instances.end())
+
+		if (instances.contains(typeIndex))
 		{
-			return std::static_pointer_cast<T>(it->second);
+			return std::static_pointer_cast<T>(instances[typeIndex]);
 		}
-		const auto factoryIt = factories.find(typeIndex);
-		if (factoryIt != factories.end()) {
-			auto instance = std::static_pointer_cast<T>(factoryIt->second());
+
+		if (factories.contains(typeIndex))
+		{
+			auto instance = std::static_pointer_cast<T>(factories[typeIndex]());
 			instances[typeIndex] = instance;
 			return instance;
 		}
+
 		throw std::runtime_error("Type not registered in container");
 	}
 };

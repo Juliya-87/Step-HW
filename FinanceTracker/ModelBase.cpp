@@ -1,7 +1,8 @@
 #include "ModelBase.h"
 
 #include <cstdlib>
-#include <cstring>
+
+#include "StringTokenExtractor.h"
 
 ModelBase::ModelBase(const int id)
 {
@@ -15,14 +16,14 @@ int ModelBase::GetId() const
 
 void ModelBase::Parse(MyString& str)
 {
-	char* chars = str.GetCStr();
-	char* context = nullptr;
+	StringTokenExtractor splitter(str, DELIMITER);
+	MyString token;
 	char* endPtr = nullptr;
 
-	const char* token = strtok_s(chars, DELIMITER, &context);
-	mId = strtol(token, &endPtr, 10);
+	splitter.GetNextToken(token);
+	mId = strtol(token.GetCStr(), &endPtr, 10);
 
-	str = MyString(context);
+	str = splitter.GetRemaining();
 }
 
 MyString ModelBase::ToString() const

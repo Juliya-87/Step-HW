@@ -1,7 +1,8 @@
 #include "SpendingTransaction.h"
 
 #include <cstdlib>
-#include <cstring>
+
+#include "StringTokenExtractor.h"
 
 SpendingTransaction::SpendingTransaction(const int id, const double amount, Account* account, Category* category,
 	const MyString& notes) : Transaction(id, amount, account, notes)
@@ -32,14 +33,14 @@ void SpendingTransaction::Parse(MyString& str)
 {
 	Transaction::Parse(str);
 
-	char* chars = str.GetCStr();
-	char* context = nullptr;
+	StringTokenExtractor splitter(str, DELIMITER);
+	MyString token;
 	char* endPtr = nullptr;
 
-	const char* token = strtok_s(chars, DELIMITER, &context);
-	mCategoryId = strtol(token, &endPtr, 10);
+	splitter.GetNextToken(token);
+	mCategoryId = strtol(token.GetCStr(), &endPtr, 10);
 
-	str = MyString(context);
+	str = splitter.GetRemaining();
 }
 
 MyString SpendingTransaction::ToString() const
