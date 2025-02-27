@@ -1,4 +1,6 @@
 #pragma once
+#include <map>
+
 #include "MyString.h"
 
 class Serializable
@@ -7,10 +9,8 @@ protected:
 	Serializable() = default;
 
 public:
-	static constexpr char DELIMITER = '\t';
-
-	virtual void Parse(MyString& str) = 0;
-	virtual MyString ToString() const = 0;
+	virtual std::map<MyString, MyString> ToMap() const = 0;
+	virtual void FromMap(const std::map<MyString, MyString>& data) = 0;
 
 	virtual ~Serializable() = default;
 };

@@ -1,8 +1,6 @@
 #include "SpendingTransaction.h"
 
-#include <cstdlib>
-
-#include "StringTokenExtractor.h"
+#include "ConversionHelpers.h"
 
 SpendingTransaction::SpendingTransaction(const int id, const double amount, Account* account, Category* category,
 	const MyString& notes) : Transaction(id, amount, account, notes)
@@ -21,7 +19,7 @@ Category* SpendingTransaction::GetCategory() const
 	return mCategory;
 }
 
-void SpendingTransaction::InitCategory(Category* category)
+void SpendingTransaction::InitializeCategory(Category* category)
 {
 	if (mCategory == nullptr && category->GetId() == mCategoryId)
 	{
@@ -29,24 +27,18 @@ void SpendingTransaction::InitCategory(Category* category)
 	}
 }
 
-void SpendingTransaction::Parse(MyString& str)
+std::map<MyString, MyString> SpendingTransaction::ToMap() const
 {
-	Transaction::Parse(str);
+	std::map<MyString, MyString> map = Transaction::ToMap();
 
-	StringTokenExtractor splitter(str, DELIMITER);
-	MyString token;
-	char* endPtr = nullptr;
+	map.emplace("CategoryId", ToString(mCategoryId));
 
-	splitter.GetNextToken(token);
-	mCategoryId = strtol(token.GetCStr(), &endPtr, 10);
-
-	str = splitter.GetRemaining();
+	return map;
 }
 
-MyString SpendingTransaction::ToString() const
+void SpendingTransaction::FromMap(const std::map<MyString, MyString>& data)
 {
-	MyString str = Transaction::ToString();
-	str.Append(DELIMITER);
-	str.Append(mCategoryId);
-	return str;
+	Transaction::FromMap(data);
+
+	mCategoryId = StrToInt(data.at("CategoryId"));
 }

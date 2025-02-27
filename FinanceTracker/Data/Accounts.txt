@@ -1,4 +1,5 @@
-1	Mono Bank	27050.50	2
-2	PrivatBank	12350.00	2
-3	Cash Wallet	1950.75	3
-4	Visa Gold	-750.00	1
+Id,Name,Balance,Type
+1,Mono Bank,27050.50,2
+2,PrivatBank,12350.00,2
+3,Cash Wallet,1950.75,3
+4,Visa Gold,-750.00,1

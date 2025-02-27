@@ -25,11 +25,11 @@ protected:
 		const auto transaction = item;
 		const int accountId = transaction->GetAccountId();
 		Account* account = accountRepository->GetById(accountId);
-		transaction->InitAccount(account);
+		transaction->InitializeAccount(account);
 	}
 
 public:
-	void InitAccountRepository(const std::weak_ptr<ModelRepository<Account>>& accountRepository)
+	void InitializeAccountRepository(const std::weak_ptr<ModelRepository<Account>>& accountRepository)
 	{
 		if (mAccountRepository.expired())
 		{

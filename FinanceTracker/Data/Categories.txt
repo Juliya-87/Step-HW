@@ -1,5 +1,6 @@
-1	Health
-2	Food
-3	Transport
-4	Entertainment
-5	Education
+Id,Name
+1,Health
+2,Food
+3,Transport
+4,Entertainment
+5,Education

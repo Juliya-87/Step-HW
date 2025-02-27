@@ -1,40 +1,8 @@
 #include "Account.h"
 
-#include "StringTokenExtractor.h"
+#include "ConversionHelpers.h"
 
 using namespace std;
-
-void Account::Parse(MyString& str)
-{
-	ModelBase::Parse(str);
-		
-	StringTokenExtractor splitter(str, DELIMITER);
-	MyString token;
-	char* endPtr = nullptr;
-
-	splitter.GetNextToken(token);
-	mName = token;
-
-	splitter.GetNextToken(token);
-	mBalance = strtod(token.GetCStr(), &endPtr);
-
-	splitter.GetNextToken(token);
-	mType = IntToAccountType(strtol(token.GetCStr(), &endPtr, 10));
-
-	str = splitter.GetRemaining();
-}
-
-MyString Account::ToString() const
-{
-	MyString str = ModelBase::ToString();
-	str.Append(DELIMITER);
-	str.Append(mName);
-	str.Append(DELIMITER);
-	str.Append(mBalance);
-	str.Append(DELIMITER);
-	str.Append(mType);
-	return str;
-}
 
 Account::Account(const int id, const MyString& name, const AccountType type) : ModelBase(id), mName(name)
 {
@@ -70,4 +38,24 @@ void Account::IncreaseBalance(const double balance)
 void Account::DecreaseBalance(const double balance)
 {
 	mBalance -= balance;
+}
+
+std::map<MyString, MyString> Account::ToMap() const
+{
+	map<MyString, MyString> map = ModelBase::ToMap();
+
+	map.emplace("Name", mName);
+	map.emplace("Balance", ToString(mBalance, 2));
+	map.emplace("Type", ToString(mType));
+
+	return map;
+}
+
+void Account::FromMap(const std::map<MyString, MyString>& data)
+{
+	ModelBase::FromMap(data);
+
+	mName = data.at("Name");
+	mBalance = StrToDouble(data.at("Balance"));
+	mType = StrToAccountType(data.at("Type"));
 }

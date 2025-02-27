@@ -1,11 +1,9 @@
 #pragma once
 #include <vector>
-#include <fstream>
-#include <string>
 
 #include "Console.h"
 #include "MyString.h"
-#include "Serializer.h"
+#include "CsvStorageManager.h"
 
 template <is_serializable T>
 class Repository
@@ -24,30 +22,14 @@ private:
 		}
 
 		EnsureFullFileNameInitialized();
-		EnsureItemsInitialized();
+		CsvStorageManager<T>::LoadFromCsv(mFullFileName, mItems);
+
+		for (T* item : mItems)
+		{
+			AfterDeserialized(item);
+		}
 
 		isInitialized = true;
-	}
-
-	void EnsureItemsInitialized()
-	{
-		std::ifstream file(mFullFileName.GetCStr());
-		if (!file.is_open())
-		{
-			Console::WriteLine("Unable to open the file ", mFullFileName.GetCStr());
-			return;
-		}
-
-		std::string line;
-
-		while (getline(file, line)) {
-			auto str = MyString(line.c_str());
-			T* item = Serializer<T>::Deserialize(str);
-			AfterDeserialized(item);
-			mItems.push_back(item);
-		}
-
-		file.close();
 	}
 
 	void EnsureFullFileNameInitialized()
@@ -136,20 +118,7 @@ public:
 			return;
 		}
 
-		std::ofstream file(mFullFileName.GetCStr());
-		if (!file.is_open())
-		{
-			Console::WriteLine("Unable to open the file ", mFullFileName.GetCStr());
-			return;
-		}
-
-		for (T* item : mItems)
-		{
-			const MyString line = Serializer<T>::Serialize(item);
-			file << line.GetCStr() << '\n';
-		}
-
-		file.close();
+		CsvStorageManager<T>::SaveToCsv(mFullFileName, mItems);
 	}
 
 	virtual ~Repository()

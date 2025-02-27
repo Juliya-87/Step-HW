@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "ConversionHelpers.h"
+
 using namespace std;
 
 MyString SpendingRating::GetFileName() const
@@ -30,8 +32,8 @@ unique_ptr<ReportData> SpendingRating::GetReportData(const ReportingPeriod perio
 	{
 		const SpendingTransaction* transaction = transactions[i];
 		ReportRow* row = result->AddRow();
-		row->AddCell(transaction->GetTransactionTime(), 19);
-		row->AddCell(transaction->GetAmount(), 10, false);
+		row->AddCell(ToString(transaction->GetTransactionTime()), 19);
+		row->AddCell(ToString(transaction->GetAmount(), 2), 10, false);
 		row->AddCell(transaction->GetNotes());
 	}
 

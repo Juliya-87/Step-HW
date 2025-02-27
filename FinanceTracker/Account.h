@@ -22,6 +22,6 @@ public:
 	void IncreaseBalance(double balance);
 	void DecreaseBalance(double balance);
 
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
+	std::map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::map<MyString, MyString>& data) override;
 };

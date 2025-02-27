@@ -17,15 +17,12 @@ void SpendingMenu::List() const
 
 	for (const SpendingTransaction* transaction : transactions)
 	{
-		char timeBuff[25];
-		TimeToString(timeBuff, sizeof(timeBuff), transaction->GetTransactionTime());
-
 		Console::WriteLine("ID: ", transaction->GetId(),
-			", Account: ", transaction->GetAccount()->GetName().GetCStr(),
+			", Account: ", transaction->GetAccount()->GetName(),
 			", Amount: ", transaction->GetAmount(),
-			", Category: ", transaction->GetCategory()->GetName().GetCStr(),
-			", Notes: ", transaction->GetNotes().GetCStr(),
-			", Time: ", timeBuff);
+			", Category: ", transaction->GetCategory()->GetName(),
+			", Notes: ", transaction->GetNotes(),
+			", Time: ", ToString(transaction->GetTransactionTime()));
 	}
 }
 
@@ -38,14 +35,14 @@ void SpendingMenu::Add() const
 	Console::WriteLine("Choose account for the transaction:");
 	for (const Account* account : mAccountRepository->GetAll())
 	{
-		Console::WriteLine(account->GetId(), ". ", account->GetName().GetCStr());
+		Console::WriteLine(account->GetId(), ". ", account->GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
 	Console::WriteLine("Choose category for the transaction:");
 	for (const Category* category : mCategoryRepository->GetAll())
 	{
-		Console::WriteLine(category->GetId(), ". ", category->GetName().GetCStr());
+		Console::WriteLine(category->GetId(), ". ", category->GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(categoryId);

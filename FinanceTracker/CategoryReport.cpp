@@ -1,5 +1,7 @@
 #include "CategoryReport.h"
 
+#include "ConversionHelpers.h"
+
 using namespace std;
 
 MyString CategoryReport::GetFileName() const
@@ -26,14 +28,14 @@ unique_ptr<ReportData> CategoryReport::GetReportData(const ReportingPeriod perio
 	{
 		ReportRow* row = result->AddRow();
 		row->AddCell(category->GetName(), 20);
-		row->AddCell(amount, 10, false);
+		row->AddCell(ToString(amount, 2), 10, false);
 
 		total += amount;
 	}
 
 	ReportRow* totalRow = result->AddRow();
 	totalRow->AddCell("Total:", 20);
-	totalRow->AddCell(total, 10, false);
+	totalRow->AddCell(ToString(total, 2), 10, false);
 
 	return result;
 }

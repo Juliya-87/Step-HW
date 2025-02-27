@@ -13,8 +13,8 @@ protected:
 public:
 	int GetId() const;
 
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
+	std::map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::map<MyString, MyString>& data) override;
 
 	bool operator==(const ModelBase& other) const;
 };

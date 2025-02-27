@@ -1,3 +1,4 @@
-Account.Id	4
-Transaction.Id	29
-Category.Id	5
+Name,Value
+Account.Id,4
+Transaction.Id,29
+Category.Id,5

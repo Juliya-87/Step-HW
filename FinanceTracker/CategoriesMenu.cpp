@@ -15,13 +15,13 @@ void CategoriesMenu::List() const
 
 	for (const Category* category : categories)
 	{
-		Console::WriteLine("ID: ", category->GetId(), ", Name: ", category->GetName().GetCStr());
+		Console::WriteLine("ID: ", category->GetId(), ", Name: ", category->GetName());
 	}
 }
 
 void CategoriesMenu::Add() const
 {
-	auto name = MyString();
+	MyString name;
 	Console::Write("Enter category name: ");
 	Console::ReadLine(name);
 

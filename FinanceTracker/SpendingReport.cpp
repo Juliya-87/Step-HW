@@ -1,5 +1,7 @@
 #include "SpendingReport.h"
 
+#include "ConversionHelpers.h"
+
 using namespace std;
 
 MyString SpendingReport::GetFileName() const
@@ -26,8 +28,8 @@ unique_ptr<ReportData> SpendingReport::GetReportData(const ReportingPeriod perio
 	for (const SpendingTransaction* transaction : transactions)
 	{
 		ReportRow* row = result->AddRow();
-		row->AddCell(transaction->GetTransactionTime(), 19);
-		row->AddCell(transaction->GetAmount(), 10, false);
+		row->AddCell(ToString(transaction->GetTransactionTime()), 19);
+		row->AddCell(ToString(transaction->GetAmount(), 2), 10, false);
 		row->AddCell(transaction->GetNotes());
 
 		total += transaction->GetAmount();
@@ -35,7 +37,7 @@ unique_ptr<ReportData> SpendingReport::GetReportData(const ReportingPeriod perio
 
 	ReportRow* totalRow = result->AddRow();
 	totalRow->AddCell("Total:", 19);
-	totalRow->AddCell(total, 10, false);
+	totalRow->AddCell(ToString(total, 2), 10, false);
 
 	return result;
 }

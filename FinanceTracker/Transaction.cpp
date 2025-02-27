@@ -1,7 +1,6 @@
 #include "Transaction.h"
 
 #include "ConversionHelpers.h"
-#include "StringTokenExtractor.h"
 
 Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelBase(id), mNotes(notes)
 {
@@ -36,7 +35,7 @@ time_t Transaction::GetTransactionTime() const
 	return mTransactionTime;
 }
 
-void Transaction::InitAccount(Account* account)
+void Transaction::InitializeAccount(Account* account)
 {
 	if (mAccount == nullptr && account->GetId() == mAccountId)
 	{
@@ -44,39 +43,24 @@ void Transaction::InitAccount(Account* account)
 	}
 }
 
-void Transaction::Parse(MyString& str)
+std::map<MyString, MyString> Transaction::ToMap() const
 {
-	ModelBase::Parse(str);
+	std::map<MyString, MyString> map = ModelBase::ToMap();
 
-	StringTokenExtractor splitter(str, DELIMITER);
-	MyString token;
-	char* endPtr = nullptr;
+	map.emplace("Amount", ToString(mAmount, 2));
+	map.emplace("AccountId", ToString(mAccountId));
+	map.emplace("Notes", mNotes);
+	map.emplace("TransactionTime", ToString(mTransactionTime));
 
-	splitter.GetNextToken(token);
-	mAmount = strtod(token.GetCStr(), &endPtr);
-
-	splitter.GetNextToken(token);
-	mAccountId = strtol(token.GetCStr(), &endPtr, 10);
-
-	splitter.GetNextToken(token);
-	mNotes = token;
-
-	splitter.GetNextToken(token);
-	ParseTime(mTransactionTime, token.GetCStr());
-
-	str = splitter.GetRemaining();
+	return map;
 }
 
-MyString Transaction::ToString() const
+void Transaction::FromMap(const std::map<MyString, MyString>& data)
 {
-	MyString str = ModelBase::ToString();
-	str.Append(DELIMITER);
-	str.Append(mAmount);
-	str.Append(DELIMITER);
-	str.Append(mAccountId);
-	str.Append(DELIMITER);
-	str.Append(mNotes);
-	str.Append(DELIMITER);
-	str.Append(mTransactionTime);
-	return str;
+	ModelBase::FromMap(data);
+
+	mAmount = StrToDouble(data.at("Amount"));
+	mAccountId = StrToInt(data.at("AccountId"));
+	mNotes = data.at("Notes");
+	mTransactionTime = StrToTime(data.at("TransactionTime"));
 }

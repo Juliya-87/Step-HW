@@ -13,8 +13,8 @@ public:
 	int GetNextValue();
 	const MyString& GetName() const;
 
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
+	std::map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::map<MyString, MyString>& data) override;
 
 	bool operator==(const Counter& other) const;
 };

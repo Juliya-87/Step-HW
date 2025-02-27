@@ -1,8 +1,6 @@
 #include "ModelBase.h"
 
-#include <cstdlib>
-
-#include "StringTokenExtractor.h"
+#include "ConversionHelpers.h"
 
 ModelBase::ModelBase(const int id)
 {
@@ -14,21 +12,14 @@ int ModelBase::GetId() const
 	return mId;
 }
 
-void ModelBase::Parse(MyString& str)
+std::map<MyString, MyString> ModelBase::ToMap() const
 {
-	StringTokenExtractor splitter(str, DELIMITER);
-	MyString token;
-	char* endPtr = nullptr;
-
-	splitter.GetNextToken(token);
-	mId = strtol(token.GetCStr(), &endPtr, 10);
-
-	str = splitter.GetRemaining();
+	return { {"Id", ToString(mId)} };
 }
 
-MyString ModelBase::ToString() const
+void ModelBase::FromMap(const std::map<MyString, MyString>& data)
 {
-	return {mId};
+	mId = StrToInt(data.at("Id"));
 }
 
 bool ModelBase::operator==(const ModelBase& other) const

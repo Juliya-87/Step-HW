@@ -1,53 +1,43 @@
 #pragma once
-#include <ctime>
-
-#include "ConversionHelpers.h"
+#include <ostream>
+#include <vector>
 
 class MyString final
 {
 private:
-    static constexpr size_t DEFAULT_SIZE = 15;
-    static constexpr size_t REALLOCATION_STEP = 15;
-	static constexpr int DEFAULT_PRECISION = 2;
-	static constexpr size_t DOUBLE_BUFFER_SIZE = 20;
-    static constexpr size_t TIME_BUFFER_SIZE = 25;
-    static constexpr size_t INT_BUFFER_SIZE = 12;
-
-    std::unique_ptr<char[]> mChars = nullptr;
-    size_t mCapacity = 0;
-
-    void AllocateChars(size_t size);
-
-    void Copy(const MyString& other);
-
-    void Move(MyString& other) noexcept;
+	std::vector<char> mChars = { '\0' };
 
 public:
-    MyString();
-    MyString(size_t size);
+    MyString() = default;
     MyString(const char* str);
-	MyString(int value);
-    MyString(time_t value, const char* format = DEFAULT_TIME_FORMAT);
-	MyString(double value, int precision = DEFAULT_PRECISION);
-    MyString(const MyString& other);
-    MyString(MyString&& other) noexcept;
+    MyString(const char* str, size_t length);
+    MyString(size_t number, char ch);
+    MyString(const MyString& str) = default;
+    MyString(MyString&& str) noexcept;
 
-	size_t GetCapacity() const;
     size_t GetLength() const;
     const char* GetCStr() const;
 
-    void Assign(const char* str, size_t maxLength = SIZE_MAX);
+    void Assign(const char* str);
+    void Assign(const char* str, size_t length);
 
-    void Append(const char* str, size_t maxLength = SIZE_MAX);
-    void Append(char ch);
-    void Append(int value);
+    void Append(const char* str);
+    void Append(const char* str, size_t length);
+    void Append(size_t number, char ch);
     void Append(const MyString& str);
-    void Append(time_t value, const char* format = DEFAULT_TIME_FORMAT);
-    void Append(double value, int precision = DEFAULT_PRECISION);
+
+    void Insert(size_t position, const char* str);
 
     void Clear();
 
-    MyString& operator=(const MyString& other);
+    bool Contains(char ch) const;
+    size_t Find(char ch, size_t startPosition = 0) const;
+
+	MyString& operator=(const MyString& other);
     MyString& operator=(MyString&& other) noexcept;
     bool operator==(const MyString& other) const;
+	bool operator<(const MyString& other) const;
+    friend std::ostream& operator<<(std::ostream& os, const MyString& str);
+    char& operator[](size_t pos);
+    const char& operator[](size_t pos) const;
 };

@@ -23,9 +23,9 @@ public:
 	const MyString& GetNotes() const;
 	time_t GetTransactionTime() const;
 
-	void InitAccount(Account* account);
+	void InitializeAccount(Account* account);
 
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
+	std::map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::map<MyString, MyString>& data) override;
 };
 

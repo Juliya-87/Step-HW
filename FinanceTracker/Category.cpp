@@ -1,6 +1,6 @@
 #include "Category.h"
 
-#include "StringTokenExtractor.h"
+using namespace std;
 
 Category::Category(const int id, const MyString& name) : ModelBase(id), mName(name)
 {
@@ -16,23 +16,18 @@ void Category::Rename(const MyString& name)
 	mName = name;
 }
 
-void Category::Parse(MyString& str)
+map<MyString, MyString> Category::ToMap() const
 {
-	ModelBase::Parse(str);
+	map<MyString, MyString> map = ModelBase::ToMap();
 
-	StringTokenExtractor splitter(str, DELIMITER);
-	MyString token;
+	map.emplace("Name", mName);
 
-	splitter.GetNextToken(token);
-	mName = std::move(token);
-
-	str = splitter.GetRemaining();
+	return map;
 }
 
-MyString Category::ToString() const
+void Category::FromMap(const map<MyString, MyString>& data)
 {
-	MyString str = ModelBase::ToString();
-	str.Append(DELIMITER);
-	str.Append(mName);
-	return str;
+	ModelBase::FromMap(data);
+
+	mName = data.at("Name");
 }

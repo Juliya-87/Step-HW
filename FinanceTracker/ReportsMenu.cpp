@@ -1,6 +1,7 @@
 #include "ReportsMenu.h"
 
 #include "Console.h"
+#include "ConversionHelpers.h"
 
 using namespace std;
 

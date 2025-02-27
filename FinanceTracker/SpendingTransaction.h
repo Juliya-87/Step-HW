@@ -15,9 +15,9 @@ public:
 	int GetCategoryId() const;
 	Category* GetCategory() const;
 
-	void InitCategory(Category* category);
+	void InitializeCategory(Category* category);
 
-	void Parse(MyString& str) override;
-	MyString ToString() const override;
+	std::map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::map<MyString, MyString>& data) override;
 };
 

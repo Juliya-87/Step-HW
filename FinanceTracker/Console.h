@@ -8,12 +8,10 @@
 
 class Console
 {
-public:
-	static void ReadLine(char* line, const std::streamsize maxSize)
-	{
-		std::cin.getline(line, maxSize - 1);
-	}
+private:
+	static constexpr std::streamsize DEFAULT_MAX_SIZE = 50;
 
+public:
 	static void ReadLine(int& value)
 	{
 		constexpr int maxSize = 20;
@@ -34,14 +32,12 @@ public:
 		lineStream >> value;
 	}
 
-	static void ReadLine(MyString& value)
+	static void ReadLine(MyString& value, const std::streamsize maxSize = DEFAULT_MAX_SIZE)
 	{
-		const size_t capacity = value.GetCapacity();
-		const auto line = new char[capacity];
-		ReadLine(line, static_cast<std::streamsize>(capacity));
+		const auto line = std::make_unique<char[]>(maxSize + 1);
+		std::cin.getline(line.get(), maxSize + 1);
 
-		value = MyString(line);
-		delete[] line;
+		value.Assign(line.get());
 	}
 
 	template <typename... Args>

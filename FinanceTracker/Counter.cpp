@@ -1,32 +1,6 @@
 #include "Counter.h"
 
-#include <cstdlib>
-
-#include "StringTokenExtractor.h"
-
-void Counter::Parse(MyString& str)
-{
-	StringTokenExtractor splitter(str, DELIMITER);
-	MyString token;
-	char* endPtr = nullptr;
-
-	splitter.GetNextToken(token);
-	mName = token;
-
-	splitter.GetNextToken(token);
-	mValue = strtol(token.GetCStr(), &endPtr, 10);
-
-	str = splitter.GetRemaining();
-}
-
-MyString Counter::ToString() const
-{
-	MyString str;
-	str.Append(mName);
-	str.Append(DELIMITER);
-	str.Append(mValue);
-	return str;
-}
+#include "ConversionHelpers.h"
 
 Counter::Counter(const MyString& name) : mName(name)
 {
@@ -42,6 +16,17 @@ int Counter::GetNextValue()
 const MyString& Counter::GetName() const
 {
 	return mName;
+}
+
+std::map<MyString, MyString> Counter::ToMap() const
+{
+	return { {"Name", mName}, {"Value", ToString(mValue)} };
+}
+
+void Counter::FromMap(const std::map<MyString, MyString>& data)
+{
+	mName = data.at("Name");
+	mValue = StrToInt(data.at("Value"));
 }
 
 bool Counter::operator==(const Counter& other) const

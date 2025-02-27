@@ -147,9 +147,6 @@
     <ClCompile Include="DependencyRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringTokenExtractor.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Repository.h">
@@ -182,7 +179,7 @@
     <ClInclude Include="Serializable.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Serializer.h">
+    <ClInclude Include="CsvStorageManager.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="MyString.h">
@@ -271,9 +268,6 @@
     </ClInclude>
     <ClInclude Include="DependencyRegistry.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringTokenExtractor.h">
-      <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

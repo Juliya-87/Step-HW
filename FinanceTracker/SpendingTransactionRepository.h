@@ -16,5 +16,5 @@ protected:
 	void AfterDeserialized(SpendingTransaction* item) override;
 
 public:
-	void InitCategoryRepository(const std::weak_ptr<ModelRepository<Category>>& categoryRepository);
+	void InitializeCategoryRepository(const std::weak_ptr<ModelRepository<Category>>& categoryRepository);
 };

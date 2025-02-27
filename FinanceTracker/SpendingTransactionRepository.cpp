@@ -19,10 +19,10 @@ void SpendingTransactionRepository::AfterDeserialized(SpendingTransaction* item)
 
 	const int categoryId = item->GetCategoryId();
 	Category* category = categoryRepository->GetById(categoryId);
-	item->InitCategory(category);
+	item->InitializeCategory(category);
 }
 
-void SpendingTransactionRepository::InitCategoryRepository(
+void SpendingTransactionRepository::InitializeCategoryRepository(
 	const std::weak_ptr<ModelRepository<Category>>& categoryRepository)
 {
 	if (mCategoryRepository.expired())

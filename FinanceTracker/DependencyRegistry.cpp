@@ -31,9 +31,9 @@ void RegisterDependencies(DIContainer& container)
 	const std::shared_ptr<IncomingTransactionRepository> incomingTransactionRepository = container.Resolve<IncomingTransactionRepository>();
 	const std::shared_ptr<SpendingTransactionRepository> spendingTransactionRepository = container.Resolve<SpendingTransactionRepository>();
 
-	incomingTransactionRepository->InitAccountRepository(accountRepository);
-	spendingTransactionRepository->InitAccountRepository(accountRepository);
-	spendingTransactionRepository->InitCategoryRepository(categoryRepository);
+	incomingTransactionRepository->InitializeAccountRepository(accountRepository);
+	spendingTransactionRepository->InitializeAccountRepository(accountRepository);
+	spendingTransactionRepository->InitializeCategoryRepository(categoryRepository);
 
 	container.Register<CounterService, CounterRepository>();
 	container.Register<ReportDataSource, CategoryRepository, SpendingTransactionRepository>();

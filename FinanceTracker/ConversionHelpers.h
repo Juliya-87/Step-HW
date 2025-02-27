@@ -2,18 +2,18 @@
 #include <iomanip>
 
 #include "AccountType.h"
+#include "MyString.h"
 #include "ReportingPeriod.h"
 
 constexpr char DEFAULT_TIME_FORMAT[] = "%Y-%m-%d %H:%M:%S";
 
-void TimeToString(char* buffer, size_t bufferSize, time_t time, const char* format = DEFAULT_TIME_FORMAT);
-
-void ParseTime(time_t& time, const char* str, const char* format = DEFAULT_TIME_FORMAT);
-
-const char* AccountTypeToString(AccountType type);
-
-void DoubleToString(char* buffer, size_t bufferSize, double value, int precision = 2);
-
+MyString ToString(time_t time, const char* format = DEFAULT_TIME_FORMAT);
+time_t StrToTime(const MyString& str, const char* format = DEFAULT_TIME_FORMAT);
+MyString ToString(AccountType type);
+MyString ToString(double value, int precision);
+double StrToDouble(const MyString& str);
+MyString ToString(int value);
+int StrToInt(const MyString& str);
 ReportingPeriod IntToReportingPeriod(int value);
-
 AccountType IntToAccountType(int value);
+AccountType StrToAccountType(const MyString& str);

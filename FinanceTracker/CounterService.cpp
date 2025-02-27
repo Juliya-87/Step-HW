@@ -29,18 +29,15 @@ CounterService::CounterService(const shared_ptr<CounterRepository>& counterRepos
 
 int CounterService::GetNextAccountId() const
 {
-	const auto name = MyString("Account.Id");
-	return GetNextValue(name);
+	return GetNextValue("Account.Id");
 }
 
 int CounterService::GetNextCategoryId() const
 {
-	const auto name = MyString("Category.Id");
-	return GetNextValue(name);
+	return GetNextValue("Category.Id");
 }
 
 int CounterService::GetNextTransactionId() const
 {
-	const auto name = MyString("Transaction.Id");
-	return GetNextValue(name);
+	return GetNextValue("Transaction.Id");
 }

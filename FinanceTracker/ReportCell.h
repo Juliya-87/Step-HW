@@ -1,4 +1,6 @@
 #pragma once
+#include <ios>
+
 #include "MyString.h"
 
 class ReportCell final

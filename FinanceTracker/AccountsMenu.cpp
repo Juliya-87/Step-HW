@@ -17,20 +17,20 @@ void AccountsMenu::List() const
 	for (const Account* account : accounts)
 	{
 		Console::WriteLine("ID: ", account->GetId(),
-			", Name: ", account->GetName().GetCStr(),
-			", Type: ", AccountTypeToString(account->GetType()));
+			", Name: ", account->GetName(),
+			", Type: ", ToString(account->GetType()));
 	}
 }
 
 void AccountsMenu::Add() const
 {
-	auto name = MyString();
+	MyString name;
 	int type;
 	Console::Write("Enter account name: ");
 	Console::ReadLine(name);
-	Console::Write("Enter account type (1 - ", AccountTypeToString(CREDIT_CARD),
-		", 2 - ", AccountTypeToString(DEBIT_CARD),
-		", 3 - ", AccountTypeToString(WALLET), "): ");
+	Console::Write("Enter account type (1 - ", ToString(CREDIT_CARD),
+		", 2 - ", ToString(DEBIT_CARD),
+		", 3 - ", ToString(WALLET), "): ");
 	Console::ReadLine(type);
 
 	const AccountType accountType = IntToAccountType(type);
@@ -79,9 +79,9 @@ void AccountsMenu::ChangeType() const
 	int newType;
 	Console::Write("Enter account ID to rename: ");
 	Console::ReadLine(id);
-	Console::Write("Enter new type (1 - ", AccountTypeToString(CREDIT_CARD),
-		", 2 - ", AccountTypeToString(DEBIT_CARD),
-		", 3 - ", AccountTypeToString(WALLET), "): ");
+	Console::Write("Enter new type (1 - ", ToString(CREDIT_CARD),
+		", 2 - ", ToString(DEBIT_CARD),
+		", 3 - ", ToString(WALLET), "): ");
 	Console::ReadLine(newType);
 
 	const AccountType newAccountType = IntToAccountType(newType);
