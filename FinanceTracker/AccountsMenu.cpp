@@ -7,18 +7,19 @@ using namespace std;
 
 void AccountsMenu::List() const
 {
-	const vector<Account*> accounts = mAccountRepository->GetAll();
+	const auto& accounts = mAccountRepository->GetAll();
 
 	if (accounts.empty()) {
 		Console::WriteLine("No accounts available.");
 		return;
 	}
 
-	for (const Account* account : accounts)
+	for (const auto& account : accounts)
 	{
 		Console::WriteLine("ID: ", account->GetId(),
 			", Name: ", account->GetName(),
-			", Type: ", ToString(account->GetType()));
+			", Type: ", ToString(account->GetType()),
+			", Balance: ", ToString(account->GetBalance(), 2));
 	}
 }
 
@@ -42,8 +43,8 @@ void AccountsMenu::Add() const
 
 	const int id = mCounterService->GetNextAccountId();
 
-	const auto newAccount = new Account(id, name, accountType);
-	mAccountRepository->AddOrUpdate(newAccount);
+	auto newAccount = make_unique<Account>(id, name, accountType);
+	mAccountRepository->Add(std::move(newAccount));
 	mAccountRepository->Save();
 
 	Console::WriteLine("Account added!");
@@ -67,7 +68,7 @@ void AccountsMenu::Rename() const
 	}
 
 	account->Rename(newName);
-	mAccountRepository->AddOrUpdate(account);
+	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
 	Console::WriteLine("Account name changed!");
@@ -100,7 +101,7 @@ void AccountsMenu::ChangeType() const
 	}
 
 	account->ChangeType(newAccountType);
-	mAccountRepository->AddOrUpdate(account);
+	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
 	Console::WriteLine("Account type changed!");
@@ -112,7 +113,7 @@ void AccountsMenu::Delete() const
 	Console::Write("Enter account ID to delete: ");
 	Console::ReadLine(id);
 
-	Account* account = mAccountRepository->GetById(id);
+	const Account* account = mAccountRepository->GetById(id);
 
 	if (account == nullptr)
 	{

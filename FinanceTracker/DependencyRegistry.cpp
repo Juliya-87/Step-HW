@@ -18,18 +18,29 @@
 #include "SpendingReport.h"
 #include "SpendingTransactionRepository.h"
 
+template <is_class... T>
+void RegisterStorageManagers(DIContainer& container)
+{
+	(container.Register<FileStorageManager<T>, FileHandler>(), ...);
+	(container.Register<StorageManager<T>>([&container]() { return container.Resolve<FileStorageManager<T>>(); }), ...);
+}
+
 void RegisterDependencies(DIContainer& container)
 {
-	container.Register<IncomingTransactionRepository>();
-	container.Register<SpendingTransactionRepository>();
-	container.Register<AccountRepository, IncomingTransactionRepository, SpendingTransactionRepository>();
-	container.Register<CategoryRepository, SpendingTransactionRepository>();
-	container.Register<CounterRepository>();
+	container.Register<CsvFileHandler>();
+	container.Register<FileHandler>([&container]() { return container.Resolve<CsvFileHandler>(); });
+	RegisterStorageManagers<Account, Category, Counter, IncomingTransaction, SpendingTransaction>(container);
 
-	const std::shared_ptr<AccountRepository> accountRepository = container.Resolve<AccountRepository>();
-	const std::shared_ptr<CategoryRepository> categoryRepository = container.Resolve<CategoryRepository>();
-	const std::shared_ptr<IncomingTransactionRepository> incomingTransactionRepository = container.Resolve<IncomingTransactionRepository>();
-	const std::shared_ptr<SpendingTransactionRepository> spendingTransactionRepository = container.Resolve<SpendingTransactionRepository>();
+	container.Register<IncomingTransactionRepository, StorageManager<IncomingTransaction>>();
+	container.Register<SpendingTransactionRepository, StorageManager<SpendingTransaction>>();
+	container.Register<AccountRepository, StorageManager<Account>, IncomingTransactionRepository, SpendingTransactionRepository>();
+	container.Register<CategoryRepository, StorageManager<Category>, SpendingTransactionRepository>();
+	container.Register<CounterRepository, StorageManager<Counter>>();
+
+	const auto accountRepository = container.Resolve<AccountRepository>();
+	const auto categoryRepository = container.Resolve<CategoryRepository>();
+	const auto incomingTransactionRepository = container.Resolve<IncomingTransactionRepository>();
+	const auto spendingTransactionRepository = container.Resolve<SpendingTransactionRepository>();
 
 	incomingTransactionRepository->InitializeAccountRepository(accountRepository);
 	spendingTransactionRepository->InitializeAccountRepository(accountRepository);
@@ -38,10 +49,10 @@ void RegisterDependencies(DIContainer& container)
 	container.Register<CounterService, CounterRepository>();
 	container.Register<ReportDataSource, CategoryRepository, SpendingTransactionRepository>();
 
-	container.Register<SpendingReport, ReportDataSource>();
-	container.Register<CategoryReport, ReportDataSource>();
-	container.Register<SpendingRating, ReportDataSource>();
-	container.Register<CategoryRating, ReportDataSource>();
+	container.Register<SpendingReport, ReportDataSource, FileHandler>();
+	container.Register<CategoryReport, ReportDataSource, FileHandler>();
+	container.Register<SpendingRating, ReportDataSource, FileHandler>();
+	container.Register<CategoryRating, ReportDataSource, FileHandler>();
 
 	container.Register<AccountsMenu, AccountRepository, CounterService>();
 	container.Register<CategoriesMenu, CategoryRepository, CounterService>();

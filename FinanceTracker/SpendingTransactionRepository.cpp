@@ -2,9 +2,9 @@
 
 using namespace std;
 
-MyString SpendingTransactionRepository::GetFileName()
+MyString SpendingTransactionRepository::GetTableName()
 {
-	return { FILE_NAME };
+	return { TABLE_NAME };
 }
 
 void SpendingTransactionRepository::AfterDeserialized(SpendingTransaction* item)
@@ -20,6 +20,11 @@ void SpendingTransactionRepository::AfterDeserialized(SpendingTransaction* item)
 	const int categoryId = item->GetCategoryId();
 	Category* category = categoryRepository->GetById(categoryId);
 	item->InitializeCategory(category);
+}
+
+SpendingTransactionRepository::SpendingTransactionRepository(
+	const std::shared_ptr<StorageManager<SpendingTransaction>>& storageManager): TransactionRepository(storageManager)
+{
 }
 
 void SpendingTransactionRepository::InitializeCategoryRepository(

@@ -4,21 +4,23 @@
 
 using namespace std;
 
-MyString CategoryRepository::GetFileName()
+MyString CategoryRepository::GetTableName()
 {
-	return { FILE_NAME };
+	return { TABLE_NAME };
 }
 
-bool CategoryRepository::IsItemUsedInOtherRepository(Category* item)
+bool CategoryRepository::IsItemUsedInOtherRepository(const Category* item)
 {
-	const vector<SpendingTransaction*> spendingTransactions = mSpendingTransactionRepository->GetAll();
+	const auto& spendingTransactions = mSpendingTransactionRepository->GetAll();
 	const bool hasSpendingTransactions = ranges::any_of(spendingTransactions,
-	                                                    [item](const SpendingTransaction* transaction) { return *transaction->GetCategory() == *item; });
+		[item](const unique_ptr<SpendingTransaction>& transaction) { return *transaction->GetCategory() == *item; });
 
 	return hasSpendingTransactions;
 }
 
-CategoryRepository::CategoryRepository(const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
-	: mSpendingTransactionRepository(spendingTransactionRepository)
+CategoryRepository::CategoryRepository(const std::shared_ptr<StorageManager<Category>>& storageManager,
+	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
+	: ModelRepository(storageManager),
+	mSpendingTransactionRepository(spendingTransactionRepository)
 {
 }

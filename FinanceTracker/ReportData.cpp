@@ -2,13 +2,13 @@
 
 using namespace std;
 
-const vector<std::unique_ptr<ReportRow>>& ReportData::GetRows() const
+const vector<unique_ptr<ReportRow>>& ReportData::GetRows() const
 {
 	return mRows;
 }
 
-ReportRow* ReportData::AddRow()
+ReportRow* ReportData::CreateRow()
 {
-	mRows.emplace_back(make_unique<ReportRow>());
-	return mRows.back().get();
+	const auto& row = mRows.emplace_back(make_unique<ReportRow>());
+	return row.get();
 }

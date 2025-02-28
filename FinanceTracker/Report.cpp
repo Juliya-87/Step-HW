@@ -17,12 +17,12 @@ MyString Report::GetFullFileName() const
 	fullFileName.Append(fileName);
 	fullFileName.Append(" ");
 	fullFileName.Append(ToString(time(nullptr), "%Y-%m-%d %H%M%S"));
-	fullFileName.Append(FILE_EXTENSION);
+	fullFileName.Append(mFileHandler->GetExtension());
 
 	return fullFileName;
 }
 
-Report::Report(const shared_ptr<ReportDataSource>& reportDataSource) : mReportDataSource(reportDataSource)
+Report::Report(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : mReportDataSource(reportDataSource), mFileHandler(csvFileHandler)
 {
 }
 
@@ -41,13 +41,13 @@ time_t Report::GetStartTime(const ReportingPeriod period)
 
 void Report::Print(const ReportingPeriod period) const
 {
-	const unique_ptr<ReportData> reportData = GetReportData(period);
+	const auto reportData = GetReportData(period);
 
-	for (const auto& row : reportData->GetRows())
+	for (const auto& reportRow : reportData->GetRows())
 	{
-		for (const auto& cell : row->GetCells())
+		for (const auto& reportCell : reportRow->GetCells())
 		{
-			Console::WriteAligned(cell->GetValue(), cell->GetWidth(), cell->GetIsLeftAligned());
+			Console::WriteAligned(reportCell->GetValue(), reportCell->GetWidth(), reportCell->GetIsLeftAligned());
 			Console::Write(' ');
 		}
 
@@ -57,27 +57,20 @@ void Report::Print(const ReportingPeriod period) const
 
 void Report::Export(const ReportingPeriod period) const
 {
-	const unique_ptr<ReportData> reportData = GetReportData(period);
+	const auto reportData = GetReportData(period);
 	const MyString fullFileName = GetFullFileName();
+	const auto fileData = make_unique<FileData>();
 
-	ofstream file(fullFileName.GetCStr());
-	if (!file.is_open())
+	for (const auto& reportRow : reportData->GetRows())
 	{
-		Console::WriteLine("Unable to open the file ", fullFileName);
-		return;
-	}
-
-	for (const auto& row : reportData->GetRows())
-	{
-		bool isFirstColumn = true;
-		for (const auto& cell : row->GetCells())
+		FileRow* fileRow = fileData->CreateRow();
+		for (const auto& reportCell : reportRow->GetCells())
 		{
-			file << (isFirstColumn ? "" : SEPARATOR) << cell->GetValue();
-			isFirstColumn = false;
+			fileRow->AddCell(reportCell->GetValue());
 		}
-
-		file << '\n';
 	}
+
+	mFileHandler->SaveToFile(fullFileName, fileData);
 
 	Console::WriteLine("Report successfully exported to: ", fullFileName);
 }

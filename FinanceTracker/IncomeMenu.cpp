@@ -1,23 +1,24 @@
 #include "IncomeMenu.h"
 
+#include "Console.h"
 #include "ConversionHelpers.h"
 
 using namespace std;
 
 void IncomeMenu::List() const
 {
-	const vector<IncomingTransaction*> transactions = mIncomingTransactionRepository->GetAll();
+	const auto& transactions = mIncomingTransactionRepository->GetAll();
 
 	if (transactions.empty()) {
 		Console::WriteLine("No incoming transactions available.");
 		return;
 	}
 
-	for (const IncomingTransaction* transaction : transactions)
+	for (const auto& transaction : transactions)
 	{
 		Console::WriteLine("ID: ", transaction->GetId(),
 			", Account: ", transaction->GetAccount()->GetName(),
-			", Amount: ", transaction->GetAmount(),
+			", Amount: ", ToString(transaction->GetAmount(), 2),
 			", Notes: ", transaction->GetNotes(),
 			", Time: ", ToString(transaction->GetTransactionTime()));
 	}
@@ -29,7 +30,7 @@ void IncomeMenu::Add() const
 	int accountId;
 	MyString notes;
 	Console::WriteLine("Choose account for the transaction:");
-	for (const Account* account : mAccountRepository->GetAll())
+	for (const auto& account : mAccountRepository->GetAll())
 	{
 		Console::WriteLine(account->GetId(), ". ", account->GetName());
 	}
@@ -43,12 +44,12 @@ void IncomeMenu::Add() const
 	const int id = mCounterService->GetNextTransactionId();
 	Account* account = mAccountRepository->GetById(accountId);
 
-	const auto newTransaction = new IncomingTransaction(id, amount, account, notes);
-	mIncomingTransactionRepository->AddOrUpdate(newTransaction);
+	auto newTransaction = make_unique<IncomingTransaction>(id, amount, account, notes);
+	mIncomingTransactionRepository->Add(std::move(newTransaction));
 	mIncomingTransactionRepository->Save();
 
 	account->IncreaseBalance(amount);
-	mAccountRepository->AddOrUpdate(account);
+	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
 	Console::WriteLine("Income added!");
@@ -60,7 +61,7 @@ void IncomeMenu::Delete() const
 	Console::Write("Enter incoming transaction ID to delete: ");
 	Console::ReadLine(id);
 
-	IncomingTransaction* transaction = mIncomingTransactionRepository->GetById(id);
+	const IncomingTransaction* transaction = mIncomingTransactionRepository->GetById(id);
 
 	if (transaction == nullptr)
 	{
@@ -73,7 +74,7 @@ void IncomeMenu::Delete() const
 
 	Account* account = transaction->GetAccount();
 	account->DecreaseBalance(transaction->GetAmount());
-	mAccountRepository->AddOrUpdate(account);
+	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
 	Console::WriteLine("Income deleted!");

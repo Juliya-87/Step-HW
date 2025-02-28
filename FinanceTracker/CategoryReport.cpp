@@ -12,13 +12,13 @@ MyString CategoryReport::GetFileName() const
 unique_ptr<ReportData> CategoryReport::GetReportData(const ReportingPeriod period) const
 {
 	const time_t startTime = GetStartTime(period);
-	const vector<pair<Category*, double>> statistics = mReportDataSource->GetCategoryStatistics(startTime);
+	const auto statistics = mReportDataSource->GetCategoryStatistics(startTime);
 	auto result = make_unique<ReportData>();
 
-	ReportRow* header = result->AddRow();
+	ReportRow* header = result->CreateRow();
 	header->AddCell(REPORT_NAME);
 
-	ReportRow* columnNames = result->AddRow();
+	ReportRow* columnNames = result->CreateRow();
 	columnNames->AddCell("Category", 20);
 	columnNames->AddCell("Amount", 10, false);
 
@@ -26,20 +26,20 @@ unique_ptr<ReportData> CategoryReport::GetReportData(const ReportingPeriod perio
 
 	for (auto& [category, amount] : statistics)
 	{
-		ReportRow* row = result->AddRow();
+		ReportRow* row = result->CreateRow();
 		row->AddCell(category->GetName(), 20);
 		row->AddCell(ToString(amount, 2), 10, false);
 
 		total += amount;
 	}
 
-	ReportRow* totalRow = result->AddRow();
+	ReportRow* totalRow = result->CreateRow();
 	totalRow->AddCell("Total:", 20);
 	totalRow->AddCell(ToString(total, 2), 10, false);
 
 	return result;
 }
 
-CategoryReport::CategoryReport(const shared_ptr<ReportDataSource>& reportDataSource) : Report(reportDataSource)
+CategoryReport::CategoryReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
 {
 }

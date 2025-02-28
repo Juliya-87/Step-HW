@@ -5,8 +5,11 @@
 class IncomingTransactionRepository final : public TransactionRepository<IncomingTransaction>
 {
 private:
-	static constexpr char FILE_NAME[] = "Incoming Transactions.txt";
+	static constexpr char TABLE_NAME[] = "Incoming Transactions";
 
 protected:
-	MyString GetFileName() override;
+	MyString GetTableName() override;
+
+public:
+	IncomingTransactionRepository(const std::shared_ptr<StorageManager<IncomingTransaction>>& storageManager);
 };

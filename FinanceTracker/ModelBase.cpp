@@ -12,12 +12,12 @@ int ModelBase::GetId() const
 	return mId;
 }
 
-std::map<MyString, MyString> ModelBase::ToMap() const
+std::unordered_map<MyString, MyString> ModelBase::ToMap() const
 {
 	return { {"Id", ToString(mId)} };
 }
 
-void ModelBase::FromMap(const std::map<MyString, MyString>& data)
+void ModelBase::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
 	mId = StrToInt(data.at("Id"));
 }

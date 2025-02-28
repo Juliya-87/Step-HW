@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const vector<std::unique_ptr<ReportCell>>& ReportRow::GetCells() const
+const vector<unique_ptr<ReportCell>>& ReportRow::GetCells() const
 {
 	return mCells;
 }

@@ -30,14 +30,28 @@ public:
 
     void Clear();
 
+    bool IsEmpty() const;
     bool Contains(char ch) const;
     size_t Find(char ch, size_t startPosition = 0) const;
 
 	MyString& operator=(const MyString& other);
     MyString& operator=(MyString&& other) noexcept;
     bool operator==(const MyString& other) const;
-	bool operator<(const MyString& other) const;
-    friend std::ostream& operator<<(std::ostream& os, const MyString& str);
     char& operator[](size_t pos);
     const char& operator[](size_t pos) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const MyString& str);
+};
+
+template <>
+struct std::hash<MyString> {
+	size_t operator()(const MyString& str) const noexcept
+	{
+		size_t hashValue = 0;
+		const char* chars = str.GetCStr();
+		for (size_t i = 0; i < str.GetLength(); ++i) {
+			hashValue = hashValue * 31 + std::hash<char>()(chars[i]);
+		}
+		return hashValue;
+	}
 };

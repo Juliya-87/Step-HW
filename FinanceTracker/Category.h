@@ -14,6 +14,6 @@ public:
 
 	void Rename(const MyString& name);
 
-	std::map<MyString, MyString> ToMap() const override;
-	void FromMap(const std::map<MyString, MyString>& data) override;
+	std::unordered_map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 };

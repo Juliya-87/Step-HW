@@ -6,15 +6,16 @@
 class CategoryRepository final : public ModelRepository<Category>
 {
 private:
-	static constexpr char FILE_NAME[] = "Categories.txt";
+	static constexpr char TABLE_NAME[] = "Categories";
 
 	std::shared_ptr<ModelRepository<SpendingTransaction>> mSpendingTransactionRepository = nullptr;
 
 protected:
-	MyString GetFileName() override;
+	MyString GetTableName() override;
 
-	bool IsItemUsedInOtherRepository(Category* item) override;
+	bool IsItemUsedInOtherRepository(const Category* item) override;
 
 public:
-	CategoryRepository(const std::shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository);
+	CategoryRepository(const std::shared_ptr<StorageManager<Category>>& storageManager,
+		const std::shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository);
 };

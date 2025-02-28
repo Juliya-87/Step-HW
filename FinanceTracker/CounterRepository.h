@@ -5,8 +5,13 @@
 class CounterRepository final : public Repository<Counter>
 {
 private:
-	static constexpr char FILE_NAME[] = "Counters.txt";
+	static constexpr char TABLE_NAME[] = "Counters";
 
 protected:
-	MyString GetFileName() override;
+	MyString GetTableName() override;
+
+public:
+	CounterRepository(const std::shared_ptr<StorageManager<Counter>>& storageManager);
+
+	Counter* GetByName(const MyString& name);
 };

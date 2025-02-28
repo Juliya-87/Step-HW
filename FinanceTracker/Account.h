@@ -16,12 +16,13 @@ public:
 
 	const MyString& GetName() const;
 	AccountType GetType() const;
+	double GetBalance() const;
 
 	void Rename(const MyString& name);
 	void ChangeType(AccountType type);
 	void IncreaseBalance(double balance);
 	void DecreaseBalance(double balance);
 
-	std::map<MyString, MyString> ToMap() const override;
-	void FromMap(const std::map<MyString, MyString>& data) override;
+	std::unordered_map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 };

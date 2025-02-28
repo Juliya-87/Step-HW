@@ -12,7 +12,9 @@ private:
 	std::weak_ptr<ModelRepository<Account>> mAccountRepository;
 
 protected:
-	TransactionRepository() = default;
+	TransactionRepository(const std::shared_ptr<StorageManager<T>>& storageManager) : ModelRepository<T>(storageManager)
+	{
+	}
 
 	void AfterDeserialized(T* item) override
 	{

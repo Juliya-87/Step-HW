@@ -4,21 +4,17 @@ using namespace std;
 
 int CounterService::GetNextValue(const MyString& name) const
 {
-	const vector<Counter*> counters = mCounterRepository->GetAll();
-
-	for (Counter* counter : counters)
+	if (Counter* counter = mCounterRepository->GetByName(name))
 	{
-		if (counter->GetName() == name)
-		{
-			const int nextValue = counter->GetNextValue();
-			mCounterRepository->Save();
-			return nextValue;
-		}
+		const int nextValue = counter->GetNextValue();
+		mCounterRepository->Update(counter);
+		mCounterRepository->Save();
+		return nextValue;
 	}
 
-	const auto newCounter = new Counter(name);
+	auto newCounter = make_unique<Counter>(name);
 	const int nextValue = newCounter->GetNextValue();
-	mCounterRepository->AddOrUpdate(newCounter);
+	mCounterRepository->Add(std::move(newCounter));
 	mCounterRepository->Save();
 	return nextValue;
 }

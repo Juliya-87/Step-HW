@@ -2,7 +2,12 @@
 
 using namespace std;
 
-MyString IncomingTransactionRepository::GetFileName()
+MyString IncomingTransactionRepository::GetTableName()
 {
-	return {FILE_NAME};
+	return {TABLE_NAME};
+}
+
+IncomingTransactionRepository::IncomingTransactionRepository(
+	const std::shared_ptr<StorageManager<IncomingTransaction>>& storageManager): TransactionRepository(storageManager)
+{
 }

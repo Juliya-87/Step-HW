@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Reports">
       <UniqueIdentifier>{ec8d55bf-a5b5-429c-ac0d-907631f1e344}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Storage">
+      <UniqueIdentifier>{5d528814-f327-4174-b5f2-ef83699dd57c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Storage">
+      <UniqueIdentifier>{1c752b07-e36a-43db-9f0d-0bc66540ba1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -144,8 +150,20 @@
     <ClCompile Include="ReportDataSource.cpp">
       <Filter>Source Files\Reports</Filter>
     </ClCompile>
+    <ClCompile Include="CsvFileHandler.cpp">
+      <Filter>Source Files\Storage</Filter>
+    </ClCompile>
     <ClCompile Include="DependencyRegistry.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileData.cpp">
+      <Filter>Source Files\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="FileRow.cpp">
+      <Filter>Source Files\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="FileCell.cpp">
+      <Filter>Source Files\Storage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +195,6 @@
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="Serializable.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="CsvStorageManager.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="MyString.h">
@@ -268,6 +283,27 @@
     </ClInclude>
     <ClInclude Include="DependencyRegistry.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CsvFileHandler.h">
+      <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileStorageManager.h">
+      <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHandler.h">
+      <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="StorageManager.h">
+      <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileData.h">
+      <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileRow.h">
+      <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="FileCell.h">
+      <Filter>Header Files\Storage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,6 +15,6 @@ protected:
 	std::unique_ptr<ReportData> GetReportData(ReportingPeriod period) const override;
 
 public:
-	SpendingReport(const std::shared_ptr<ReportDataSource>& reportDataSource);
+	SpendingReport(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
 };
 

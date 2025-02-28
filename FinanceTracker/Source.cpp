@@ -10,7 +10,7 @@ int main()
 	RegisterDependencies(container);
 
 	const std::shared_ptr<MainMenu> mainMenu = container.Resolve<MainMenu>();
-    mainMenu->ShowMenu();
+	mainMenu->ShowMenu();
 
 	return 0;
 }

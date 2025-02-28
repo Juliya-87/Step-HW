@@ -1,17 +1,16 @@
 #pragma once
 #include <vector>
 
-#include "Console.h"
 #include "MyString.h"
-#include "CsvStorageManager.h"
+#include "FileStorageManager.h"
 
 template <is_serializable T>
 class Repository
 {
 private:
-	static constexpr char BASE_DIRECTORY[] = "Data";
-	MyString mFullFileName;
-	std::vector<T*> mItems;
+	std::shared_ptr<StorageManager<T>> mStorageManager;
+	MyString mTableName;
+	std::vector<std::unique_ptr<T>> mItems;
 	bool isInitialized = false;
 
 	void EnsureInitialized()
@@ -21,73 +20,78 @@ private:
 			return;
 		}
 
-		EnsureFullFileNameInitialized();
-		CsvStorageManager<T>::LoadFromCsv(mFullFileName, mItems);
+		mTableName = GetTableName();
+		mItems = mStorageManager->Load(mTableName);
 
-		for (T* item : mItems)
+		for (const auto& item : mItems)
 		{
-			AfterDeserialized(item);
+			AfterDeserialized(item.get());
 		}
 
 		isInitialized = true;
 	}
 
-	void EnsureFullFileNameInitialized()
+protected:
+	Repository(const std::shared_ptr<StorageManager<T>>& storageManager) : mStorageManager(storageManager)
 	{
-		const MyString fileName = GetFileName();
-
-		mFullFileName = MyString(BASE_DIRECTORY);
-		mFullFileName.Append("\\");
-		mFullFileName.Append(fileName);
 	}
 
-protected:
-	Repository() = default;
-
-	virtual MyString GetFileName() = 0;
+	virtual MyString GetTableName() = 0;
 
 	virtual void AfterDeserialized(T* item)
 	{
 	}
 
-	virtual bool IsItemUsedInOtherRepository(T* item)
+	virtual bool IsItemUsedInOtherRepository(const T* item)
 	{
-		return true;
+		return false;
 	}
 
 public:
-	const std::vector<T*>& GetAll()
+	const std::vector<std::unique_ptr<T>>& GetAll()
 	{
 		EnsureInitialized();
 
 		return mItems;
 	}
 
-	void AddOrUpdate(T* item)
+	void Add(std::unique_ptr<T> item)
 	{
 		EnsureInitialized();
 
-		const size_t size = mItems.size();
-		for (size_t i = 0; i < size; i++)
+		for (const auto& vectorItem : mItems)
 		{
-			T* vectorItem = mItems.at(i);
 			if (*vectorItem == *item)
 			{
-				if (vectorItem == item)
+				throw std::runtime_error("Item already exists");
+			}
+		}
+
+		mItems.push_back(std::move(item));
+	}
+
+	void Update(T* item)
+	{
+		EnsureInitialized();
+
+		for (auto& vectorItem : mItems)
+		{
+			if (*vectorItem == *item)
+			{
+				if (vectorItem.get() == item)
 				{
 					return;
 				}
 
-				mItems.at(i) = item;
-				delete vectorItem;
+				*vectorItem = *item;
 				return;
 			}
 		}
 
-		mItems.push_back(item);
+		throw std::runtime_error("Item not found in repository");
 	}
 
-	bool Delete(T* item)
+	bool Delete(const T* item)
 	{
 		EnsureInitialized();
 
@@ -96,16 +100,13 @@ public:
 			return false;
 		}
 
-		const size_t size = mItems.size();
-		for (size_t i = 0; i < size; i++)
+		auto it = std::find_if(mItems.begin(), mItems.end(),
+			[&](const std::unique_ptr<T>& vectorItem) { return *vectorItem == *item; });
+
+		if (it != mItems.end())
 		{
-			T* vectorItem = mItems.at(i);
-			if (*vectorItem == *item)
-			{
-				mItems.erase(mItems.begin() + i);
-				delete vectorItem;
-				return true;
-			}
+			mItems.erase(it);
+			return true;
 		}
 
 		return false;
@@ -118,15 +119,8 @@ public:
 			return;
 		}
 
-		CsvStorageManager<T>::SaveToCsv(mFullFileName, mItems);
+		mStorageManager->Save(mTableName, mItems);
 	}
 
-	virtual ~Repository()
-	{
-		for (const T* item : mItems) {
-			delete item;
-		}
-
-		mItems.clear();
-	}
+	virtual ~Repository() = default;
 };

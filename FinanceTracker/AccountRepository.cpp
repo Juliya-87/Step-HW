@@ -7,26 +7,29 @@
 
 using namespace std;
 
-MyString AccountRepository::GetFileName()
+MyString AccountRepository::GetTableName()
 {
-	return { FILE_NAME };
+	return { TABLE_NAME };
 }
 
-bool AccountRepository::IsItemUsedInOtherRepository(Account* item)
+bool AccountRepository::IsItemUsedInOtherRepository(const Account* item)
 {
-	const vector<IncomingTransaction*> incomingTransactions = mIncomingTransactionRepository->GetAll();
+	const auto& incomingTransactions = mIncomingTransactionRepository->GetAll();
 	const bool hasIncomingTransactions = ranges::any_of(incomingTransactions,
-		[item](const IncomingTransaction* transaction) { return *transaction->GetAccount() == *item; });
+		[item](const unique_ptr<IncomingTransaction>& transaction) { return *transaction->GetAccount() == *item; });
 
-	const vector<SpendingTransaction*> spendingTransactions = mSpendingTransactionRepository->GetAll();
+	const auto& spendingTransactions = mSpendingTransactionRepository->GetAll();
 	const bool hasSpendingTransactions = ranges::any_of(spendingTransactions,
-		[item](const SpendingTransaction* transaction) { return *transaction->GetAccount() == *item; });
+		[item](const unique_ptr<SpendingTransaction>& transaction) { return *transaction->GetAccount() == *item; });
 
 	return hasIncomingTransactions || hasSpendingTransactions;
 }
 
-AccountRepository::AccountRepository(const shared_ptr<ModelRepository<IncomingTransaction>>& incomingTransactionRepository,
+AccountRepository::AccountRepository(const std::shared_ptr<StorageManager<Account>>& storageManager,
+	const shared_ptr<ModelRepository<IncomingTransaction>>& incomingTransactionRepository,
 	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
-	: mIncomingTransactionRepository(incomingTransactionRepository), mSpendingTransactionRepository(spendingTransactionRepository)
+	: ModelRepository(storageManager),
+	mIncomingTransactionRepository(incomingTransactionRepository),
+	mSpendingTransactionRepository(spendingTransactionRepository)
 {
 }

@@ -6,14 +6,14 @@ using namespace std;
 
 void CategoriesMenu::List() const
 {
-	const vector<Category*> categories = mCategoryRepository->GetAll();
+	const auto& categories = mCategoryRepository->GetAll();
 
 	if (categories.empty()) {
 		Console::WriteLine("No categories available.");
 		return;
 	}
 
-	for (const Category* category : categories)
+	for (const auto& category : categories)
 	{
 		Console::WriteLine("ID: ", category->GetId(), ", Name: ", category->GetName());
 	}
@@ -27,8 +27,8 @@ void CategoriesMenu::Add() const
 
 	const int id = mCounterService->GetNextCategoryId();
 
-	const auto newCategory = new Category(id, name);
-	mCategoryRepository->AddOrUpdate(newCategory);
+	auto newCategory = make_unique<Category>(id, name);
+	mCategoryRepository->Add(std::move(newCategory));
 	mCategoryRepository->Save();
 
 	Console::WriteLine("Category added!");
@@ -52,7 +52,7 @@ void CategoriesMenu::Rename() const
 	}
 
 	category->Rename(newName);
-	mCategoryRepository->AddOrUpdate(category);
+	mCategoryRepository->Update(category);
 	mCategoryRepository->Save();
 
 	Console::WriteLine("Category name changed!");
@@ -64,7 +64,7 @@ void CategoriesMenu::Delete() const
 	Console::Write("Enter category ID to delete: ");
 	Console::ReadLine(id);
 
-	Category* category = mCategoryRepository->GetById(id);
+	const Category* category = mCategoryRepository->GetById(id);
 
 	if (category == nullptr)
 	{

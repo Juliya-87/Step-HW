@@ -10,15 +10,15 @@ class Report
 {
 private:
 	static constexpr char BASE_DIRECTORY[] = "Reports";
-	static constexpr char FILE_EXTENSION[] = ".csv";
 	static constexpr char SEPARATOR[] = ",";
 
 	MyString GetFullFileName() const;
 
 protected:
 	std::shared_ptr<ReportDataSource> mReportDataSource = nullptr;
+	std::shared_ptr<FileHandler> mFileHandler = nullptr;
 
-	Report(const std::shared_ptr<ReportDataSource>& reportDataSource);
+	Report(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
 
 	virtual MyString GetFileName() const = 0;
 	virtual std::unique_ptr<ReportData> GetReportData(ReportingPeriod period) const = 0;

@@ -18,12 +18,12 @@ const MyString& Counter::GetName() const
 	return mName;
 }
 
-std::map<MyString, MyString> Counter::ToMap() const
+std::unordered_map<MyString, MyString> Counter::ToMap() const
 {
 	return { {"Name", mName}, {"Value", ToString(mValue)} };
 }
 
-void Counter::FromMap(const std::map<MyString, MyString>& data)
+void Counter::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
 	mName = data.at("Name");
 	mValue = StrToInt(data.at("Value"));

@@ -2,24 +2,25 @@
 
 #include "AccountRepository.h"
 #include "CategoryRepository.h"
+#include "Console.h"
 #include "ConversionHelpers.h"
 
 using namespace std;
 
 void SpendingMenu::List() const
 {
-	const vector<SpendingTransaction*> transactions = mSpendingTransactionRepository->GetAll();
+	const auto& transactions = mSpendingTransactionRepository->GetAll();
 
 	if (transactions.empty()) {
-		Console::WriteLine("No incoming transactions available.");
+		Console::WriteLine("No spending transactions available.");
 		return;
 	}
 
-	for (const SpendingTransaction* transaction : transactions)
+	for (const auto& transaction : transactions)
 	{
 		Console::WriteLine("ID: ", transaction->GetId(),
 			", Account: ", transaction->GetAccount()->GetName(),
-			", Amount: ", transaction->GetAmount(),
+			", Amount: ", ToString(transaction->GetAmount(), 2),
 			", Category: ", transaction->GetCategory()->GetName(),
 			", Notes: ", transaction->GetNotes(),
 			", Time: ", ToString(transaction->GetTransactionTime()));
@@ -33,20 +34,20 @@ void SpendingMenu::Add() const
 	int categoryId;
 	MyString notes;
 	Console::WriteLine("Choose account for the transaction:");
-	for (const Account* account : mAccountRepository->GetAll())
+	for (const auto& account : mAccountRepository->GetAll())
 	{
 		Console::WriteLine(account->GetId(), ". ", account->GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
 	Console::WriteLine("Choose category for the transaction:");
-	for (const Category* category : mCategoryRepository->GetAll())
+	for (const auto& category : mCategoryRepository->GetAll())
 	{
 		Console::WriteLine(category->GetId(), ". ", category->GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(categoryId);
-	Console::Write("Enter income amount: ");
+	Console::Write("Enter spending amount: ");
 	Console::ReadLine(amount);
 	Console::Write("Enter notes: ");
 	Console::ReadLine(notes);
@@ -55,28 +56,28 @@ void SpendingMenu::Add() const
 	Account* account = mAccountRepository->GetById(accountId);
 	Category* category = mCategoryRepository->GetById(categoryId);
 
-	const auto newTransaction = new SpendingTransaction(id, amount, account, category, notes);
-	mSpendingTransactionRepository->AddOrUpdate(newTransaction);
+	auto newTransaction = make_unique<SpendingTransaction>(id, amount, account, category, notes);
+	mSpendingTransactionRepository->Add(std::move(newTransaction));
 	mSpendingTransactionRepository->Save();
 
 	account->DecreaseBalance(amount);
-	mAccountRepository->AddOrUpdate(account);
+	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
-	Console::WriteLine("Income added!");
+	Console::WriteLine("Spending added!");
 }
 
 void SpendingMenu::Delete() const
 {
 	int id;
-	Console::Write("Enter incoming transaction ID to delete: ");
+	Console::Write("Enter spending transaction ID to delete: ");
 	Console::ReadLine(id);
 
-	SpendingTransaction* transaction = mSpendingTransactionRepository->GetById(id);
+	const SpendingTransaction* transaction = mSpendingTransactionRepository->GetById(id);
 
 	if (transaction == nullptr)
 	{
-		Console::WriteLine("Incoming transaction with this ID not found!");
+		Console::WriteLine("Spending transaction with this ID not found!");
 		return;
 	}
 
@@ -85,10 +86,10 @@ void SpendingMenu::Delete() const
 
 	Account* account = transaction->GetAccount();
 	account->IncreaseBalance(transaction->GetAmount());
-	mAccountRepository->AddOrUpdate(account);
+	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
-	Console::WriteLine("Income deleted!");
+	Console::WriteLine("Spending deleted!");
 }
 
 SpendingMenu::SpendingMenu(const shared_ptr<AccountRepository>& accountRepository,

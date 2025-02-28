@@ -12,6 +12,5 @@ protected:
 	std::unique_ptr<ReportData> GetReportData(ReportingPeriod period) const override;
 
 public:
-	CategoryReport(const std::shared_ptr<ReportDataSource>& reportDataSource);
+	CategoryReport(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
 };
-

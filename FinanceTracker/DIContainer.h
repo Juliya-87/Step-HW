@@ -21,6 +21,12 @@ public:
 	}
 
 	template <is_class T>
+	void Register(std::function<std::shared_ptr<T>()> factory)
+	{
+		factories[typeid(T)] = factory;
+	}
+
+	template <is_class T>
 	std::shared_ptr<T> Resolve()
 	{
 		const std::type_index typeIndex = typeid(T);

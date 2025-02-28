@@ -43,13 +43,13 @@ public:
 	template <typename... Args>
 	static void WriteLine(Args... args)
 	{
-		(std::cout << ... << args) << "\n";
+		(std::cout << ... << args) << std::endl;
 	}
 
 	template <typename... Args>
 	static void Write(Args... args)
 	{
-		(std::cout << ... << args);
+		(std::cout << ... << args) << std::flush;
 	}
 
 	template <typename T>
@@ -63,6 +63,8 @@ public:
 		else {
 			std::cout << alignment << value;
 		}
+
+		std::cout << std::flush;
 	}
 };
 

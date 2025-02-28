@@ -12,22 +12,22 @@ MyString SpendingReport::GetFileName() const
 unique_ptr<ReportData> SpendingReport::GetReportData(const ReportingPeriod period) const
 {
 	const time_t startTime = GetStartTime(period);
-	const vector<SpendingTransaction*> transactions = mReportDataSource->GetTransactions(startTime);
+	const auto transactions = mReportDataSource->GetTransactions(startTime);
 	auto result = make_unique<ReportData>();
 
-	ReportRow* header = result->AddRow();
+	ReportRow* header = result->CreateRow();
 	header->AddCell(REPORT_NAME);
 
-	ReportRow* columnNames = result->AddRow();
+	ReportRow* columnNames = result->CreateRow();
 	columnNames->AddCell("Time", 19);
 	columnNames->AddCell("Amount", 10, false);
 	columnNames->AddCell("Notes");
 
 	double total = 0;
 
-	for (const SpendingTransaction* transaction : transactions)
+	for (const auto transaction : transactions)
 	{
-		ReportRow* row = result->AddRow();
+		ReportRow* row = result->CreateRow();
 		row->AddCell(ToString(transaction->GetTransactionTime()), 19);
 		row->AddCell(ToString(transaction->GetAmount(), 2), 10, false);
 		row->AddCell(transaction->GetNotes());
@@ -35,13 +35,13 @@ unique_ptr<ReportData> SpendingReport::GetReportData(const ReportingPeriod perio
 		total += transaction->GetAmount();
 	}
 
-	ReportRow* totalRow = result->AddRow();
+	ReportRow* totalRow = result->CreateRow();
 	totalRow->AddCell("Total:", 19);
 	totalRow->AddCell(ToString(total, 2), 10, false);
 
 	return result;
 }
 
-SpendingReport::SpendingReport(const shared_ptr<ReportDataSource>& reportDataSource) : Report(reportDataSource)
+SpendingReport::SpendingReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
 {
 }

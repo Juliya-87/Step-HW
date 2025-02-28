@@ -27,16 +27,16 @@ void SpendingTransaction::InitializeCategory(Category* category)
 	}
 }
 
-std::map<MyString, MyString> SpendingTransaction::ToMap() const
+std::unordered_map<MyString, MyString> SpendingTransaction::ToMap() const
 {
-	std::map<MyString, MyString> map = Transaction::ToMap();
+	auto map = Transaction::ToMap();
 
 	map.emplace("CategoryId", ToString(mCategoryId));
 
 	return map;
 }
 
-void SpendingTransaction::FromMap(const std::map<MyString, MyString>& data)
+void SpendingTransaction::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
 	Transaction::FromMap(data);
 

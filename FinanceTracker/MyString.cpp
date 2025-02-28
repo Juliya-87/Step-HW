@@ -96,6 +96,11 @@ void MyString::Clear()
 	mChars.assign(1, '\0');
 }
 
+bool MyString::IsEmpty() const
+{
+	return !GetLength();
+}
+
 bool MyString::Contains(const char ch) const
 {
 	return ranges::find(mChars, ch) != mChars.end();
@@ -138,17 +143,6 @@ bool MyString::operator==(const MyString& other) const
 	return mChars == other.mChars;
 }
 
-bool MyString::operator<(const MyString& other) const
-{
-	return mChars < other.mChars;
-}
-
-ostream& operator<<(ostream& os, const MyString& str)
-{
-	os << str.GetCStr();
-	return os;
-}
-
 char& MyString::operator[](const size_t pos)
 {
 	return mChars[pos];
@@ -157,4 +151,10 @@ char& MyString::operator[](const size_t pos)
 const char& MyString::operator[](const size_t pos) const
 {
 	return mChars[pos];
+}
+
+ostream& operator<<(ostream& os, const MyString& str)
+{
+	os << str.GetCStr();
+	return os;
 }

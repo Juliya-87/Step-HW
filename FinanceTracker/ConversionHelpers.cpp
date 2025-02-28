@@ -10,7 +10,7 @@ static constexpr size_t INT_BUFFER_SIZE = 12;
 
 MyString ToString(const time_t time, const char* format)
 {
-	tm timeInfo = {};
+	tm timeInfo;
 	char buffer[TIME_BUFFER_SIZE];
 
 	(void)localtime_s(&timeInfo, &time);
@@ -21,7 +21,7 @@ MyString ToString(const time_t time, const char* format)
 
 time_t StrToTime(const MyString& str, const char* format)
 {
-	tm timeInfo = {};
+	tm timeInfo;
 
 	std::istringstream ss(str.GetCStr());
 	ss >> std::get_time(&timeInfo, format);

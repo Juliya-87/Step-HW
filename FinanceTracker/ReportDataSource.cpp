@@ -1,7 +1,5 @@
 #include "ReportDataSource.h"
 
-#include <algorithm>
-
 using namespace std;
 
 ReportDataSource::ReportDataSource(const std::shared_ptr<CategoryRepository>& categoryRepository,
@@ -12,25 +10,30 @@ ReportDataSource::ReportDataSource(const std::shared_ptr<CategoryRepository>& ca
 
 std::vector<SpendingTransaction*> ReportDataSource::GetTransactions(const time_t startTime) const
 {
-	const vector<SpendingTransaction*> transactions = mSpendingTransactionRepository->GetAll();
+	const auto& transactions = mSpendingTransactionRepository->GetAll();
 
 	vector<SpendingTransaction*> result;
-	ranges::copy_if(transactions, back_inserter(result),
-		[startTime](const SpendingTransaction* transaction) { return transaction->GetTransactionTime() >= startTime; });
+	for (const auto& transaction : transactions)
+	{
+		if (transaction->GetTransactionTime() >= startTime)
+		{
+			result.push_back(transaction.get());
+		}
+	}
 
 	return result;
 }
 
 vector<pair<Category*, double>> ReportDataSource::GetCategoryStatistics(const time_t startTime) const
 {
-	const vector<Category*> categories = mCategoryRepository->GetAll();
-	const vector<SpendingTransaction*> transactions = GetTransactions(startTime);
+	const auto& categories = mCategoryRepository->GetAll();
+	const auto transactions = GetTransactions(startTime);
 
 	vector<pair<Category*, double>> result;
-	for (Category* category : categories)
+	for (const auto& category : categories)
 	{
 		double categoryAmount = 0;
-		for (const SpendingTransaction* transaction : transactions)
+		for (const auto transaction : transactions)
 		{
 			if (*transaction->GetCategory() == *category)
 			{
@@ -38,7 +41,7 @@ vector<pair<Category*, double>> ReportDataSource::GetCategoryStatistics(const ti
 			}
 		}
 
-		result.emplace_back(category, categoryAmount);
+		result.emplace_back(category.get(), categoryAmount);
 	}
 
 	return result;

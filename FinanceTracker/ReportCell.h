@@ -17,4 +17,3 @@ public:
 	std::streamsize GetWidth() const;
 	bool GetIsLeftAligned() const;
 };
-

@@ -43,9 +43,9 @@ void Transaction::InitializeAccount(Account* account)
 	}
 }
 
-std::map<MyString, MyString> Transaction::ToMap() const
+std::unordered_map<MyString, MyString> Transaction::ToMap() const
 {
-	std::map<MyString, MyString> map = ModelBase::ToMap();
+	auto map = ModelBase::ToMap();
 
 	map.emplace("Amount", ToString(mAmount, 2));
 	map.emplace("AccountId", ToString(mAccountId));
@@ -55,7 +55,7 @@ std::map<MyString, MyString> Transaction::ToMap() const
 	return map;
 }
 
-void Transaction::FromMap(const std::map<MyString, MyString>& data)
+void Transaction::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
 	ModelBase::FromMap(data);
 

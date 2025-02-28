@@ -13,8 +13,8 @@ public:
 	int GetNextValue();
 	const MyString& GetName() const;
 
-	std::map<MyString, MyString> ToMap() const override;
-	void FromMap(const std::map<MyString, MyString>& data) override;
+	std::unordered_map<MyString, MyString> ToMap() const override;
+	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 
 	bool operator==(const Counter& other) const;
 };

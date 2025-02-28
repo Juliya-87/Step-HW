@@ -20,6 +20,11 @@ AccountType Account::GetType() const
 	return mType;
 }
 
+double Account::GetBalance() const
+{
+	return mBalance;
+}
+
 void Account::Rename(const MyString& name)
 {
 	mName = name;
@@ -40,18 +45,18 @@ void Account::DecreaseBalance(const double balance)
 	mBalance -= balance;
 }
 
-std::map<MyString, MyString> Account::ToMap() const
+std::unordered_map<MyString, MyString> Account::ToMap() const
 {
-	map<MyString, MyString> map = ModelBase::ToMap();
+	auto map = ModelBase::ToMap();
 
 	map.emplace("Name", mName);
 	map.emplace("Balance", ToString(mBalance, 2));
-	map.emplace("Type", ToString(mType));
+	map.emplace("Type", ToString(static_cast<int>(mType)));
 
 	return map;
 }
 
-void Account::FromMap(const std::map<MyString, MyString>& data)
+void Account::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
 	ModelBase::FromMap(data);
 

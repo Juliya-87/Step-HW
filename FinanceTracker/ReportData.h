@@ -11,6 +11,5 @@ private:
 public:
 	const std::vector<std::unique_ptr<ReportRow>>& GetRows() const;
 
-	ReportRow* AddRow();
+	ReportRow* CreateRow();
 };
-

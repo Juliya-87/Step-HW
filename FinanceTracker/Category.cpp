@@ -16,16 +16,16 @@ void Category::Rename(const MyString& name)
 	mName = name;
 }
 
-map<MyString, MyString> Category::ToMap() const
+unordered_map<MyString, MyString> Category::ToMap() const
 {
-	map<MyString, MyString> map = ModelBase::ToMap();
+	auto map = ModelBase::ToMap();
 
 	map.emplace("Name", mName);
 
 	return map;
 }
 
-void Category::FromMap(const map<MyString, MyString>& data)
+void Category::FromMap(const unordered_map<MyString, MyString>& data)
 {
 	ModelBase::FromMap(data);
 
