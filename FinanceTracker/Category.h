@@ -1,7 +1,7 @@
 #pragma once
-#include "ModelBase.h"
+#include "ModelWithId.h"
 
-class Category final : public ModelBase
+class Category final : public ModelWithId
 {
 public:
 	Category() = default;

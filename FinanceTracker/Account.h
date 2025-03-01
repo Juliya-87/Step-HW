@@ -1,9 +1,9 @@
 #pragma once
 #include "AccountType.h"
-#include "ModelBase.h"
+#include "ModelWithId.h"
 #include "MyString.h"
 
-class Account final : public ModelBase
+class Account final : public ModelWithId
 {
 public:
 	Account() = default;

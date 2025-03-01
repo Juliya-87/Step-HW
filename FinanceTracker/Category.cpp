@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Category::Category(const int id, const MyString& name) : ModelBase(id), mName(name)
+Category::Category(const int id, const MyString& name) : ModelWithId(id), mName(name)
 {
 }
 
@@ -18,7 +18,7 @@ void Category::Rename(const MyString& name)
 
 unordered_map<MyString, MyString> Category::ToMap() const
 {
-	auto map = ModelBase::ToMap();
+	auto map = ModelWithId::ToMap();
 
 	map.emplace("Name", mName);
 
@@ -27,7 +27,7 @@ unordered_map<MyString, MyString> Category::ToMap() const
 
 void Category::FromMap(const unordered_map<MyString, MyString>& data)
 {
-	ModelBase::FromMap(data);
+	ModelWithId::FromMap(data);
 
 	mName = data.at("Name");
 }

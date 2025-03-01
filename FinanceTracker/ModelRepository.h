@@ -1,9 +1,9 @@
 #pragma once
-#include "ModelBase.h"
+#include "ModelWithId.h"
 #include "Repository.h"
 
 template <typename T>
-concept is_model_base = std::is_base_of_v<ModelBase, T>;
+concept is_model_base = std::is_base_of_v<ModelWithId, T>;
 
 template <is_model_base T>
 class ModelRepository : public Repository<T>

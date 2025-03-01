@@ -3,7 +3,7 @@
 
 #include "Account.h"
 
-class Transaction : public ModelBase
+class Transaction : public ModelWithId
 {
 public:
 	double GetAmount() const;

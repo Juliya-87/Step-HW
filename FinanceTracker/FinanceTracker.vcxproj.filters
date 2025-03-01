@@ -87,7 +87,7 @@
     <ClCompile Include="Transaction.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="ModelBase.cpp">
+    <ClCompile Include="ModelWithId.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="Counter.cpp">
@@ -209,7 +209,7 @@
     <ClInclude Include="AccountType.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="ModelBase.h">
+    <ClInclude Include="ModelWithId.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="Counter.h">

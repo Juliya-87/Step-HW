@@ -37,7 +37,7 @@ void Transaction::InitializeAccount(Account* account)
 
 std::unordered_map<MyString, MyString> Transaction::ToMap() const
 {
-	auto map = ModelBase::ToMap();
+	auto map = ModelWithId::ToMap();
 
 	map.emplace("Amount", ToString(mAmount, 2));
 	map.emplace("AccountId", ToString(mAccountId));
@@ -49,7 +49,7 @@ std::unordered_map<MyString, MyString> Transaction::ToMap() const
 
 void Transaction::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
-	ModelBase::FromMap(data);
+	ModelWithId::FromMap(data);
 
 	mAmount = StrToDouble(data.at("Amount"));
 	mAccountId = StrToInt(data.at("AccountId"));
@@ -57,7 +57,7 @@ void Transaction::FromMap(const std::unordered_map<MyString, MyString>& data)
 	mTransactionTime = StrToTime(data.at("TransactionTime"));
 }
 
-Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelBase(id), mNotes(notes)
+Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelWithId(id), mNotes(notes)
 {
 	mAmount = amount;
 	mAccountId = account->GetId();

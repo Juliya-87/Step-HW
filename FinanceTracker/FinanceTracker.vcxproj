@@ -149,7 +149,7 @@
     <ClCompile Include="IncomingTransactionRepository.cpp" />
     <ClCompile Include="IncomeMenu.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="ModelBase.cpp" />
+    <ClCompile Include="ModelWithId.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="ReportCell.cpp" />
     <ClCompile Include="ReportData.cpp" />
@@ -192,7 +192,7 @@
     <ClInclude Include="IncomingTransactionRepository.h" />
     <ClInclude Include="IncomeMenu.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="ModelBase.h" />
+    <ClInclude Include="ModelWithId.h" />
     <ClInclude Include="ModelRepository.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="ReportCell.h" />

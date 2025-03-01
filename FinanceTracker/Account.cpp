@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Account::Account(const int id, const MyString& name, const AccountType type) : ModelBase(id), mName(name)
+Account::Account(const int id, const MyString& name, const AccountType type) : ModelWithId(id), mName(name)
 {
 	mBalance = 0;
 	mType = type;
@@ -47,7 +47,7 @@ void Account::DecreaseBalance(const double balance)
 
 std::unordered_map<MyString, MyString> Account::ToMap() const
 {
-	auto map = ModelBase::ToMap();
+	auto map = ModelWithId::ToMap();
 
 	map.emplace("Name", mName);
 	map.emplace("Balance", ToString(mBalance, 2));
@@ -58,7 +58,7 @@ std::unordered_map<MyString, MyString> Account::ToMap() const
 
 void Account::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
-	ModelBase::FromMap(data);
+	ModelWithId::FromMap(data);
 
 	mName = data.at("Name");
 	mBalance = StrToDouble(data.at("Balance"));

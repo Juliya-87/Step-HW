@@ -1,10 +1,10 @@
 #pragma once
 #include "Serializable.h"
 
-class ModelBase : public Serializable
+class ModelWithId : public Serializable
 {
 public:
-	bool operator==(const ModelBase& other) const;
+	bool operator==(const ModelWithId& other) const;
 
 	int GetId() const;
 
@@ -12,8 +12,8 @@ public:
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 
 protected:
-	ModelBase() = default;
-	ModelBase(int id);
+	ModelWithId() = default;
+	ModelWithId(int id);
 
 private:
 	int mId = 0;
