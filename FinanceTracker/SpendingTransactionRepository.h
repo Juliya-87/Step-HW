@@ -5,18 +5,18 @@
 
 class SpendingTransactionRepository final : public TransactionRepository<SpendingTransaction>
 {
-private:
-	static constexpr char TABLE_NAME[] = "Spending Transactions";
+public:
+	SpendingTransactionRepository(const std::shared_ptr<StorageManager<SpendingTransaction>>& storageManager);
 
-	std::weak_ptr<ModelRepository<Category>> mCategoryRepository;
+	void InitializeCategoryRepository(const std::weak_ptr<ModelRepository<Category>>& categoryRepository);
 
 protected:
 	MyString GetTableName() override;
 
 	void AfterDeserialized(SpendingTransaction* item) override;
 
-public:
-	SpendingTransactionRepository(const std::shared_ptr<StorageManager<SpendingTransaction>>& storageManager);
+private:
+	std::weak_ptr<ModelRepository<Category>> mCategoryRepository;
 
-	void InitializeCategoryRepository(const std::weak_ptr<ModelRepository<Category>>& categoryRepository);
+	static constexpr char TABLE_NAME[] = "Spending Transactions";
 };

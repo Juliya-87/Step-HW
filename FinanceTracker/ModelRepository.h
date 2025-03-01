@@ -8,11 +8,6 @@ concept is_model_base = std::is_base_of_v<ModelBase, T>;
 template <is_model_base T>
 class ModelRepository : public Repository<T>
 {
-protected:
-	ModelRepository(const std::shared_ptr<StorageManager<T>>& storageManager) : Repository<T>(storageManager)
-	{
-	}
-
 public:
 	T* GetById(const int id)
 	{
@@ -27,5 +22,10 @@ public:
 		}
 
 		return nullptr;
+	}
+
+protected:
+	ModelRepository(const std::shared_ptr<StorageManager<T>>& storageManager) : Repository<T>(storageManager)
+	{
 	}
 };

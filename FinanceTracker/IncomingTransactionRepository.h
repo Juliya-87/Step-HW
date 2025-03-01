@@ -4,12 +4,12 @@
 
 class IncomingTransactionRepository final : public TransactionRepository<IncomingTransaction>
 {
-private:
-	static constexpr char TABLE_NAME[] = "Incoming Transactions";
+public:
+	IncomingTransactionRepository(const std::shared_ptr<StorageManager<IncomingTransaction>>& storageManager);
 
 protected:
 	MyString GetTableName() override;
 
-public:
-	IncomingTransactionRepository(const std::shared_ptr<StorageManager<IncomingTransaction>>& storageManager);
+private:
+	static constexpr char TABLE_NAME[] = "Incoming Transactions";
 };

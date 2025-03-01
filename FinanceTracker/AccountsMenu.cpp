@@ -5,6 +5,42 @@
 
 using namespace std;
 
+AccountsMenu::AccountsMenu(const shared_ptr<AccountRepository>& accountRepository, const shared_ptr<CounterService>& counterService)
+	: mAccountRepository(accountRepository), mCounterService(counterService)
+{
+}
+
+void AccountsMenu::ShowMenu() const
+{
+	while (true)
+	{
+		Console::WriteLine("Choose account action:");
+		Console::WriteLine("1. List accounts");
+		Console::WriteLine("2. Add account");
+		Console::WriteLine("3. Rename account");
+		Console::WriteLine("4. Change account type");
+		Console::WriteLine("5. Delete account");
+		Console::WriteLine("0. Back");
+		Console::Write("Your choice: ");
+
+		int choice;
+		Console::ReadLine(choice);
+
+		switch (choice)
+		{
+		case 1: List(); break;
+		case 2: Add(); break;
+		case 3: Rename(); break;
+		case 4: ChangeType(); break;
+		case 5: Delete(); break;
+		case 0: return;
+		default: Console::WriteLine("Incorrect choice. Try again."); continue;
+		}
+
+		Console::Pause();
+	}
+}
+
 void AccountsMenu::List() const
 {
 	const auto& accounts = mAccountRepository->GetAll();
@@ -129,41 +165,5 @@ void AccountsMenu::Delete() const
 	else
 	{
 		Console::WriteLine("Account is used in transactions. Unable to delete.");
-	}
-}
-
-AccountsMenu::AccountsMenu(const shared_ptr<AccountRepository>& accountRepository, const shared_ptr<CounterService>& counterService)
-	: mAccountRepository(accountRepository), mCounterService(counterService)
-{
-}
-
-void AccountsMenu::ShowMenu() const
-{
-	while (true)
-	{
-		Console::WriteLine("Choose account action:");
-		Console::WriteLine("1. List accounts");
-		Console::WriteLine("2. Add account");
-		Console::WriteLine("3. Rename account");
-		Console::WriteLine("4. Change account type");
-		Console::WriteLine("5. Delete account");
-		Console::WriteLine("0. Back");
-		Console::Write("Your choice: ");
-
-		int choice;
-		Console::ReadLine(choice);
-
-		switch (choice)
-		{
-		case 1: List(); break;
-		case 2: Add(); break;
-		case 3: Rename(); break;
-		case 4: ChangeType(); break;
-		case 5: Delete(); break;
-		case 0: return;
-		default: Console::WriteLine("Incorrect choice. Try again."); continue;
-		}
-
-		system("pause");
 	}
 }

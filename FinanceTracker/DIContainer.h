@@ -9,10 +9,6 @@ concept is_class = std::is_class_v<T>;
 
 class DIContainer
 {
-private:
-	std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> factories;
-	std::unordered_map<std::type_index, std::shared_ptr<void>> instances;
-
 public:
 	template <is_class T, is_class... Dependencies>
 	void Register()
@@ -45,4 +41,8 @@ public:
 
 		throw std::runtime_error("Type not registered in container");
 	}
+
+private:
+	std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> factories;
+	std::unordered_map<std::type_index, std::shared_ptr<void>> instances;
 };

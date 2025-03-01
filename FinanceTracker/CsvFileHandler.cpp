@@ -6,64 +6,6 @@
 
 using namespace std;
 
-MyString CsvFileHandler::EscapeCsvValue(const MyString& value)
-{
-	if (value.Contains(DELIMITER) || value.Contains('"'))
-	{
-		MyString escapedValue = value;
-		size_t pos = 0;
-		while ((pos = escapedValue.Find('"', pos)) != SIZE_MAX)
-		{
-			escapedValue.Insert(pos, "\"");
-			pos += 2; // Skip over the inserted quote
-		}
-
-		escapedValue.Insert(0, "\"");
-		escapedValue.Append("\"");
-		return escapedValue;
-	}
-
-	return value;
-}
-
-unique_ptr<FileRow> CsvFileHandler::ParseCsvRow(const MyString& line)
-{
-	auto row = make_unique<FileRow>();
-	bool insideQuotes = false;
-	MyString value;
-
-	for (size_t i = 0; i < line.GetLength(); i++)
-	{
-		const char ch = line[i];
-
-		if (ch == '"')
-		{
-			if (insideQuotes && line[i + 1] == '"')
-			{
-				// Handle escaped quotes ("" -> ")
-				value.Append("\"");
-				i++;
-			}
-			else
-			{
-				insideQuotes = !insideQuotes;
-			}
-		}
-		else if (ch == DELIMITER && !insideQuotes)
-		{
-			row->AddCell(value);
-			value.Clear();
-		}
-		else
-		{
-			value.Append(1, ch);
-		}
-	}
-
-	row->AddCell(std::move(value)); // Add last value
-	return row;
-}
-
 MyString CsvFileHandler::GetExtension() const
 {
 	return { FILE_EXTENSION };
@@ -125,4 +67,62 @@ unique_ptr<FileData> CsvFileHandler::LoadFromFile(const MyString& fileName)
 	file.close();
 
 	return data;
+}
+
+MyString CsvFileHandler::EscapeCsvValue(const MyString& value)
+{
+	if (value.Contains(DELIMITER) || value.Contains('"'))
+	{
+		MyString escapedValue = value;
+		size_t pos = 0;
+		while ((pos = escapedValue.Find('"', pos)) != SIZE_MAX)
+		{
+			escapedValue.Insert(pos, "\"");
+			pos += 2; // Skip over the inserted quote
+		}
+
+		escapedValue.Insert(0, "\"");
+		escapedValue.Append("\"");
+		return escapedValue;
+	}
+
+	return value;
+}
+
+unique_ptr<FileRow> CsvFileHandler::ParseCsvRow(const MyString& line)
+{
+	auto row = make_unique<FileRow>();
+	bool insideQuotes = false;
+	MyString value;
+
+	for (size_t i = 0; i < line.GetLength(); i++)
+	{
+		const char ch = line[i];
+
+		if (ch == '"')
+		{
+			if (insideQuotes && line[i + 1] == '"')
+			{
+				// Handle escaped quotes ("" -> ")
+				value.Append("\"");
+				i++;
+			}
+			else
+			{
+				insideQuotes = !insideQuotes;
+			}
+		}
+		else if (ch == DELIMITER && !insideQuotes)
+		{
+			row->AddCell(value);
+			value.Clear();
+		}
+		else
+		{
+			value.Append(1, ch);
+		}
+	}
+
+	row->AddCell(std::move(value)); // Add last value
+	return row;
 }

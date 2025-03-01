@@ -2,11 +2,6 @@
 
 using namespace std;
 
-MyString CounterRepository::GetTableName()
-{
-	return {TABLE_NAME};
-}
-
 CounterRepository::CounterRepository(const std::shared_ptr<StorageManager<Counter>>& storageManager): Repository(storageManager)
 {
 }
@@ -24,4 +19,9 @@ Counter* CounterRepository::GetByName(const MyString& name)
 	}
 
 	return nullptr;
+}
+
+MyString CounterRepository::GetTableName()
+{
+	return { TABLE_NAME };
 }

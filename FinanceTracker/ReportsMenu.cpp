@@ -5,37 +5,6 @@
 
 using namespace std;
 
-void ReportsMenu::PrintReport(const Report* report)
-{
-	if (!report)
-	{
-		Console::WriteLine("Invalid report.");
-		return;
-	}
-
-	int period;
-	Console::Write("Enter period (1 - Day, 2 - Week, 3 - Month): ");
-	Console::ReadLine(period);
-
-	const auto reportingPeriod = IntToReportingPeriod(period);
-	if (reportingPeriod == UNDEFINED)
-	{
-		Console::WriteLine("Incorrect choice. Try again.");
-		return;
-	}
-
-	int action;
-	Console::Write("Enter action (1 - Print, 2 - Export): ");
-	Console::ReadLine(action);
-
-	switch (action)
-	{
-	case 1: report->Print(reportingPeriod); break;
-	case 2: report->Export(reportingPeriod); break;
-	default: Console::WriteLine("Incorrect choice. Try again."); break;
-	}
-}
-
 ReportsMenu::ReportsMenu(const shared_ptr<SpendingReport>& spendingReport, const shared_ptr<CategoryReport>& categoryReport,
 	const shared_ptr<SpendingRating>& spendingRating, const shared_ptr<CategoryRating>& categoryRating)
 	: mSpendingReport(spendingReport), mCategoryReport(categoryReport),
@@ -68,6 +37,37 @@ void ReportsMenu::ShowMenu() const
 		default: Console::WriteLine("Incorrect choice. Try again."); continue;
 		}
 
-		system("pause");
+		Console::Pause();
+	}
+}
+
+void ReportsMenu::PrintReport(const Report* report)
+{
+	if (!report)
+	{
+		Console::WriteLine("Invalid report.");
+		return;
+	}
+
+	int period;
+	Console::Write("Enter period (1 - Day, 2 - Week, 3 - Month): ");
+	Console::ReadLine(period);
+
+	const auto reportingPeriod = IntToReportingPeriod(period);
+	if (reportingPeriod == UNDEFINED)
+	{
+		Console::WriteLine("Incorrect choice. Try again.");
+		return;
+	}
+
+	int action;
+	Console::Write("Enter action (1 - Print, 2 - Export): ");
+	Console::ReadLine(action);
+
+	switch (action)
+	{
+	case 1: report->Print(reportingPeriod); break;
+	case 2: report->Export(reportingPeriod); break;
+	default: Console::WriteLine("Incorrect choice. Try again."); break;
 	}
 }

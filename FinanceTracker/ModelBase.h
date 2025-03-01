@@ -3,18 +3,18 @@
 
 class ModelBase : public Serializable
 {
-private:
-	int mId = 0;
-
-protected:
-	ModelBase() = default;
-	ModelBase(int id);
-
 public:
+	bool operator==(const ModelBase& other) const;
+
 	int GetId() const;
 
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 
-	bool operator==(const ModelBase& other) const;
+protected:
+	ModelBase() = default;
+	ModelBase(int id);
+
+private:
+	int mId = 0;
 };

@@ -5,17 +5,6 @@
 
 class Transaction : public ModelBase
 {
-private:
-	double mAmount = 0;
-	int mAccountId = 0;
-	Account* mAccount = nullptr;
-	MyString mNotes;
-	time_t mTransactionTime = 0;
-
-protected:
-	Transaction() = default;
-	Transaction(int id, double amount, Account* account, const MyString& notes);
-
 public:
 	double GetAmount() const;
 	int GetAccountId() const;
@@ -27,4 +16,15 @@ public:
 
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
+
+protected:
+	Transaction() = default;
+	Transaction(int id, double amount, Account* account, const MyString& notes);
+
+private:
+	double mAmount = 0;
+	int mAccountId = 0;
+	Account* mAccount = nullptr;
+	MyString mNotes;
+	time_t mTransactionTime = 0;
 };

@@ -4,6 +4,13 @@
 
 using namespace std;
 
+CategoryRepository::CategoryRepository(const std::shared_ptr<StorageManager<Category>>& storageManager,
+	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
+	: ModelRepository(storageManager),
+	mSpendingTransactionRepository(spendingTransactionRepository)
+{
+}
+
 MyString CategoryRepository::GetTableName()
 {
 	return { TABLE_NAME };
@@ -16,11 +23,4 @@ bool CategoryRepository::IsItemUsedInOtherRepository(const Category* item)
 		[item](const unique_ptr<SpendingTransaction>& transaction) { return *transaction->GetCategory() == *item; });
 
 	return hasSpendingTransactions;
-}
-
-CategoryRepository::CategoryRepository(const std::shared_ptr<StorageManager<Category>>& storageManager,
-	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
-	: ModelRepository(storageManager),
-	mSpendingTransactionRepository(spendingTransactionRepository)
-{
 }

@@ -8,8 +8,14 @@ concept is_transaction = std::is_base_of_v<Transaction, T>;
 template <is_transaction T>
 class TransactionRepository : public ModelRepository<T>
 {
-private:
-	std::weak_ptr<ModelRepository<Account>> mAccountRepository;
+public:
+	void InitializeAccountRepository(const std::weak_ptr<ModelRepository<Account>>& accountRepository)
+	{
+		if (mAccountRepository.expired())
+		{
+			mAccountRepository = accountRepository;
+		}
+	}
 
 protected:
 	TransactionRepository(const std::shared_ptr<StorageManager<T>>& storageManager) : ModelRepository<T>(storageManager)
@@ -30,12 +36,6 @@ protected:
 		transaction->InitializeAccount(account);
 	}
 
-public:
-	void InitializeAccountRepository(const std::weak_ptr<ModelRepository<Account>>& accountRepository)
-	{
-		if (mAccountRepository.expired())
-		{
-			mAccountRepository = accountRepository;
-		}
-	}
+private:
+	std::weak_ptr<ModelRepository<Account>> mAccountRepository;
 };

@@ -9,39 +9,6 @@
 template <is_serializable T>
 class FileStorageManager final : public StorageManager<T>
 {
-private:
-	static constexpr char BASE_DIRECTORY[] = "Data";
-
-	std::shared_ptr<FileHandler> mFileHandler;
-
-	MyString GetFileName(const MyString& tableName) const
-	{
-		MyString fileName(BASE_DIRECTORY);
-		fileName.Append("\\");
-		fileName.Append(tableName);
-		fileName.Append(mFileHandler->GetExtension());
-		return fileName;
-	}
-
-	static std::unordered_map<MyString, MyString> GetMap(const FileRow* header, const FileRow* values)
-	{
-		auto& headerCells = header->GetCells();
-		auto& valuesCells = values->GetCells();
-
-		if (headerCells.size() != valuesCells.size())
-		{
-			return {};
-		}
-
-		std::unordered_map<MyString, MyString> map;
-		for (size_t i = 0; i < headerCells.size(); i++)
-		{
-			map.emplace(headerCells[i]->GetValue(), valuesCells[i]->GetValue());
-		}
-
-		return map;
-	}
-
 public:
 	FileStorageManager(const std::shared_ptr<FileHandler>& fileHandler) : mFileHandler(fileHandler)
 	{
@@ -109,4 +76,37 @@ public:
 
 		return items;
 	}
+
+private:
+	MyString GetFileName(const MyString& tableName) const
+	{
+		MyString fileName(BASE_DIRECTORY);
+		fileName.Append("\\");
+		fileName.Append(tableName);
+		fileName.Append(mFileHandler->GetExtension());
+		return fileName;
+	}
+
+	static std::unordered_map<MyString, MyString> GetMap(const FileRow* header, const FileRow* values)
+	{
+		auto& headerCells = header->GetCells();
+		auto& valuesCells = values->GetCells();
+
+		if (headerCells.size() != valuesCells.size())
+		{
+			return {};
+		}
+
+		std::unordered_map<MyString, MyString> map;
+		for (size_t i = 0; i < headerCells.size(); i++)
+		{
+			map.emplace(headerCells[i]->GetValue(), valuesCells[i]->GetValue());
+		}
+
+		return map;
+	}
+
+	std::shared_ptr<FileHandler> mFileHandler;
+
+	static constexpr char BASE_DIRECTORY[] = "Data";
 };

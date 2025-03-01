@@ -7,6 +7,15 @@
 
 using namespace std;
 
+AccountRepository::AccountRepository(const std::shared_ptr<StorageManager<Account>>& storageManager,
+	const shared_ptr<ModelRepository<IncomingTransaction>>& incomingTransactionRepository,
+	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
+	: ModelRepository(storageManager),
+	mIncomingTransactionRepository(incomingTransactionRepository),
+	mSpendingTransactionRepository(spendingTransactionRepository)
+{
+}
+
 MyString AccountRepository::GetTableName()
 {
 	return { TABLE_NAME };
@@ -23,13 +32,4 @@ bool AccountRepository::IsItemUsedInOtherRepository(const Account* item)
 		[item](const unique_ptr<SpendingTransaction>& transaction) { return *transaction->GetAccount() == *item; });
 
 	return hasIncomingTransactions || hasSpendingTransactions;
-}
-
-AccountRepository::AccountRepository(const std::shared_ptr<StorageManager<Account>>& storageManager,
-	const shared_ptr<ModelRepository<IncomingTransaction>>& incomingTransactionRepository,
-	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
-	: ModelRepository(storageManager),
-	mIncomingTransactionRepository(incomingTransactionRepository),
-	mSpendingTransactionRepository(spendingTransactionRepository)
-{
 }

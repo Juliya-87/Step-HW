@@ -5,6 +5,40 @@
 
 using namespace std;
 
+IncomeMenu::IncomeMenu(const shared_ptr<AccountRepository>& accountRepository,
+	const shared_ptr<IncomingTransactionRepository>& incomingTransactionRepository,
+	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository),
+	mCounterService(counterService), mIncomingTransactionRepository(incomingTransactionRepository)
+{
+}
+
+void IncomeMenu::ShowMenu() const
+{
+	while (true)
+	{
+		Console::WriteLine("Choose income action:");
+		Console::WriteLine("1. List incomes");
+		Console::WriteLine("2. Add income");
+		Console::WriteLine("3. Delete income");
+		Console::WriteLine("0. Back");
+		Console::Write("Your choice: ");
+
+		int choice;
+		Console::ReadLine(choice);
+
+		switch (choice)
+		{
+		case 1: List(); break;
+		case 2: Add(); break;
+		case 3: Delete(); break;
+		case 0: return;
+		default: Console::WriteLine("Incorrect choice. Try again."); continue;
+		}
+
+		Console::Pause();
+	}
+}
+
 void IncomeMenu::List() const
 {
 	const auto& transactions = mIncomingTransactionRepository->GetAll();
@@ -78,38 +112,4 @@ void IncomeMenu::Delete() const
 	mAccountRepository->Save();
 
 	Console::WriteLine("Income deleted!");
-}
-
-IncomeMenu::IncomeMenu(const shared_ptr<AccountRepository>& accountRepository,
-	const shared_ptr<IncomingTransactionRepository>& incomingTransactionRepository,
-	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository),
-	mCounterService(counterService), mIncomingTransactionRepository(incomingTransactionRepository)
-{
-}
-
-void IncomeMenu::ShowMenu() const
-{
-	while (true)
-	{
-		Console::WriteLine("Choose income action:");
-		Console::WriteLine("1. List incomes");
-		Console::WriteLine("2. Add income");
-		Console::WriteLine("3. Delete income");
-		Console::WriteLine("0. Back");
-		Console::Write("Your choice: ");
-
-		int choice;
-		Console::ReadLine(choice);
-
-		switch (choice)
-		{
-		case 1: List(); break;
-		case 2: Add(); break;
-		case 3: Delete(); break;
-		case 0: return;
-		default: Console::WriteLine("Incorrect choice. Try again."); continue;
-		}
-
-		system("pause");
-	}
 }

@@ -3,13 +3,12 @@
 
 class FileCell
 {
-private:
-	MyString mValue;
-
 public:
 	FileCell(const MyString& value);
 	FileCell(MyString&& value);
 
 	const MyString& GetValue() const;
-};
 
+private:
+	MyString mValue;
+};

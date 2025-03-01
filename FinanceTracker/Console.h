@@ -8,9 +8,6 @@
 
 class Console
 {
-private:
-	static constexpr std::streamsize DEFAULT_MAX_SIZE = 50;
-
 public:
 	static void ReadLine(int& value)
 	{
@@ -66,5 +63,13 @@ public:
 
 		std::cout << std::flush;
 	}
+
+	static void Pause()
+	{
+		system("pause");
+	}
+
+private:
+	static constexpr std::streamsize DEFAULT_MAX_SIZE = 50;
 };
 

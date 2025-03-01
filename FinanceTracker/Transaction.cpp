@@ -2,14 +2,6 @@
 
 #include "ConversionHelpers.h"
 
-Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelBase(id), mNotes(notes)
-{
-	mAmount = amount;
-	mAccountId = account->GetId();
-	mAccount = account;
-	mTransactionTime = time(nullptr);
-}
-
 double Transaction::GetAmount() const
 {
 	return mAmount;
@@ -63,4 +55,12 @@ void Transaction::FromMap(const std::unordered_map<MyString, MyString>& data)
 	mAccountId = StrToInt(data.at("AccountId"));
 	mNotes = data.at("Notes");
 	mTransactionTime = StrToTime(data.at("TransactionTime"));
+}
+
+Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelBase(id), mNotes(notes)
+{
+	mAmount = amount;
+	mAccountId = account->GetId();
+	mAccount = account;
+	mTransactionTime = time(nullptr);
 }

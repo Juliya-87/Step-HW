@@ -9,8 +9,8 @@ template <is_serializable T>
 class StorageManager
 {
 public:
+	virtual ~StorageManager() = default;
+
 	virtual void Save(const MyString& tableName, const std::vector<std::unique_ptr<T>>& items) = 0;
 	virtual std::vector<std::unique_ptr<T>> Load(const MyString& tableName) = 0;
-
-	virtual ~StorageManager() = default;
 };

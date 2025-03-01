@@ -8,37 +8,6 @@
 
 using namespace std;
 
-MyString Report::GetFullFileName() const
-{
-	const MyString fileName = GetFileName();
-
-	MyString fullFileName(BASE_DIRECTORY);
-	fullFileName.Append("\\");
-	fullFileName.Append(fileName);
-	fullFileName.Append(" ");
-	fullFileName.Append(ToString(time(nullptr), "%Y-%m-%d %H%M%S"));
-	fullFileName.Append(mFileHandler->GetExtension());
-
-	return fullFileName;
-}
-
-Report::Report(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : mReportDataSource(reportDataSource), mFileHandler(csvFileHandler)
-{
-}
-
-time_t Report::GetStartTime(const ReportingPeriod period)
-{
-	const time_t now = time(nullptr);
-
-	switch (period)
-	{
-	case DAY: return AddDays(now, -1);
-	case WEEK: return AddDays(now, -7);
-	case MONTH: return AddMonths(now, -1);
-	default: return now;
-	}
-}
-
 void Report::Print(const ReportingPeriod period) const
 {
 	const auto reportData = GetReportData(period);
@@ -73,4 +42,35 @@ void Report::Export(const ReportingPeriod period) const
 	mFileHandler->SaveToFile(fullFileName, fileData);
 
 	Console::WriteLine("Report successfully exported to: ", fullFileName);
+}
+
+Report::Report(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : mReportDataSource(reportDataSource), mFileHandler(csvFileHandler)
+{
+}
+
+time_t Report::GetStartTime(const ReportingPeriod period)
+{
+	const time_t now = time(nullptr);
+
+	switch (period)
+	{
+	case DAY: return AddDays(now, -1);
+	case WEEK: return AddDays(now, -7);
+	case MONTH: return AddMonths(now, -1);
+	default: return now;
+	}
+}
+
+MyString Report::GetFullFileName() const
+{
+	const MyString fileName = GetFileName();
+
+	MyString fullFileName(BASE_DIRECTORY);
+	fullFileName.Append("\\");
+	fullFileName.Append(fileName);
+	fullFileName.Append(" ");
+	fullFileName.Append(ToString(time(nullptr), "%Y-%m-%d %H%M%S"));
+	fullFileName.Append(mFileHandler->GetExtension());
+
+	return fullFileName;
 }

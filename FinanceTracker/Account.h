@@ -5,11 +5,6 @@
 
 class Account final : public ModelBase
 {
-private:
-	MyString mName;
-	double mBalance = 0;
-	AccountType mType = NONE;
-
 public:
 	Account() = default;
 	Account(int id, const MyString& name, AccountType type);
@@ -25,4 +20,9 @@ public:
 
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
+
+private:
+	MyString mName;
+	double mBalance = 0;
+	AccountType mType = NONE;
 };

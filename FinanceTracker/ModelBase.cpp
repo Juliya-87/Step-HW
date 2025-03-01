@@ -2,9 +2,9 @@
 
 #include "ConversionHelpers.h"
 
-ModelBase::ModelBase(const int id)
+bool ModelBase::operator==(const ModelBase& other) const
 {
-	mId = id;
+	return GetId() == other.GetId();
 }
 
 int ModelBase::GetId() const
@@ -22,7 +22,7 @@ void ModelBase::FromMap(const std::unordered_map<MyString, MyString>& data)
 	mId = StrToInt(data.at("Id"));
 }
 
-bool ModelBase::operator==(const ModelBase& other) const
+ModelBase::ModelBase(const int id)
 {
-	return GetId() == other.GetId();
+	mId = id;
 }

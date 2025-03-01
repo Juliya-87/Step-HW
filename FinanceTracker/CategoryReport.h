@@ -3,14 +3,13 @@
 
 class CategoryReport final : public Report
 {
-private:
-	static constexpr char REPORT_NAME[] = "Category Report";
+public:
+	CategoryReport(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
 
 protected:
 	MyString GetFileName() const override;
-
 	std::unique_ptr<ReportData> GetReportData(ReportingPeriod period) const override;
 
-public:
-	CategoryReport(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
+private:
+	static constexpr char REPORT_NAME[] = "Category Report";
 };

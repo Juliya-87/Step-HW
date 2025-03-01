@@ -24,6 +24,48 @@ MyString::MyString(MyString&& str) noexcept : mChars(std::move(str.mChars))
 	str.mChars.assign(1, '\0');
 }
 
+MyString& MyString::operator=(const MyString& other)
+{
+	if (this != &other)
+	{
+		mChars = other.mChars;
+	}
+
+	return *this;
+}
+
+MyString& MyString::operator=(MyString&& other) noexcept
+{
+	if (this != &other)
+	{
+		mChars = std::move(other.mChars);
+		other.mChars.assign(1, '\0');
+	}
+
+	return *this;
+}
+
+bool MyString::operator==(const MyString& other) const
+{
+	return mChars == other.mChars;
+}
+
+char& MyString::operator[](const size_t pos)
+{
+	return mChars[pos];
+}
+
+const char& MyString::operator[](const size_t pos) const
+{
+	return mChars[pos];
+}
+
+ostream& operator<<(ostream& os, const MyString& str)
+{
+	os << str.GetCStr();
+	return os;
+}
+
 size_t MyString::GetLength() const
 {
 	return mChars.size() - 1; // last one is '\0'
@@ -32,6 +74,27 @@ size_t MyString::GetLength() const
 const char* MyString::GetCStr() const
 {
 	return mChars.data();
+}
+
+bool MyString::IsEmpty() const
+{
+	return !GetLength();
+}
+
+bool MyString::Contains(const char ch) const
+{
+	return ranges::find(mChars, ch) != mChars.end();
+}
+
+size_t MyString::Find(const char ch, const size_t startPosition) const
+{
+	if (startPosition > GetLength())
+	{
+		return SIZE_MAX;
+	}
+
+	const auto result = ranges::find(mChars.begin() + startPosition, mChars.end(), ch);
+	return result == mChars.end() ? SIZE_MAX : result - mChars.begin();
 }
 
 void MyString::Assign(const char* str)
@@ -94,67 +157,4 @@ void MyString::Insert(const size_t position, const char* str)
 void MyString::Clear()
 {
 	mChars.assign(1, '\0');
-}
-
-bool MyString::IsEmpty() const
-{
-	return !GetLength();
-}
-
-bool MyString::Contains(const char ch) const
-{
-	return ranges::find(mChars, ch) != mChars.end();
-}
-
-size_t MyString::Find(const char ch, const size_t startPosition) const
-{
-	if (startPosition > GetLength())
-	{
-		return SIZE_MAX;
-	}
-
-	const auto result = ranges::find(mChars.begin() + startPosition, mChars.end(), ch);
-	return result == mChars.end() ? SIZE_MAX : result - mChars.begin();
-}
-
-MyString& MyString::operator=(const MyString& other)
-{
-	if (this != &other)
-	{
-		mChars = other.mChars;
-	}
-
-	return *this;
-}
-
-MyString& MyString::operator=(MyString&& other) noexcept
-{
-	if (this != &other)
-	{
-		mChars = std::move(other.mChars);
-		other.mChars.assign(1, '\0');
-	}
-
-	return *this;
-}
-
-bool MyString::operator==(const MyString& other) const
-{
-	return mChars == other.mChars;
-}
-
-char& MyString::operator[](const size_t pos)
-{
-	return mChars[pos];
-}
-
-const char& MyString::operator[](const size_t pos) const
-{
-	return mChars[pos];
-}
-
-ostream& operator<<(ostream& os, const MyString& str)
-{
-	os << str.GetCStr();
-	return os;
 }

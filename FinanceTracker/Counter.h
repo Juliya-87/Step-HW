@@ -2,13 +2,11 @@
 #include "Serializable.h"
 class Counter final : public Serializable
 {
-private:
-	MyString mName;
-	int mValue = 0;
-
 public:
 	Counter() = default;
 	Counter(const MyString& name);
+
+	bool operator==(const Counter& other) const;
 
 	int GetNextValue();
 	const MyString& GetName() const;
@@ -16,5 +14,7 @@ public:
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 
-	bool operator==(const Counter& other) const;
+private:
+	MyString mName;
+	int mValue = 0;
 };

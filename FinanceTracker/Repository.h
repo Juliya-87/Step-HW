@@ -7,47 +7,9 @@
 template <is_serializable T>
 class Repository
 {
-private:
-	std::shared_ptr<StorageManager<T>> mStorageManager;
-	MyString mTableName;
-	std::vector<std::unique_ptr<T>> mItems;
-	bool isInitialized = false;
-
-	void EnsureInitialized()
-	{
-		if (isInitialized)
-		{
-			return;
-		}
-
-		mTableName = GetTableName();
-		mItems = mStorageManager->Load(mTableName);
-
-		for (const auto& item : mItems)
-		{
-			AfterDeserialized(item.get());
-		}
-
-		isInitialized = true;
-	}
-
-protected:
-	Repository(const std::shared_ptr<StorageManager<T>>& storageManager) : mStorageManager(storageManager)
-	{
-	}
-
-	virtual MyString GetTableName() = 0;
-
-	virtual void AfterDeserialized(T* item)
-	{
-	}
-
-	virtual bool IsItemUsedInOtherRepository(const T* item)
-	{
-		return false;
-	}
-
 public:
+	virtual ~Repository() = default;
+
 	const std::vector<std::unique_ptr<T>>& GetAll()
 	{
 		EnsureInitialized();
@@ -122,5 +84,43 @@ public:
 		mStorageManager->Save(mTableName, mItems);
 	}
 
-	virtual ~Repository() = default;
+protected:
+	Repository(const std::shared_ptr<StorageManager<T>>& storageManager) : mStorageManager(storageManager)
+	{
+	}
+
+	virtual MyString GetTableName() = 0;
+
+	virtual void AfterDeserialized(T* item)
+	{
+	}
+
+	virtual bool IsItemUsedInOtherRepository(const T* item)
+	{
+		return false;
+	}
+
+private:
+	void EnsureInitialized()
+	{
+		if (isInitialized)
+		{
+			return;
+		}
+
+		mTableName = GetTableName();
+		mItems = mStorageManager->Load(mTableName);
+
+		for (const auto& item : mItems)
+		{
+			AfterDeserialized(item.get());
+		}
+
+		isInitialized = true;
+	}
+
+	std::shared_ptr<StorageManager<T>> mStorageManager;
+	MyString mTableName;
+	std::vector<std::unique_ptr<T>> mItems;
+	bool isInitialized = false;
 };

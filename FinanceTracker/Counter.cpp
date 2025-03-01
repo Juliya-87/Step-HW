@@ -7,6 +7,11 @@ Counter::Counter(const MyString& name) : mName(name)
 	mValue = 0;
 }
 
+bool Counter::operator==(const Counter& other) const
+{
+	return mName == other.mName;
+}
+
 int Counter::GetNextValue()
 {
 	mValue++;
@@ -27,9 +32,4 @@ void Counter::FromMap(const std::unordered_map<MyString, MyString>& data)
 {
 	mName = data.at("Name");
 	mValue = StrToInt(data.at("Value"));
-}
-
-bool Counter::operator==(const Counter& other) const
-{
-	return mName == other.mName;
 }

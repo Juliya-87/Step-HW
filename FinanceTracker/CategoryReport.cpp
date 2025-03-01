@@ -4,6 +4,10 @@
 
 using namespace std;
 
+CategoryReport::CategoryReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
+{
+}
+
 MyString CategoryReport::GetFileName() const
 {
 	return { REPORT_NAME };
@@ -38,8 +42,4 @@ unique_ptr<ReportData> CategoryReport::GetReportData(const ReportingPeriod perio
 	totalRow->AddCell(ToString(total, 2), 10, false);
 
 	return result;
-}
-
-CategoryReport::CategoryReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
-{
 }

@@ -8,16 +8,13 @@
 
 class Report
 {
-private:
-	static constexpr char BASE_DIRECTORY[] = "Reports";
-	static constexpr char SEPARATOR[] = ",";
+public:
+	virtual ~Report() = default;
 
-	MyString GetFullFileName() const;
+	void Print(ReportingPeriod period) const;
+	void Export(ReportingPeriod period) const;
 
 protected:
-	std::shared_ptr<ReportDataSource> mReportDataSource = nullptr;
-	std::shared_ptr<FileHandler> mFileHandler = nullptr;
-
 	Report(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
 
 	virtual MyString GetFileName() const = 0;
@@ -25,10 +22,13 @@ protected:
 
 	static time_t GetStartTime(ReportingPeriod period);
 
-public:
-	void Print(ReportingPeriod period) const;
+	std::shared_ptr<ReportDataSource> mReportDataSource = nullptr;
 
-	void Export(ReportingPeriod period) const;
+private:
+	MyString GetFullFileName() const;
 
-	virtual ~Report() = default;
+	std::shared_ptr<FileHandler> mFileHandler = nullptr;
+
+	static constexpr char BASE_DIRECTORY[] = "Reports";
+	static constexpr char SEPARATOR[] = ",";
 };

@@ -4,10 +4,6 @@
 
 class SpendingTransaction final : public Transaction
 {
-private:
-	int mCategoryId = 0;
-	Category* mCategory = nullptr;
-
 public:
 	SpendingTransaction() = default;
 	SpendingTransaction(int id, double amount, Account* account, Category* category, const MyString& notes);
@@ -19,4 +15,8 @@ public:
 
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
+
+private:
+	int mCategoryId = 0;
+	Category* mCategory = nullptr;
 };

@@ -6,6 +6,10 @@
 
 using namespace std;
 
+SpendingRating::SpendingRating(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
+{
+}
+
 MyString SpendingRating::GetFileName() const
 {
 	return { REPORT_NAME };
@@ -38,8 +42,4 @@ unique_ptr<ReportData> SpendingRating::GetReportData(const ReportingPeriod perio
 	}
 
 	return result;
-}
-
-SpendingRating::SpendingRating(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
-{
 }

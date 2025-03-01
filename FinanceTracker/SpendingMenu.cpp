@@ -7,6 +7,40 @@
 
 using namespace std;
 
+SpendingMenu::SpendingMenu(const shared_ptr<AccountRepository>& accountRepository,
+	const shared_ptr<CategoryRepository>& categoryRepository, const shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository,
+	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository), mCategoryRepository(categoryRepository),
+	mSpendingTransactionRepository(spendingTransactionRepository), mCounterService(counterService)
+{
+}
+
+void SpendingMenu::ShowMenu() const
+{
+	while (true)
+	{
+		Console::WriteLine("Choose spending action:");
+		Console::WriteLine("1. List spendings");
+		Console::WriteLine("2. Add spending");
+		Console::WriteLine("3. Delete spending");
+		Console::WriteLine("0. Back");
+		Console::Write("Your choice: ");
+
+		int choice;
+		Console::ReadLine(choice);
+
+		switch (choice)
+		{
+		case 1: List(); break;
+		case 2: Add(); break;
+		case 3: Delete(); break;
+		case 0: return;
+		default: Console::WriteLine("Incorrect choice. Try again."); continue;
+		}
+
+		Console::Pause();
+	}
+}
+
 void SpendingMenu::List() const
 {
 	const auto& transactions = mSpendingTransactionRepository->GetAll();
@@ -90,38 +124,4 @@ void SpendingMenu::Delete() const
 	mAccountRepository->Save();
 
 	Console::WriteLine("Spending deleted!");
-}
-
-SpendingMenu::SpendingMenu(const shared_ptr<AccountRepository>& accountRepository,
-	const shared_ptr<CategoryRepository>& categoryRepository, const shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository,
-	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository), mCategoryRepository(categoryRepository),
-	mSpendingTransactionRepository(spendingTransactionRepository), mCounterService(counterService)
-{
-}
-
-void SpendingMenu::ShowMenu() const
-{
-	while (true)
-	{
-		Console::WriteLine("Choose spending action:");
-		Console::WriteLine("1. List spendings");
-		Console::WriteLine("2. Add spending");
-		Console::WriteLine("3. Delete spending");
-		Console::WriteLine("0. Back");
-		Console::Write("Your choice: ");
-
-		int choice;
-		Console::ReadLine(choice);
-
-		switch (choice)
-		{
-		case 1: List(); break;
-		case 2: Add(); break;
-		case 3: Delete(); break;
-		case 0: return;
-		default: Console::WriteLine("Incorrect choice. Try again."); continue;
-		}
-
-		system("pause");
-	}
 }
