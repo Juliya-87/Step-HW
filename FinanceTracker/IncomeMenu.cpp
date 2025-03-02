@@ -70,13 +70,20 @@ void IncomeMenu::Add() const
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
+
+	Account* account = mAccountRepository->GetById(accountId);
+	if (account == nullptr)
+	{
+		Console::WriteLine("Account with this ID not found!");
+		return;
+	}
+
 	Console::Write("Enter income amount: ");
 	Console::ReadLine(amount);
 	Console::Write("Enter notes: ");
 	Console::ReadLine(notes);
 
 	const int id = mCounterService->GetNextTransactionId();
-	Account* account = mAccountRepository->GetById(accountId);
 
 	auto newTransaction = make_unique<IncomingTransaction>(id, amount, account, notes);
 	mIncomingTransactionRepository->Add(std::move(newTransaction));
@@ -103,13 +110,13 @@ void IncomeMenu::Delete() const
 		return;
 	}
 
-	mIncomingTransactionRepository->Delete(transaction);
-	mIncomingTransactionRepository->Save();
-
 	Account* account = transaction->GetAccount();
 	account->DecreaseBalance(transaction->GetAmount());
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
+
+	mIncomingTransactionRepository->Delete(transaction);
+	mIncomingTransactionRepository->Save();
 
 	Console::WriteLine("Income deleted!");
 }

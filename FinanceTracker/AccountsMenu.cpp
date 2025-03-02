@@ -92,16 +92,16 @@ void AccountsMenu::Rename() const
 	MyString newName;
 	Console::Write("Enter account ID to rename: ");
 	Console::ReadLine(id);
-	Console::Write("Enter new name: ");
-	Console::ReadLine(newName);
 
 	Account* account = mAccountRepository->GetById(id);
-
 	if (account == nullptr)
 	{
 		Console::WriteLine("Account with this ID not found!");
 		return;
 	}
+
+	Console::Write("Enter new name: ");
+	Console::ReadLine(newName);
 
 	account->Rename(newName);
 	mAccountRepository->Update(account);
@@ -114,8 +114,16 @@ void AccountsMenu::ChangeType() const
 {
 	int id;
 	int newType;
-	Console::Write("Enter account ID to rename: ");
+	Console::Write("Enter account ID to change type: ");
 	Console::ReadLine(id);
+
+	Account* account = mAccountRepository->GetById(id);
+	if (account == nullptr)
+	{
+		Console::WriteLine("Account with this ID not found!");
+		return;
+	}
+
 	Console::Write("Enter new type (1 - ", ToString(CREDIT_CARD),
 		", 2 - ", ToString(DEBIT_CARD),
 		", 3 - ", ToString(WALLET), "): ");
@@ -125,14 +133,6 @@ void AccountsMenu::ChangeType() const
 	if (newAccountType == NONE)
 	{
 		Console::WriteLine("Incorrect choice of the type. Try again.");
-		return;
-	}
-
-	Account* account = mAccountRepository->GetById(id);
-
-	if (account == nullptr)
-	{
-		Console::WriteLine("Account with this ID not found!");
 		return;
 	}
 
@@ -150,7 +150,6 @@ void AccountsMenu::Delete() const
 	Console::ReadLine(id);
 
 	const Account* account = mAccountRepository->GetById(id);
-
 	if (account == nullptr)
 	{
 		Console::WriteLine("Account with this ID not found!");

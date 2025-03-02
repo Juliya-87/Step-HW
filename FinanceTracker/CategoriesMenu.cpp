@@ -74,16 +74,16 @@ void CategoriesMenu::Rename() const
 	MyString newName;
 	Console::Write("Enter category ID to rename: ");
 	Console::ReadLine(id);
-	Console::Write("Enter new name: ");
-	Console::ReadLine(newName);
 
 	Category* category = mCategoryRepository->GetById(id);
-
 	if (category == nullptr)
 	{
 		Console::WriteLine("Category with this ID not found!");
 		return;
 	}
+
+	Console::Write("Enter new name: ");
+	Console::ReadLine(newName);
 
 	category->Rename(newName);
 	mCategoryRepository->Update(category);
@@ -99,7 +99,6 @@ void CategoriesMenu::Delete() const
 	Console::ReadLine(id);
 
 	const Category* category = mCategoryRepository->GetById(id);
-
 	if (category == nullptr)
 	{
 		Console::WriteLine("Category with this ID not found!");
@@ -113,6 +112,6 @@ void CategoriesMenu::Delete() const
 	}
 	else
 	{
-		Console::WriteLine("Category is used in transactions. Can't delete!");
+		Console::WriteLine("Category is used in transactions. Unable to delete.");
 	}
 }
