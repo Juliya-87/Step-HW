@@ -15,7 +15,7 @@ protected:
 	bool IsItemUsedInOtherRepository(const Category* item) override;
 
 private:
-	std::shared_ptr<ModelRepository<SpendingTransaction>> mSpendingTransactionRepository = nullptr;
+	std::shared_ptr<ModelRepository<SpendingTransaction>> mSpendingTransactionRepository;
 
 	static constexpr char TABLE_NAME[] = "Categories";
 };

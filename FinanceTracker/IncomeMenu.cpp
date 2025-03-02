@@ -8,7 +8,7 @@ using namespace std;
 IncomeMenu::IncomeMenu(const shared_ptr<AccountRepository>& accountRepository,
 	const shared_ptr<IncomingTransactionRepository>& incomingTransactionRepository,
 	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository),
-	mCounterService(counterService), mIncomingTransactionRepository(incomingTransactionRepository)
+	mIncomingTransactionRepository(incomingTransactionRepository), mCounterService(counterService)
 {
 }
 
@@ -71,8 +71,8 @@ void IncomeMenu::Add() const
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
 
-	Account* account = mAccountRepository->GetById(accountId);
-	if (account == nullptr)
+	const auto optionalAccount = mAccountRepository->GetById(accountId);
+	if (!optionalAccount.has_value())
 	{
 		Console::WriteLine("Account with this ID not found!");
 		return;
@@ -83,6 +83,7 @@ void IncomeMenu::Add() const
 	Console::Write("Enter notes: ");
 	Console::ReadLine(notes);
 
+	Account* account = optionalAccount.value();
 	const int id = mCounterService->GetNextTransactionId();
 
 	auto newTransaction = make_unique<IncomingTransaction>(id, amount, account, notes);
@@ -102,13 +103,14 @@ void IncomeMenu::Delete() const
 	Console::Write("Enter incoming transaction ID to delete: ");
 	Console::ReadLine(id);
 
-	const IncomingTransaction* transaction = mIncomingTransactionRepository->GetById(id);
-
-	if (transaction == nullptr)
+	const auto optionalTransaction = mIncomingTransactionRepository->GetById(id);
+	if (!optionalTransaction.has_value())
 	{
 		Console::WriteLine("Incoming transaction with this ID not found!");
 		return;
 	}
+
+	const IncomingTransaction* transaction = optionalTransaction.value();
 
 	Account* account = transaction->GetAccount();
 	account->DecreaseBalance(transaction->GetAmount());

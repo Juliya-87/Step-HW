@@ -11,7 +11,7 @@ public:
 	std::vector<std::pair<Category*, double>> GetCategoryStatistics(time_t startTime) const;
 
 private:
-	std::shared_ptr<CategoryRepository> mCategoryRepository = nullptr;
-	std::shared_ptr<SpendingTransactionRepository> mSpendingTransactionRepository = nullptr;
+	std::shared_ptr<CategoryRepository> mCategoryRepository;
+	std::shared_ptr<SpendingTransactionRepository> mSpendingTransactionRepository;
 };
 

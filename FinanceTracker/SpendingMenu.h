@@ -17,8 +17,8 @@ private:
 	void Add() const;
 	void Delete() const;
 
-	std::shared_ptr<AccountRepository> mAccountRepository = nullptr;
-	std::shared_ptr<CategoryRepository> mCategoryRepository = nullptr;
-	std::shared_ptr<SpendingTransactionRepository> mSpendingTransactionRepository = nullptr;
-	std::shared_ptr<CounterService> mCounterService = nullptr;
+	std::shared_ptr<AccountRepository> mAccountRepository;
+	std::shared_ptr<CategoryRepository> mCategoryRepository;
+	std::shared_ptr<SpendingTransactionRepository> mSpendingTransactionRepository;
+	std::shared_ptr<CounterService> mCounterService;
 };

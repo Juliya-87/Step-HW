@@ -32,6 +32,9 @@ void SpendingTransactionRepository::AfterDeserialized(SpendingTransaction* item)
 	}
 
 	const int categoryId = item->GetCategoryId();
-	Category* category = categoryRepository->GetById(categoryId);
-	item->InitializeCategory(category);
+	const auto optionalCategory = categoryRepository->GetById(categoryId);
+	if (optionalCategory.has_value())
+	{
+		item->InitializeCategory(optionalCategory.value());
+	}
 }

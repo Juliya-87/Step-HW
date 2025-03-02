@@ -75,8 +75,8 @@ void CategoriesMenu::Rename() const
 	Console::Write("Enter category ID to rename: ");
 	Console::ReadLine(id);
 
-	Category* category = mCategoryRepository->GetById(id);
-	if (category == nullptr)
+	const auto optionalCategory = mCategoryRepository->GetById(id);
+	if (!optionalCategory.has_value())
 	{
 		Console::WriteLine("Category with this ID not found!");
 		return;
@@ -85,6 +85,7 @@ void CategoriesMenu::Rename() const
 	Console::Write("Enter new name: ");
 	Console::ReadLine(newName);
 
+	Category* category = optionalCategory.value();
 	category->Rename(newName);
 	mCategoryRepository->Update(category);
 	mCategoryRepository->Save();
@@ -98,13 +99,14 @@ void CategoriesMenu::Delete() const
 	Console::Write("Enter category ID to delete: ");
 	Console::ReadLine(id);
 
-	const Category* category = mCategoryRepository->GetById(id);
-	if (category == nullptr)
+	const auto optionalCategory = mCategoryRepository->GetById(id);
+	if (!optionalCategory.has_value())
 	{
 		Console::WriteLine("Category with this ID not found!");
 		return;
 	}
 
+	const Category* category = optionalCategory.value();
 	if (mCategoryRepository->Delete(category))
 	{
 		mCategoryRepository->Save();

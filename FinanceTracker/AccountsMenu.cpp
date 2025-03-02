@@ -93,8 +93,8 @@ void AccountsMenu::Rename() const
 	Console::Write("Enter account ID to rename: ");
 	Console::ReadLine(id);
 
-	Account* account = mAccountRepository->GetById(id);
-	if (account == nullptr)
+	const auto optionalAccount = mAccountRepository->GetById(id);
+	if (!optionalAccount.has_value())
 	{
 		Console::WriteLine("Account with this ID not found!");
 		return;
@@ -103,6 +103,7 @@ void AccountsMenu::Rename() const
 	Console::Write("Enter new name: ");
 	Console::ReadLine(newName);
 
+	Account* account = optionalAccount.value();
 	account->Rename(newName);
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
@@ -117,8 +118,8 @@ void AccountsMenu::ChangeType() const
 	Console::Write("Enter account ID to change type: ");
 	Console::ReadLine(id);
 
-	Account* account = mAccountRepository->GetById(id);
-	if (account == nullptr)
+	const auto optionalAccount = mAccountRepository->GetById(id);
+	if (!optionalAccount.has_value())
 	{
 		Console::WriteLine("Account with this ID not found!");
 		return;
@@ -136,6 +137,7 @@ void AccountsMenu::ChangeType() const
 		return;
 	}
 
+	Account* account = optionalAccount.value();
 	account->ChangeType(newAccountType);
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
@@ -149,13 +151,14 @@ void AccountsMenu::Delete() const
 	Console::Write("Enter account ID to delete: ");
 	Console::ReadLine(id);
 
-	const Account* account = mAccountRepository->GetById(id);
-	if (account == nullptr)
+	const auto optionalAccount = mAccountRepository->GetById(id);
+	if (!optionalAccount.has_value())
 	{
 		Console::WriteLine("Account with this ID not found!");
 		return;
 	}
 
+	Account* account = optionalAccount.value();
 	if (mAccountRepository->Delete(account))
 	{
 		mAccountRepository->Save();

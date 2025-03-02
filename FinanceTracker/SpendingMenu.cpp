@@ -75,8 +75,8 @@ void SpendingMenu::Add() const
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
 
-	Account* account = mAccountRepository->GetById(accountId);
-	if (account == nullptr)
+	const auto optionalAccount = mAccountRepository->GetById(accountId);
+	if (!optionalAccount.has_value())
 	{
 		Console::WriteLine("Account with this ID not found!");
 		return;
@@ -90,8 +90,8 @@ void SpendingMenu::Add() const
 	Console::Write("Your choice: ");
 	Console::ReadLine(categoryId);
 
-	Category* category = mCategoryRepository->GetById(categoryId);
-	if (category == nullptr)
+	const auto optionalCategory = mCategoryRepository->GetById(categoryId);
+	if (!optionalCategory.has_value())
 	{
 		Console::WriteLine("Category with this ID not found!");
 		return;
@@ -103,6 +103,9 @@ void SpendingMenu::Add() const
 	Console::ReadLine(notes);
 
 	const int id = mCounterService->GetNextTransactionId();
+	Account* account = optionalAccount.value();
+	Category* category = optionalCategory.value();
+
 	auto newTransaction = make_unique<SpendingTransaction>(id, amount, account, category, notes);
 	mSpendingTransactionRepository->Add(std::move(newTransaction));
 	mSpendingTransactionRepository->Save();
@@ -120,13 +123,14 @@ void SpendingMenu::Delete() const
 	Console::Write("Enter spending transaction ID to delete: ");
 	Console::ReadLine(id);
 
-	const SpendingTransaction* transaction = mSpendingTransactionRepository->GetById(id);
-
-	if (transaction == nullptr)
+	const auto optionalTransaction = mSpendingTransactionRepository->GetById(id);
+	if (!optionalTransaction.has_value())
 	{
 		Console::WriteLine("Spending transaction with this ID not found!");
 		return;
 	}
+
+	const SpendingTransaction* transaction = optionalTransaction.value();
 
 	Account* account = transaction->GetAccount();
 	account->IncreaseBalance(transaction->GetAmount());

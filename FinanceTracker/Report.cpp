@@ -64,12 +64,13 @@ time_t Report::GetStartTime(const ReportingPeriod period)
 MyString Report::GetFullFileName() const
 {
 	const MyString fileName = GetFileName();
+	const time_t now = time(nullptr);
 
 	MyString fullFileName(BASE_DIRECTORY);
 	fullFileName.Append("\\");
 	fullFileName.Append(fileName);
 	fullFileName.Append(" ");
-	fullFileName.Append(ToString(time(nullptr), "%Y-%m-%d %H%M%S"));
+	fullFileName.Append(ToString(now, "%Y-%m-%d %H%M%S"));
 	fullFileName.Append(mFileHandler->GetExtension());
 
 	return fullFileName;

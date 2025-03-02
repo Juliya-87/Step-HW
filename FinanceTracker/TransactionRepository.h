@@ -30,10 +30,12 @@ protected:
 			return;
 		}
 
-		const auto transaction = item;
-		const int accountId = transaction->GetAccountId();
-		Account* account = accountRepository->GetById(accountId);
-		transaction->InitializeAccount(account);
+		const int accountId = item->GetAccountId();
+		const auto optionalAccount = accountRepository->GetById(accountId);
+		if (optionalAccount.has_value())
+		{
+			item->InitializeAccount(optionalAccount.value());
+		}
 	}
 
 private:

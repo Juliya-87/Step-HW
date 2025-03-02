@@ -15,7 +15,7 @@ private:
 	void Rename() const;
 	void Delete() const;
 
-	std::shared_ptr<CategoryRepository> mCategoryRepository = nullptr;
-	std::shared_ptr<CounterService> mCounterService = nullptr;
+	std::shared_ptr<CategoryRepository> mCategoryRepository;
+	std::shared_ptr<CounterService> mCounterService;
 };
 

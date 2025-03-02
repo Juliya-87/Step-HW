@@ -23,8 +23,10 @@ int CounterService::GetNextTransactionId() const
 
 int CounterService::GetNextValue(const MyString& name) const
 {
-	if (Counter* counter = mCounterRepository->GetByName(name))
+	const auto optionalCounter = mCounterRepository->GetByName(name);
+	if (optionalCounter.has_value())
 	{
+		Counter* counter = optionalCounter.value();
 		const int nextValue = counter->GetNextValue();
 		mCounterRepository->Update(counter);
 		mCounterRepository->Save();

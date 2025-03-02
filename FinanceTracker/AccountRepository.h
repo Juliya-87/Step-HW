@@ -17,8 +17,8 @@ protected:
 	bool IsItemUsedInOtherRepository(const Account* item) override;
 
 private:
-	std::shared_ptr<ModelRepository<IncomingTransaction>> mIncomingTransactionRepository = nullptr;
-	std::shared_ptr<ModelRepository<SpendingTransaction>> mSpendingTransactionRepository = nullptr;
+	std::shared_ptr<ModelRepository<IncomingTransaction>> mIncomingTransactionRepository;
+	std::shared_ptr<ModelRepository<SpendingTransaction>> mSpendingTransactionRepository;
 
 	static constexpr char TABLE_NAME[] = "Accounts";
 };

@@ -22,12 +22,12 @@ protected:
 
 	static time_t GetStartTime(ReportingPeriod period);
 
-	std::shared_ptr<ReportDataSource> mReportDataSource = nullptr;
+	std::shared_ptr<ReportDataSource> mReportDataSource;
 
 private:
 	MyString GetFullFileName() const;
 
-	std::shared_ptr<FileHandler> mFileHandler = nullptr;
+	std::shared_ptr<FileHandler> mFileHandler;
 
 	static constexpr char BASE_DIRECTORY[] = "Reports";
 	static constexpr char SEPARATOR[] = ",";

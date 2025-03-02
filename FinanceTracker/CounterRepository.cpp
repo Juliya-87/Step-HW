@@ -6,7 +6,7 @@ CounterRepository::CounterRepository(const std::shared_ptr<StorageManager<Counte
 {
 }
 
-Counter* CounterRepository::GetByName(const MyString& name)
+optional<Counter*> CounterRepository::GetByName(const MyString& name)
 {
 	const auto& counters = GetAll();
 
@@ -18,7 +18,7 @@ Counter* CounterRepository::GetByName(const MyString& name)
 		}
 	}
 
-	return nullptr;
+	return nullopt;
 }
 
 MyString CounterRepository::GetTableName()

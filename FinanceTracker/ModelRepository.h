@@ -1,4 +1,6 @@
 #pragma once
+#include <optional>
+
 #include "ModelWithId.h"
 #include "Repository.h"
 
@@ -9,7 +11,7 @@ template <is_model_base T>
 class ModelRepository : public Repository<T>
 {
 public:
-	T* GetById(const int id)
+	std::optional<T*> GetById(const int id)
 	{
 		const std::vector<std::unique_ptr<T>>& items = this->GetAll();
 
@@ -21,7 +23,7 @@ public:
 			}
 		}
 
-		return nullptr;
+		return std::nullopt;
 	}
 
 protected:

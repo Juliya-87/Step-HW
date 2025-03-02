@@ -6,7 +6,9 @@
 class IncomeMenu
 {
 public:
-	IncomeMenu(const std::shared_ptr<AccountRepository>& accountRepository, const std::shared_ptr<IncomingTransactionRepository>& incomingTransactionRepository, const std::shared_ptr<CounterService>& counterService);
+	IncomeMenu(const std::shared_ptr<AccountRepository>& accountRepository,
+		const std::shared_ptr<IncomingTransactionRepository>& incomingTransactionRepository,
+		const std::shared_ptr<CounterService>& counterService);
 
 	void ShowMenu() const;
 
@@ -15,7 +17,7 @@ private:
 	void Add() const;
 	void Delete() const;
 
-	std::shared_ptr<AccountRepository> mAccountRepository = nullptr;
-	std::shared_ptr<CounterService> mCounterService = nullptr;
-	std::shared_ptr<IncomingTransactionRepository> mIncomingTransactionRepository = nullptr;
+	std::shared_ptr<AccountRepository> mAccountRepository;
+	std::shared_ptr<IncomingTransactionRepository> mIncomingTransactionRepository;
+	std::shared_ptr<CounterService> mCounterService;
 };

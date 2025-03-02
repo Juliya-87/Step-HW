@@ -15,9 +15,9 @@ public:
 private:
 	static void PrintReport(const Report* report);
 
-	std::shared_ptr<SpendingReport> mSpendingReport = nullptr;
-	std::shared_ptr<CategoryReport> mCategoryReport = nullptr;
-	std::shared_ptr<SpendingRating> mSpendingRating = nullptr;
-	std::shared_ptr<CategoryRating> mCategoryRating = nullptr;
+	std::shared_ptr<SpendingReport> mSpendingReport;
+	std::shared_ptr<CategoryReport> mCategoryReport;
+	std::shared_ptr<SpendingRating> mSpendingRating;
+	std::shared_ptr<CategoryRating> mCategoryRating;
 };
 

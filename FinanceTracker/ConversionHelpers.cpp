@@ -1,5 +1,6 @@
 #include "ConversionHelpers.h"
 
+#include <iomanip>
 #include <sstream>
 
 #include "MyString.h"

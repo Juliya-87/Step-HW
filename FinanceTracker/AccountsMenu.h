@@ -17,7 +17,7 @@ private:
 	void ChangeType() const;
 	void Delete() const;
 
-	std::shared_ptr<AccountRepository> mAccountRepository = nullptr;
-	std::shared_ptr<CounterService> mCounterService = nullptr;
+	std::shared_ptr<AccountRepository> mAccountRepository;
+	std::shared_ptr<CounterService> mCounterService;
 };
 

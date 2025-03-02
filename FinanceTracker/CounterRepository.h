@@ -1,4 +1,6 @@
 #pragma once
+#include <optional>
+
 #include "Counter.h"
 #include "Repository.h"
 
@@ -7,7 +9,7 @@ class CounterRepository final : public Repository<Counter>
 public:
 	CounterRepository(const std::shared_ptr<StorageManager<Counter>>& storageManager);
 
-	Counter* GetByName(const MyString& name);
+	std::optional<Counter*> GetByName(const MyString& name);
 
 protected:
 	MyString GetTableName() override;
