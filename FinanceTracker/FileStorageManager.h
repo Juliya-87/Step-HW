@@ -15,17 +15,13 @@ public:
 
 	void Save(const MyString& tableName, const std::vector<std::unique_ptr<T>>& items) override
 	{
-		if (items.empty())
-		{
-			return;
-		}
-
 		const MyString fileName = GetFileName(tableName);
 		const auto data = std::make_unique<FileData>();
-		auto sample = items[0]->ToMap();
+		auto sample = std::make_unique<T>();
 
+		auto headerMap = sample->ToMap();
 		FileRow* header = data->CreateRow();
-		for (const auto& fieldName : sample | std::views::keys)
+		for (const auto& fieldName : headerMap | std::views::keys)
 		{
 			header->AddCell(fieldName);
 		}
@@ -46,7 +42,7 @@ public:
 	std::vector<std::unique_ptr<T>> Load(const MyString& tableName) override
 	{
 		const MyString fileName = GetFileName(tableName);
-		const auto& data = mFileHandler->LoadFromFile(fileName);
+		const auto data = mFileHandler->LoadFromFile(fileName);
 		if (data->IsEmpty())
 		{
 			return {};
