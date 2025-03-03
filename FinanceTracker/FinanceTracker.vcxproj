@@ -131,6 +131,7 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="AccountsMenu.cpp" />
     <ClCompile Include="AccountRepository.cpp" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Category.cpp" />
     <ClCompile Include="CategoriesMenu.cpp" />
     <ClCompile Include="CategoryRating.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="AccountsMenu.h" />
     <ClInclude Include="AccountRepository.h" />
     <ClInclude Include="AccountType.h" />
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Category.h" />
     <ClInclude Include="CategoriesMenu.h" />
     <ClInclude Include="CategoryRating.h" />

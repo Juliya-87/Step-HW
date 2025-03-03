@@ -1,5 +1,6 @@
 #include "CsvFileHandler.h"
 
+#include <format>
 #include <fstream>
 
 #include "Console.h"
@@ -16,8 +17,7 @@ void CsvFileHandler::SaveToFile(const MyString& fileName, const unique_ptr<FileD
 	ofstream file(fileName.GetCStr());
 	if (!file.is_open())
 	{
-		Console::WriteLine("Unable to open the file ", fileName);
-		return;
+		throw std::runtime_error(format("Unable to open the file {}", fileName.GetCStr()));
 	}
 
 	if (data->IsEmpty())

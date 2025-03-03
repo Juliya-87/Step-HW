@@ -165,6 +165,9 @@
     <ClCompile Include="FileCell.cpp">
       <Filter>Source Files\Storage</Filter>
     </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Repository.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="FileCell.h">
       <Filter>Header Files\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
