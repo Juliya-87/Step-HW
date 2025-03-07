@@ -2,6 +2,8 @@
 
 #include "ConversionHelpers.h"
 
+using namespace std;
+
 double Transaction::GetAmount() const
 {
 	return mAmount;
@@ -35,7 +37,7 @@ void Transaction::InitializeAccount(Account* account)
 	}
 }
 
-std::unordered_map<MyString, MyString> Transaction::ToMap() const
+unordered_map<MyString, MyString> Transaction::ToMap() const
 {
 	auto map = ModelWithId::ToMap();
 
@@ -47,7 +49,7 @@ std::unordered_map<MyString, MyString> Transaction::ToMap() const
 	return map;
 }
 
-void Transaction::FromMap(const std::unordered_map<MyString, MyString>& data)
+void Transaction::FromMap(const unordered_map<MyString, MyString>& data)
 {
 	ModelWithId::FromMap(data);
 

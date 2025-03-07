@@ -2,13 +2,16 @@
 
 #include "Console.h"
 #include "ConversionHelpers.h"
+#include "StorageTransactionManager.h"
 
 using namespace std;
 
 IncomeMenu::IncomeMenu(const shared_ptr<AccountRepository>& accountRepository,
 	const shared_ptr<IncomingTransactionRepository>& incomingTransactionRepository,
-	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository),
-	mIncomingTransactionRepository(incomingTransactionRepository), mCounterService(counterService)
+	const shared_ptr<CounterService>& counterService,
+	const shared_ptr<StorageTransactionManager>& storageTransactionManager)
+	: mAccountRepository(accountRepository), mIncomingTransactionRepository(incomingTransactionRepository),
+	mCounterService(counterService), mStorageTransactionManager(storageTransactionManager)
 {
 }
 
@@ -78,14 +81,16 @@ void IncomeMenu::Add() const
 		return;
 	}
 
+	Account* account = optionalAccount.value();
+
 	Console::Write("Enter income amount: ");
 	Console::ReadLine(amount);
 	Console::Write("Enter notes: ");
 	Console::ReadLine(notes);
 
-	Account* account = optionalAccount.value();
-	const int id = mCounterService->GetNextTransactionId();
+	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
+	const int id = mCounterService->GetNextTransactionId();
 	auto newTransaction = make_unique<IncomingTransaction>(id, amount, account, notes);
 	mIncomingTransactionRepository->Add(std::move(newTransaction));
 	mIncomingTransactionRepository->Save();
@@ -93,6 +98,8 @@ void IncomeMenu::Add() const
 	account->IncreaseBalance(amount);
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
+
+	storageTransaction->Commit();
 
 	Console::WriteLine("Income added!");
 }
@@ -112,6 +119,8 @@ void IncomeMenu::Delete() const
 
 	const IncomingTransaction* transaction = optionalTransaction.value();
 
+	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
+
 	Account* account = transaction->GetAccount();
 	account->DecreaseBalance(transaction->GetAmount());
 	mAccountRepository->Update(account);
@@ -119,6 +128,8 @@ void IncomeMenu::Delete() const
 
 	mIncomingTransactionRepository->Delete(transaction);
 	mIncomingTransactionRepository->Save();
+
+	storageTransaction->Commit();
 
 	Console::WriteLine("Income deleted!");
 }

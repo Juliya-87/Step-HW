@@ -7,7 +7,7 @@
 
 using namespace std;
 
-AccountRepository::AccountRepository(const std::shared_ptr<StorageManager<Account>>& storageManager,
+AccountRepository::AccountRepository(const shared_ptr<StorageManager<Account>>& storageManager,
 	const shared_ptr<ModelRepository<IncomingTransaction>>& incomingTransactionRepository,
 	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
 	: ModelRepository(storageManager),

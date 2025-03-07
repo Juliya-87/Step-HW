@@ -20,4 +20,3 @@ private:
 	std::shared_ptr<SpendingRating> mSpendingRating;
 	std::shared_ptr<CategoryRating> mCategoryRating;
 };
-

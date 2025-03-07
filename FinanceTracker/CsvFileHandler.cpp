@@ -17,7 +17,7 @@ void CsvFileHandler::SaveToFile(const MyString& fileName, const unique_ptr<FileD
 	ofstream file(fileName.GetCStr());
 	if (!file.is_open())
 	{
-		throw std::runtime_error(format("Unable to open the file {}", fileName.GetCStr()));
+		throw runtime_error(format("Unable to open the file {}", fileName.GetCStr()));
 	}
 
 	if (data->IsEmpty())

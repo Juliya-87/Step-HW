@@ -5,6 +5,8 @@
 
 #include "MyString.h"
 
+using namespace std;
+
 static constexpr size_t TIME_BUFFER_SIZE = 50;
 static constexpr size_t DOUBLE_BUFFER_SIZE = 30;
 static constexpr size_t INT_BUFFER_SIZE = 12;
@@ -24,8 +26,8 @@ time_t StrToTime(const MyString& str, const char* format)
 {
 	tm timeInfo;
 
-	std::istringstream ss(str.GetCStr());
-	ss >> std::get_time(&timeInfo, format);
+	istringstream ss(str.GetCStr());
+	ss >> get_time(&timeInfo, format);
 
 	return mktime(&timeInfo);
 }

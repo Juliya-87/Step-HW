@@ -6,7 +6,8 @@
 
 using namespace std;
 
-CategoryRating::CategoryRating(const shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler): Report(reportDataSource, csvFileHandler)
+CategoryRating::CategoryRating(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler, const shared_ptr<Settings>& settings)
+	: Report(reportDataSource, csvFileHandler, settings)
 {
 }
 

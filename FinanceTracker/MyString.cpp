@@ -45,6 +45,20 @@ MyString& MyString::operator=(MyString&& other) noexcept
 	return *this;
 }
 
+MyString MyString::operator+(const MyString& other) const
+{
+	MyString newStr(*this);
+	newStr.Append(other);
+	return newStr;
+}
+
+MyString MyString::operator+(const char* str) const
+{
+	MyString newStr(*this);
+	newStr.Append(str);
+	return newStr;
+}
+
 bool MyString::operator==(const MyString& other) const
 {
 	return mChars == other.mChars;
@@ -147,7 +161,7 @@ void MyString::Insert(const size_t position, const char* str)
 
 	if (position > GetLength())
 	{
-		throw std::out_of_range("Position is out of bounds");
+		throw out_of_range("Position is out of bounds");
 	}
 
 	const size_t strLength = strlen(str);

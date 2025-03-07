@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const std::vector<std::unique_ptr<FileCell>>& FileRow::GetCells() const
+const vector<unique_ptr<FileCell>>& FileRow::GetCells() const
 {
 	return mCells;
 }

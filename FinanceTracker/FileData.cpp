@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const std::vector<std::unique_ptr<FileRow>>& FileData::GetRows() const
+const vector<unique_ptr<FileRow>>& FileData::GetRows() const
 {
 	return mRows;
 }
@@ -24,11 +24,11 @@ const FileRow* FileData::At(const size_t pos) const
 
 FileRow* FileData::CreateRow()
 {
-	const auto& row = mRows.emplace_back(std::make_unique<FileRow>());
+	const auto& row = mRows.emplace_back(make_unique<FileRow>());
 	return row.get();
 }
 
-void FileData::AddRow(std::unique_ptr<FileRow> row)
+void FileData::AddRow(unique_ptr<FileRow> row)
 {
 	mRows.push_back(std::move(row));
 }

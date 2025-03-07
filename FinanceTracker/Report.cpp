@@ -44,7 +44,8 @@ void Report::Export(const ReportingPeriod period) const
 	Console::WriteLine("Report successfully exported to: ", fullFileName);
 }
 
-Report::Report(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : mReportDataSource(reportDataSource), mFileHandler(csvFileHandler)
+Report::Report(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler, const shared_ptr<Settings>& settings)
+	: mReportDataSource(reportDataSource), mFileHandler(csvFileHandler), mSettings(settings)
 {
 }
 
@@ -63,12 +64,11 @@ time_t Report::GetStartTime(const ReportingPeriod period)
 
 MyString Report::GetFullFileName() const
 {
-	const MyString fileName = GetFileName();
 	const time_t now = time(nullptr);
 
-	MyString fullFileName(BASE_DIRECTORY);
+	MyString fullFileName(mSettings->GetReportsBaseDirectory());
 	fullFileName.Append("\\");
-	fullFileName.Append(fileName);
+	fullFileName.Append(GetFileName());
 	fullFileName.Append(" ");
 	fullFileName.Append(ToString(now, "%Y-%m-%d %H%M%S"));
 	fullFileName.Append(mFileHandler->GetExtension());

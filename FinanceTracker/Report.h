@@ -15,7 +15,7 @@ public:
 	void Export(ReportingPeriod period) const;
 
 protected:
-	Report(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
+	Report(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler, const std::shared_ptr<Settings>& settings);
 
 	virtual MyString GetFileName() const = 0;
 	virtual std::unique_ptr<ReportData> GetReportData(ReportingPeriod period) const = 0;
@@ -28,7 +28,7 @@ private:
 	MyString GetFullFileName() const;
 
 	std::shared_ptr<FileHandler> mFileHandler;
+	std::shared_ptr<Settings> mSettings;
 
-	static constexpr char BASE_DIRECTORY[] = "Reports";
 	static constexpr char SEPARATOR[] = ",";
 };

@@ -3,12 +3,12 @@
 using namespace std;
 
 SpendingTransactionRepository::SpendingTransactionRepository(
-	const std::shared_ptr<StorageManager<SpendingTransaction>>& storageManager): TransactionRepository(storageManager)
+	const shared_ptr<StorageManager<SpendingTransaction>>& storageManager): TransactionRepository(storageManager)
 {
 }
 
 void SpendingTransactionRepository::InitializeCategoryRepository(
-	const std::weak_ptr<ModelRepository<Category>>& categoryRepository)
+	const weak_ptr<ModelRepository<Category>>& categoryRepository)
 {
 	if (mCategoryRepository.expired())
 	{

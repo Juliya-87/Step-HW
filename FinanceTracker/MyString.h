@@ -14,6 +14,8 @@ public:
 
     MyString& operator=(const MyString& other);
     MyString& operator=(MyString&& other) noexcept;
+    MyString operator+(const MyString& other) const;
+    MyString operator+(const char* str) const;
     bool operator==(const MyString& other) const;
     char& operator[](size_t pos);
     const char& operator[](size_t pos) const;

@@ -5,8 +5,11 @@
 
 using namespace std;
 
-AccountsMenu::AccountsMenu(const shared_ptr<AccountRepository>& accountRepository, const shared_ptr<CounterService>& counterService)
-	: mAccountRepository(accountRepository), mCounterService(counterService)
+AccountsMenu::AccountsMenu(const shared_ptr<AccountRepository>& accountRepository,
+	const shared_ptr<CounterService>& counterService,
+	const shared_ptr<StorageTransactionManager>& storageTransactionManager)
+	: mAccountRepository(accountRepository), mCounterService(counterService),
+	mStorageTransactionManager(storageTransactionManager)
 {
 }
 
@@ -77,11 +80,14 @@ void AccountsMenu::Add() const
 		return;
 	}
 
-	const int id = mCounterService->GetNextAccountId();
+	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
+	const int id = mCounterService->GetNextAccountId();
 	auto newAccount = make_unique<Account>(id, name, accountType);
 	mAccountRepository->Add(std::move(newAccount));
 	mAccountRepository->Save();
+
+	storageTransaction->Commit();
 
 	Console::WriteLine("Account added!");
 }

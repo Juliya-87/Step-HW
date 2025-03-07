@@ -45,7 +45,7 @@ void Account::DecreaseBalance(const double balance)
 	mBalance -= balance;
 }
 
-std::unordered_map<MyString, MyString> Account::ToMap() const
+unordered_map<MyString, MyString> Account::ToMap() const
 {
 	auto map = ModelWithId::ToMap();
 
@@ -56,7 +56,7 @@ std::unordered_map<MyString, MyString> Account::ToMap() const
 	return map;
 }
 
-void Account::FromMap(const std::unordered_map<MyString, MyString>& data)
+void Account::FromMap(const unordered_map<MyString, MyString>& data)
 {
 	ModelWithId::FromMap(data);
 

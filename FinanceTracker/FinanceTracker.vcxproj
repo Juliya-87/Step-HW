@@ -145,7 +145,11 @@
     <ClCompile Include="DependencyRegistry.cpp" />
     <ClCompile Include="FileCell.cpp" />
     <ClCompile Include="FileData.cpp" />
+    <ClCompile Include="FileHelper.cpp" />
     <ClCompile Include="FileRow.cpp" />
+    <ClCompile Include="StorageTransaction.cpp" />
+    <ClCompile Include="StorageTransactionManager.cpp" />
+    <ClCompile Include="FileStorageTransactionHandler.cpp" />
     <ClCompile Include="IncomingTransaction.cpp" />
     <ClCompile Include="IncomingTransactionRepository.cpp" />
     <ClCompile Include="IncomeMenu.cpp" />
@@ -158,6 +162,7 @@
     <ClCompile Include="ReportingPeriod.h" />
     <ClCompile Include="ReportRow.cpp" />
     <ClCompile Include="ReportsMenu.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="SpendingMenu.cpp" />
@@ -189,13 +194,18 @@
     <ClInclude Include="FileCell.h" />
     <ClInclude Include="FileData.h" />
     <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="FileHelper.h" />
     <ClInclude Include="FileRow.h" />
+    <ClInclude Include="StorageTransaction.h" />
+    <ClInclude Include="StorageTransactionManager.h" />
+    <ClInclude Include="FileStorageTransactionHandler.h" />
     <ClInclude Include="IncomingTransaction.h" />
     <ClInclude Include="IncomingTransactionRepository.h" />
     <ClInclude Include="IncomeMenu.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="ModelWithId.h" />
     <ClInclude Include="ModelRepository.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="ReportCell.h" />
     <ClInclude Include="ReportData.h" />
@@ -215,6 +225,7 @@
     <ClInclude Include="StorageManager.h" />
     <ClInclude Include="TimeHelper.h" />
     <ClInclude Include="Transaction.h" />
+    <ClInclude Include="StorageTransactionHandler.h" />
     <ClInclude Include="TransactionRepository.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

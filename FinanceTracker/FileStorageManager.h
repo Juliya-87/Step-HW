@@ -3,13 +3,15 @@
 
 #include "CsvFileHandler.h"
 #include "MyString.h"
+#include "Settings.h"
 #include "StorageManager.h"
 
 template <is_serializable T>
 class FileStorageManager final : public StorageManager<T>
 {
 public:
-	FileStorageManager(const std::shared_ptr<FileHandler>& fileHandler) : mFileHandler(fileHandler)
+	FileStorageManager(const std::shared_ptr<FileHandler>& fileHandler, const std::shared_ptr<Settings>& settings)
+		: mFileHandler(fileHandler), mSettings(settings)
 	{
 	}
 
@@ -75,7 +77,7 @@ public:
 private:
 	MyString GetFileName(const MyString& tableName) const
 	{
-		MyString fileName(BASE_DIRECTORY);
+		MyString fileName(mSettings->GetDataBaseDirectory());
 		fileName.Append("\\");
 		fileName.Append(tableName);
 		fileName.Append(mFileHandler->GetExtension());
@@ -102,6 +104,5 @@ private:
 	}
 
 	std::shared_ptr<FileHandler> mFileHandler;
-
-	static constexpr char BASE_DIRECTORY[] = "Data";
+	std::shared_ptr<Settings> mSettings;
 };

@@ -6,7 +6,8 @@
 
 using namespace std;
 
-SpendingRating::SpendingRating(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
+SpendingRating::SpendingRating(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler, const shared_ptr<Settings>& settings)
+	: Report(reportDataSource, csvFileHandler, settings)
 {
 }
 
@@ -22,7 +23,7 @@ unique_ptr<ReportData> SpendingRating::GetReportData(const ReportingPeriod perio
 	ranges::sort(transactions,
 		[](const SpendingTransaction* item1, const SpendingTransaction* item2) { return item1->GetAmount() > item2->GetAmount(); });
 
-	auto result = std::make_unique<ReportData>();
+	auto result = make_unique<ReportData>();
 
 	ReportRow* header = result->CreateRow();
 	header->AddCell(REPORT_NAME);

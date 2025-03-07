@@ -13,7 +13,7 @@ const MyString& ReportCell::GetValue() const
 	return mValue;
 }
 
-std::streamsize ReportCell::GetWidth() const
+streamsize ReportCell::GetWidth() const
 {
 	return mWidth;
 }

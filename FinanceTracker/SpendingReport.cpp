@@ -4,13 +4,14 @@
 
 using namespace std;
 
-SpendingReport::SpendingReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
+SpendingReport::SpendingReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler, const shared_ptr<Settings>& settings)
+	: Report(reportDataSource, csvFileHandler, settings)
 {
 }
 
 MyString SpendingReport::GetFileName() const
 {
-	return {REPORT_NAME};
+	return { REPORT_NAME };
 }
 
 unique_ptr<ReportData> SpendingReport::GetReportData(const ReportingPeriod period) const

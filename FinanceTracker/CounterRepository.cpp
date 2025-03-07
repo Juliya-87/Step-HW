@@ -2,7 +2,7 @@
 
 using namespace std;
 
-CounterRepository::CounterRepository(const std::shared_ptr<StorageManager<Counter>>& storageManager): Repository(storageManager)
+CounterRepository::CounterRepository(const shared_ptr<StorageManager<Counter>>& storageManager): Repository(storageManager)
 {
 }
 

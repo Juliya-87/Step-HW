@@ -8,9 +8,13 @@
 using namespace std;
 
 SpendingMenu::SpendingMenu(const shared_ptr<AccountRepository>& accountRepository,
-	const shared_ptr<CategoryRepository>& categoryRepository, const shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository,
-	const shared_ptr<CounterService>& counterService) : mAccountRepository(accountRepository), mCategoryRepository(categoryRepository),
-	mSpendingTransactionRepository(spendingTransactionRepository), mCounterService(counterService)
+	const shared_ptr<CategoryRepository>& categoryRepository,
+	const shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository,
+	const shared_ptr<CounterService>& counterService,
+	const shared_ptr<StorageTransactionManager>& storageTransactionManager)
+	: mAccountRepository(accountRepository), mCategoryRepository(categoryRepository),
+	mSpendingTransactionRepository(spendingTransactionRepository), mCounterService(counterService),
+	mStorageTransactionManager(storageTransactionManager)
 {
 }
 
@@ -82,6 +86,8 @@ void SpendingMenu::Add() const
 		return;
 	}
 
+	Account* account = optionalAccount.value();
+
 	Console::WriteLine("Choose category for the transaction:");
 	for (const auto& category : mCategoryRepository->GetAll())
 	{
@@ -97,15 +103,16 @@ void SpendingMenu::Add() const
 		return;
 	}
 
+	Category* category = optionalCategory.value();
+
 	Console::Write("Enter spending amount: ");
 	Console::ReadLine(amount);
 	Console::Write("Enter notes: ");
 	Console::ReadLine(notes);
 
-	const int id = mCounterService->GetNextTransactionId();
-	Account* account = optionalAccount.value();
-	Category* category = optionalCategory.value();
+	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
+	const int id = mCounterService->GetNextTransactionId();
 	auto newTransaction = make_unique<SpendingTransaction>(id, amount, account, category, notes);
 	mSpendingTransactionRepository->Add(std::move(newTransaction));
 	mSpendingTransactionRepository->Save();
@@ -113,6 +120,8 @@ void SpendingMenu::Add() const
 	account->DecreaseBalance(amount);
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
+
+	storageTransaction->Commit();
 
 	Console::WriteLine("Spending added!");
 }
@@ -132,6 +141,8 @@ void SpendingMenu::Delete() const
 
 	const SpendingTransaction* transaction = optionalTransaction.value();
 
+	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
+
 	Account* account = transaction->GetAccount();
 	account->IncreaseBalance(transaction->GetAmount());
 	mAccountRepository->Update(account);
@@ -139,6 +150,8 @@ void SpendingMenu::Delete() const
 
 	mSpendingTransactionRepository->Delete(transaction);
 	mSpendingTransactionRepository->Save();
+
+	storageTransaction->Commit();
 
 	Console::WriteLine("Spending deleted!");
 }

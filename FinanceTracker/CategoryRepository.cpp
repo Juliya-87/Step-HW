@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CategoryRepository::CategoryRepository(const std::shared_ptr<StorageManager<Category>>& storageManager,
+CategoryRepository::CategoryRepository(const shared_ptr<StorageManager<Category>>& storageManager,
 	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
 	: ModelRepository(storageManager),
 	mSpendingTransactionRepository(spendingTransactionRepository)

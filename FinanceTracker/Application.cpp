@@ -3,16 +3,18 @@
 #include "Console.h"
 #include "MainMenu.h"
 
+using namespace std;
+
 void Application::Run()
 {
 	try
 	{
 		RegisterDependencies(mContainer);
 
-		const std::shared_ptr<MainMenu> mainMenu = mContainer.Resolve<MainMenu>();
+		const shared_ptr<MainMenu> mainMenu = mContainer.Resolve<MainMenu>();
 		mainMenu->ShowMenu();
 	}
-	catch (const std::exception& e)
+	catch (const exception& e)
 	{
 		Console::WriteLine("Error occured: ", e.what());
 	}

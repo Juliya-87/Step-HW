@@ -4,7 +4,8 @@
 
 using namespace std;
 
-CategoryReport::CategoryReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler) : Report(reportDataSource, csvFileHandler)
+CategoryReport::CategoryReport(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler, const shared_ptr<Settings>& settings)
+	: Report(reportDataSource, csvFileHandler, settings)
 {
 }
 

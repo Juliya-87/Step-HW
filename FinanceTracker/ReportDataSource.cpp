@@ -2,13 +2,13 @@
 
 using namespace std;
 
-ReportDataSource::ReportDataSource(const std::shared_ptr<CategoryRepository>& categoryRepository,
-	const std::shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository)
+ReportDataSource::ReportDataSource(const shared_ptr<CategoryRepository>& categoryRepository,
+	const shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository)
 	: mCategoryRepository(categoryRepository), mSpendingTransactionRepository(spendingTransactionRepository)
 {
 }
 
-std::vector<SpendingTransaction*> ReportDataSource::GetTransactions(const time_t startTime) const
+vector<SpendingTransaction*> ReportDataSource::GetTransactions(const time_t startTime) const
 {
 	const auto& transactions = mSpendingTransactionRepository->GetAll();
 

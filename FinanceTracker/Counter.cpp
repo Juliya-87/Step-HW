@@ -2,6 +2,8 @@
 
 #include "ConversionHelpers.h"
 
+using namespace std;
+
 Counter::Counter(const MyString& name) : mName(name)
 {
 	mValue = 0;
@@ -23,12 +25,12 @@ const MyString& Counter::GetName() const
 	return mName;
 }
 
-std::unordered_map<MyString, MyString> Counter::ToMap() const
+unordered_map<MyString, MyString> Counter::ToMap() const
 {
 	return { {"Name", mName}, {"Value", ToString(mValue)} };
 }
 
-void Counter::FromMap(const std::unordered_map<MyString, MyString>& data)
+void Counter::FromMap(const unordered_map<MyString, MyString>& data)
 {
 	mName = data.at("Name");
 	mValue = StrToInt(data.at("Value"));

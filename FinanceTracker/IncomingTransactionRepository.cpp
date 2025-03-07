@@ -3,7 +3,7 @@
 using namespace std;
 
 IncomingTransactionRepository::IncomingTransactionRepository(
-	const std::shared_ptr<StorageManager<IncomingTransaction>>& storageManager): TransactionRepository(storageManager)
+	const shared_ptr<StorageManager<IncomingTransaction>>& storageManager): TransactionRepository(storageManager)
 {
 }
 

@@ -4,7 +4,7 @@
 class SpendingReport final : public Report
 {
 public:
-	SpendingReport(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler);
+	SpendingReport(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler, const std::shared_ptr<Settings>& settings);
 
 protected:
 	MyString GetFileName() const override;

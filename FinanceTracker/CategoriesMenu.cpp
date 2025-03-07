@@ -4,8 +4,11 @@
 
 using namespace std;
 
-CategoriesMenu::CategoriesMenu(const shared_ptr<CategoryRepository>& categoryRepository, const shared_ptr<CounterService>& counterService)
-	: mCategoryRepository(categoryRepository), mCounterService(counterService)
+CategoriesMenu::CategoriesMenu(const shared_ptr<CategoryRepository>& categoryRepository,
+	const shared_ptr<CounterService>& counterService,
+	const shared_ptr<StorageTransactionManager>& storageTransactionManager)
+	: mCategoryRepository(categoryRepository), mCounterService(counterService),
+	mStorageTransactionManager(storageTransactionManager)
 {
 }
 
@@ -59,11 +62,14 @@ void CategoriesMenu::Add() const
 	Console::Write("Enter category name: ");
 	Console::ReadLine(name);
 
-	const int id = mCounterService->GetNextCategoryId();
+	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
+	const int id = mCounterService->GetNextCategoryId();
 	auto newCategory = make_unique<Category>(id, name);
 	mCategoryRepository->Add(std::move(newCategory));
 	mCategoryRepository->Save();
+
+	storageTransaction->Commit();
 
 	Console::WriteLine("Category added!");
 }
