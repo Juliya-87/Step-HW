@@ -2,23 +2,23 @@
 
 #include <filesystem>
 
-using namespace std::filesystem;
+using namespace std;
 
 void CopyFilesOnly(const MyString& source, const MyString& destination)
 {
-	const path sourcePath(source.GetCStr());
-	const path destinationPath(destination.GetCStr());
+	const filesystem::path sourcePath(source.GetCStr());
+	const filesystem::path destinationPath(destination.GetCStr());
 
 	if (!exists(destinationPath))
 	{
 		create_directories(destinationPath);
 	}
 
-	for (const auto& entry : directory_iterator(sourcePath))
+	for (const auto& entry : filesystem::directory_iterator(sourcePath))
 	{
 		if (is_regular_file(entry.status()))
 		{
-			copy(entry.path(), destinationPath / entry.path().filename(), copy_options::overwrite_existing);
+			copy(entry.path(), destinationPath / entry.path().filename(), filesystem::copy_options::overwrite_existing);
 		}
 	}
 }

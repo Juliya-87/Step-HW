@@ -2,9 +2,9 @@
 
 #include <filesystem>
 
-using namespace std::filesystem;
+using namespace std;
 
-StorageTransaction::StorageTransaction(const std::shared_ptr<StorageTransactionHandler>& storageTransactionHandler)
+StorageTransaction::StorageTransaction(const shared_ptr<StorageTransactionHandler>& storageTransactionHandler)
 	: mStorageTransactionHandler(storageTransactionHandler), mIsActive(true)
 {
 }
