@@ -115,10 +115,11 @@ void SpendingMenu::Add() const
 	const int id = mCounterService->GetNextTransactionId();
 	auto newTransaction = make_unique<SpendingTransaction>(id, amount, account, category, notes);
 	mSpendingTransactionRepository->Add(std::move(newTransaction));
-	mSpendingTransactionRepository->Save();
 
 	account->DecreaseBalance(amount);
 	mAccountRepository->Update(account);
+	
+	mSpendingTransactionRepository->Save();
 	mAccountRepository->Save();
 
 	storageTransaction->Commit();
@@ -143,13 +144,14 @@ void SpendingMenu::Delete() const
 
 	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
+	mSpendingTransactionRepository->Delete(transaction);
+
 	Account* account = transaction->GetAccount();
 	account->IncreaseBalance(transaction->GetAmount());
 	mAccountRepository->Update(account);
-	mAccountRepository->Save();
 
-	mSpendingTransactionRepository->Delete(transaction);
 	mSpendingTransactionRepository->Save();
+	mAccountRepository->Save();
 
 	storageTransaction->Commit();
 

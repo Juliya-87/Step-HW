@@ -93,10 +93,11 @@ void IncomeMenu::Add() const
 	const int id = mCounterService->GetNextTransactionId();
 	auto newTransaction = make_unique<IncomingTransaction>(id, amount, account, notes);
 	mIncomingTransactionRepository->Add(std::move(newTransaction));
-	mIncomingTransactionRepository->Save();
-
+	
 	account->IncreaseBalance(amount);
 	mAccountRepository->Update(account);
+
+	mIncomingTransactionRepository->Save();
 	mAccountRepository->Save();
 
 	storageTransaction->Commit();
@@ -121,13 +122,14 @@ void IncomeMenu::Delete() const
 
 	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
+	mIncomingTransactionRepository->Delete(transaction);
+
 	Account* account = transaction->GetAccount();
 	account->DecreaseBalance(transaction->GetAmount());
 	mAccountRepository->Update(account);
-	mAccountRepository->Save();
 
-	mIncomingTransactionRepository->Delete(transaction);
 	mIncomingTransactionRepository->Save();
+	mAccountRepository->Save();
 
 	storageTransaction->Commit();
 

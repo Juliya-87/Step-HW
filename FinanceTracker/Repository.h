@@ -67,6 +67,7 @@ public:
 
 		if (it != mItems.end())
 		{
+			mDeletedItems.push_back(std::move(*it));
 			mItems.erase(it);
 			return true;
 		}
@@ -82,6 +83,7 @@ public:
 		}
 
 		mStorageManager->Save(mTableName, mItems);
+		mDeletedItems.clear();
 	}
 
 protected:
@@ -122,5 +124,6 @@ private:
 	std::shared_ptr<StorageManager<T>> mStorageManager;
 	MyString mTableName;
 	std::vector<std::unique_ptr<T>> mItems;
+	std::vector<std::unique_ptr<T>> mDeletedItems;
 	bool isInitialized = false;
 };
