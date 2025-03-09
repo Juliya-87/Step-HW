@@ -44,20 +44,21 @@ void IncomeMenu::ShowMenu() const
 
 void IncomeMenu::List() const
 {
-	const auto& transactions = mIncomingTransactionRepository->GetAll();
+	const auto transactions = mIncomingTransactionRepository->GetAll();
 
-	if (transactions.empty()) {
+	if (transactions.empty())
+	{
 		Console::WriteLine("No incoming transactions available.");
 		return;
 	}
 
-	for (const auto& transaction : transactions)
+	for (const IncomingTransaction& transaction : transactions | views::transform(&reference_wrapper<IncomingTransaction>::get))
 	{
-		Console::WriteLine("ID: ", transaction->GetId(),
-			", Account: ", transaction->GetAccount()->GetName(),
-			", Amount: ", ToString(transaction->GetAmount(), 2),
-			", Notes: ", transaction->GetNotes(),
-			", Time: ", ToString(transaction->GetTransactionTime()));
+		Console::WriteLine("ID: ", transaction.GetId(),
+			", Account: ", transaction.GetAccount().GetName(),
+			", Amount: ", ToString(transaction.GetAmount(), 2),
+			", Notes: ", transaction.GetNotes(),
+			", Time: ", ToString(transaction.GetTransactionTime()));
 	}
 }
 
@@ -67,9 +68,9 @@ void IncomeMenu::Add() const
 	int accountId;
 	MyString notes;
 	Console::WriteLine("Choose account for the transaction:");
-	for (const auto& account : mAccountRepository->GetAll())
+	for (const Account& account : mAccountRepository->GetAll() | views::transform(&reference_wrapper<Account>::get))
 	{
-		Console::WriteLine(account->GetId(), ". ", account->GetName());
+		Console::WriteLine(account.GetId(), ". ", account.GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
@@ -81,7 +82,7 @@ void IncomeMenu::Add() const
 		return;
 	}
 
-	Account* account = optionalAccount.value();
+	Account& account = optionalAccount.value();
 
 	Console::Write("Enter income amount: ");
 	Console::ReadLine(amount);
@@ -94,7 +95,7 @@ void IncomeMenu::Add() const
 	auto newTransaction = make_unique<IncomingTransaction>(id, amount, account, notes);
 	mIncomingTransactionRepository->Add(std::move(newTransaction));
 	
-	account->IncreaseBalance(amount);
+	account.IncreaseBalance(amount);
 	mAccountRepository->Update(account);
 
 	mIncomingTransactionRepository->Save();
@@ -118,14 +119,14 @@ void IncomeMenu::Delete() const
 		return;
 	}
 
-	const IncomingTransaction* transaction = optionalTransaction.value();
+	const IncomingTransaction& transaction = optionalTransaction.value();
 
 	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
-	mIncomingTransactionRepository->Delete(transaction);
+	mIncomingTransactionRepository->Delete(transaction.GetId());
 
-	Account* account = transaction->GetAccount();
-	account->DecreaseBalance(transaction->GetAmount());
+	Account& account = transaction.GetAccount();
+	account.DecreaseBalance(transaction.GetAmount());
 	mAccountRepository->Update(account);
 
 	mIncomingTransactionRepository->Save();

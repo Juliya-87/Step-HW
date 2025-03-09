@@ -7,17 +7,17 @@ class SpendingTransaction final : public Transaction
 {
 public:
 	SpendingTransaction() = default;
-	SpendingTransaction(int id, double amount, Account* account, Category* category, const MyString& notes);
+	SpendingTransaction(int id, double amount, Account& account, Category& category, const MyString& notes);
 
 	int GetCategoryId() const;
-	Category* GetCategory() const;
+	Category& GetCategory() const;
 
-	void InitializeCategory(Category* category);
+	void InitializeCategory(Category& category);
 
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;
 
 private:
 	int mCategoryId = 0;
-	Category* mCategory = nullptr;
+	std::optional<std::reference_wrapper<Category>> mCategory;
 };

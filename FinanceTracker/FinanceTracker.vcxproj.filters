@@ -147,9 +147,6 @@
     <ClCompile Include="SpendingRating.cpp">
       <Filter>Source Files\Reports</Filter>
     </ClCompile>
-    <ClCompile Include="ReportDataSource.cpp">
-      <Filter>Source Files\Reports</Filter>
-    </ClCompile>
     <ClCompile Include="CsvFileHandler.cpp">
       <Filter>Source Files\Storage</Filter>
     </ClCompile>
@@ -251,7 +248,7 @@
     <ClInclude Include="IncomeMenu.h">
       <Filter>Header Files\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="ModelRepository.h">
+    <ClInclude Include="ModelWithIdRepository.h">
       <Filter>Header Files\Repositories</Filter>
     </ClInclude>
     <ClInclude Include="TransactionRepository.h">
@@ -291,9 +288,6 @@
       <Filter>Header Files\Reports</Filter>
     </ClInclude>
     <ClInclude Include="SpendingRating.h">
-      <Filter>Header Files\Reports</Filter>
-    </ClInclude>
-    <ClInclude Include="ReportDataSource.h">
       <Filter>Header Files\Reports</Filter>
     </ClInclude>
     <ClInclude Include="DIContainer.h">
@@ -343,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,11 +3,6 @@
 using namespace std;
 
 IncomingTransactionRepository::IncomingTransactionRepository(
-	const shared_ptr<StorageManager<IncomingTransaction>>& storageManager): TransactionRepository(storageManager)
+	const shared_ptr<StorageManager<IncomingTransaction>>& storageManager): TransactionRepository(TABLE_NAME, storageManager)
 {
-}
-
-MyString IncomingTransactionRepository::GetTableName()
-{
-	return { TABLE_NAME };
 }

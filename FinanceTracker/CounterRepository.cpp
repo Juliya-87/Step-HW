@@ -2,26 +2,11 @@
 
 using namespace std;
 
-CounterRepository::CounterRepository(const shared_ptr<StorageManager<Counter>>& storageManager): Repository(storageManager)
+CounterRepository::CounterRepository(const shared_ptr<StorageManager<Counter>>& storageManager): Repository(TABLE_NAME, storageManager)
 {
 }
 
-optional<Counter*> CounterRepository::GetByName(const MyString& name)
+optional<reference_wrapper<Counter>> CounterRepository::GetByName(const MyString& name)
 {
-	const auto& counters = GetAll();
-
-	for (const auto& counter : counters)
-	{
-		if (counter->GetName() == name)
-		{
-			return counter.get();
-		}
-	}
-
-	return nullopt;
-}
-
-MyString CounterRepository::GetTableName()
-{
-	return { TABLE_NAME };
+	return GetByKey(name);
 }

@@ -4,12 +4,12 @@
 
 using namespace std;
 
-bool ModelWithId::operator==(const ModelWithId& other) const
+int ModelWithId::GetId() const
 {
-	return GetId() == other.GetId();
+	return mId;
 }
 
-int ModelWithId::GetId() const
+int ModelWithId::GetKey() const
 {
 	return mId;
 }

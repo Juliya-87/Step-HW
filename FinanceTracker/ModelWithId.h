@@ -1,12 +1,11 @@
 #pragma once
-#include "Serializable.h"
+#include "Model.h"
 
-class ModelWithId : public Serializable
+class ModelWithId : public Model<int>
 {
 public:
-	bool operator==(const ModelWithId& other) const;
-
 	int GetId() const;
+	int GetKey() const override;
 
 	std::unordered_map<MyString, MyString> ToMap() const override;
 	void FromMap(const std::unordered_map<MyString, MyString>& data) override;

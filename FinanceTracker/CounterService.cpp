@@ -26,8 +26,8 @@ int CounterService::GetNextValue(const MyString& name) const
 	const auto optionalCounter = mCounterRepository->GetByName(name);
 	if (optionalCounter.has_value())
 	{
-		Counter* counter = optionalCounter.value();
-		const int nextValue = counter->GetNextValue();
+		Counter& counter = optionalCounter.value();
+		const int nextValue = counter.GetNextValue();
 		mCounterRepository->Update(counter);
 		mCounterRepository->Save();
 		return nextValue;

@@ -8,7 +8,7 @@ class ReportData final
 public:
 	const std::vector<std::unique_ptr<ReportRow>>& GetRows() const;
 
-	ReportRow* CreateRow();
+	ReportRow& CreateRow();
 
 private:
 	std::vector<std::unique_ptr<ReportRow>> mRows;

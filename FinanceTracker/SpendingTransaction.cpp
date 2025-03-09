@@ -4,10 +4,10 @@
 
 using namespace std;
 
-SpendingTransaction::SpendingTransaction(const int id, const double amount, Account* account, Category* category,
+SpendingTransaction::SpendingTransaction(const int id, const double amount, Account& account, Category& category,
 	const MyString& notes) : Transaction(id, amount, account, notes)
 {
-	mCategoryId = category->GetId();
+	mCategoryId = category.GetId();
 	mCategory = category;
 }
 
@@ -16,14 +16,19 @@ int SpendingTransaction::GetCategoryId() const
 	return mCategoryId;
 }
 
-Category* SpendingTransaction::GetCategory() const
+Category& SpendingTransaction::GetCategory() const
 {
-	return mCategory;
+	if (mCategory.has_value())
+	{
+		return mCategory.value();
+	}
+
+	throw runtime_error("Category is not initialized");
 }
 
-void SpendingTransaction::InitializeCategory(Category* category)
+void SpendingTransaction::InitializeCategory(Category& category)
 {
-	if (mCategory == nullptr && category->GetId() == mCategoryId)
+	if (!mCategory.has_value() && category.GetId() == mCategoryId)
 	{
 		mCategory = category;
 	}

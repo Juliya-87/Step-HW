@@ -1,6 +1,5 @@
 #pragma once
 #include "FileStorageTransactionHandler.h"
-#include "Settings.h"
 #include "StorageTransaction.h"
 
 class StorageTransactionManager final

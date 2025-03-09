@@ -12,7 +12,6 @@
 #include "IncomeMenu.h"
 #include "IncomingTransactionRepository.h"
 #include "MainMenu.h"
-#include "ReportDataSource.h"
 #include "ReportsMenu.h"
 #include "Settings.h"
 #include "SpendingMenu.h"
@@ -54,12 +53,11 @@ void RegisterDependencies(DIContainer& container)
 	spendingTransactionRepository->InitializeCategoryRepository(categoryRepository);
 
 	container.Register<CounterService, CounterRepository>();
-	container.Register<ReportDataSource, CategoryRepository, SpendingTransactionRepository>();
 
-	container.Register<SpendingReport, ReportDataSource, FileHandler, Settings>();
-	container.Register<CategoryReport, ReportDataSource, FileHandler, Settings>();
-	container.Register<SpendingRating, ReportDataSource, FileHandler, Settings>();
-	container.Register<CategoryRating, ReportDataSource, FileHandler, Settings>();
+	container.Register<SpendingReport, SpendingTransactionRepository, FileHandler, Settings>();
+	container.Register<CategoryReport, SpendingTransactionRepository, FileHandler, Settings>();
+	container.Register<SpendingRating, SpendingTransactionRepository, FileHandler, Settings>();
+	container.Register<CategoryRating, SpendingTransactionRepository, FileHandler, Settings>();
 
 	container.Register<AccountsMenu, AccountRepository, CounterService, StorageTransactionManager>();
 	container.Register<CategoriesMenu, CategoryRepository, CounterService, StorageTransactionManager>();

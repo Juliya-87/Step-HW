@@ -1,24 +1,22 @@
 #pragma once
 #include "Account.h"
 #include "IncomingTransaction.h"
-#include "ModelRepository.h"
+#include "ModelWithIdRepository.h"
 #include "SpendingTransactionRepository.h"
 
-class AccountRepository final : public ModelRepository<Account>
+class AccountRepository final : public ModelWithIdRepository<Account>
 {
 public:
 	AccountRepository(const std::shared_ptr<StorageManager<Account>>& storageManager,
-		const std::shared_ptr<ModelRepository<IncomingTransaction>>& incomingTransactionRepository,
-		const std::shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository);
+		const std::shared_ptr<ModelWithIdRepository<IncomingTransaction>>& incomingTransactionRepository,
+		const std::shared_ptr<ModelWithIdRepository<SpendingTransaction>>& spendingTransactionRepository);
 
 protected:
-	MyString GetTableName() override;
-
-	bool IsItemUsedInOtherRepository(const Account* item) override;
+	bool CanDeleteItem(const Account& item) override;
 
 private:
-	std::shared_ptr<ModelRepository<IncomingTransaction>> mIncomingTransactionRepository;
-	std::shared_ptr<ModelRepository<SpendingTransaction>> mSpendingTransactionRepository;
+	std::shared_ptr<ModelWithIdRepository<IncomingTransaction>> mIncomingTransactionRepository;
+	std::shared_ptr<ModelWithIdRepository<SpendingTransaction>> mSpendingTransactionRepository;
 
 	static constexpr char TABLE_NAME[] = "Accounts";
 };

@@ -14,9 +14,14 @@ int Transaction::GetAccountId() const
 	return mAccountId;
 }
 
-Account* Transaction::GetAccount() const
+Account& Transaction::GetAccount() const
 {
-	return mAccount;
+	if (mAccount.has_value())
+	{
+		return mAccount.value();
+	}
+
+	throw runtime_error("Account is not initialized");
 }
 
 const MyString& Transaction::GetNotes() const
@@ -29,9 +34,9 @@ time_t Transaction::GetTransactionTime() const
 	return mTransactionTime;
 }
 
-void Transaction::InitializeAccount(Account* account)
+void Transaction::InitializeAccount(Account& account)
 {
-	if (mAccount == nullptr && account->GetId() == mAccountId)
+	if (!mAccount.has_value() && account.GetId() == mAccountId)
 	{
 		mAccount = account;
 	}
@@ -59,10 +64,10 @@ void Transaction::FromMap(const unordered_map<MyString, MyString>& data)
 	mTransactionTime = StrToTime(data.at("TransactionTime"));
 }
 
-Transaction::Transaction(const int id, const double amount, Account* account, const MyString& notes) : ModelWithId(id), mNotes(notes)
+Transaction::Transaction(const int id, const double amount, Account& account, const MyString& notes) : ModelWithId(id), mNotes(notes)
 {
 	mAmount = amount;
-	mAccountId = account->GetId();
+	mAccountId = account.GetId();
 	mAccount = account;
 	mTransactionTime = time(nullptr);
 }

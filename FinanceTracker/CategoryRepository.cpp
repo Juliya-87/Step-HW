@@ -1,26 +1,18 @@
 #include "CategoryRepository.h"
 
-#include <algorithm>
-
 using namespace std;
 
 CategoryRepository::CategoryRepository(const shared_ptr<StorageManager<Category>>& storageManager,
-	const shared_ptr<ModelRepository<SpendingTransaction>>& spendingTransactionRepository)
-	: ModelRepository(storageManager),
+	const shared_ptr<ModelWithIdRepository<SpendingTransaction>>& spendingTransactionRepository)
+	: ModelWithIdRepository(TABLE_NAME, storageManager),
 	mSpendingTransactionRepository(spendingTransactionRepository)
 {
 }
 
-MyString CategoryRepository::GetTableName()
+bool CategoryRepository::CanDeleteItem(const Category& item)
 {
-	return { TABLE_NAME };
-}
+	const auto spendingTransactions = mSpendingTransactionRepository->GetByPredicate(
+		[item](const SpendingTransaction& transaction) { return transaction.GetCategory() == item; });
 
-bool CategoryRepository::IsItemUsedInOtherRepository(const Category* item)
-{
-	const auto& spendingTransactions = mSpendingTransactionRepository->GetAll();
-	const bool hasSpendingTransactions = ranges::any_of(spendingTransactions,
-		[item](const unique_ptr<SpendingTransaction>& transaction) { return *transaction->GetCategory() == *item; });
-
-	return hasSpendingTransactions;
+	return spendingTransactions.empty();
 }

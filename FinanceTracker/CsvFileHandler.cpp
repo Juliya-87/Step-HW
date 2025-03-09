@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "Console.h"
+#include "FileHelper.h"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ MyString CsvFileHandler::GetExtension() const
 
 void CsvFileHandler::SaveToFile(const MyString& fileName, const unique_ptr<FileData>& data)
 {
+	EnsureParenDirectoryExists(fileName);
+
 	ofstream file(fileName.GetCStr());
 	if (!file.is_open())
 	{

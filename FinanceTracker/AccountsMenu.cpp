@@ -1,5 +1,7 @@
 #include "AccountsMenu.h"
 
+#include <algorithm>
+
 #include "Console.h"
 #include "ConversionHelpers.h"
 
@@ -46,19 +48,20 @@ void AccountsMenu::ShowMenu() const
 
 void AccountsMenu::List() const
 {
-	const auto& accounts = mAccountRepository->GetAll();
+	const auto accounts = mAccountRepository->GetAll();
 
-	if (accounts.empty()) {
+	if (accounts.empty())
+	{
 		Console::WriteLine("No accounts available.");
 		return;
 	}
 
-	for (const auto& account : accounts)
+	for (const Account& account : accounts | views::transform(&reference_wrapper<Account>::get))
 	{
-		Console::WriteLine("ID: ", account->GetId(),
-			", Name: ", account->GetName(),
-			", Type: ", ToString(account->GetType()),
-			", Balance: ", ToString(account->GetBalance(), 2));
+		Console::WriteLine("ID: ", account.GetId(),
+			", Name: ", account.GetName(),
+			", Type: ", ToString(account.GetType()),
+			", Balance: ", ToString(account.GetBalance(), 2));
 	}
 }
 
@@ -109,8 +112,8 @@ void AccountsMenu::Rename() const
 	Console::Write("Enter new name: ");
 	Console::ReadLine(newName);
 
-	Account* account = optionalAccount.value();
-	account->Rename(newName);
+	Account& account = optionalAccount.value();
+	account.Rename(newName);
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
@@ -143,8 +146,8 @@ void AccountsMenu::ChangeType() const
 		return;
 	}
 
-	Account* account = optionalAccount.value();
-	account->ChangeType(newAccountType);
+	Account& account = optionalAccount.value();
+	account.ChangeType(newAccountType);
 	mAccountRepository->Update(account);
 	mAccountRepository->Save();
 
@@ -164,8 +167,8 @@ void AccountsMenu::Delete() const
 		return;
 	}
 
-	Account* account = optionalAccount.value();
-	if (mAccountRepository->Delete(account))
+	const Account& account = optionalAccount.value();
+	if (mAccountRepository->Delete(account.GetId()))
 	{
 		mAccountRepository->Save();
 		Console::WriteLine("Account deleted!");

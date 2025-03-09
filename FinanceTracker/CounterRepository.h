@@ -9,10 +9,7 @@ class CounterRepository final : public Repository<Counter>
 public:
 	CounterRepository(const std::shared_ptr<StorageManager<Counter>>& storageManager);
 
-	std::optional<Counter*> GetByName(const MyString& name);
-
-protected:
-	MyString GetTableName() override;
+	std::optional<std::reference_wrapper<Counter>> GetByName(const MyString& name);
 
 private:
 	static constexpr char TABLE_NAME[] = "Counters";

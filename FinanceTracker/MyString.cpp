@@ -59,6 +59,13 @@ MyString MyString::operator+(const char* str) const
 	return newStr;
 }
 
+MyString MyString::operator+(const char ch) const
+{
+	MyString newStr(*this);
+	newStr.Append(1, ch);
+	return newStr;
+}
+
 bool MyString::operator==(const MyString& other) const
 {
 	return mChars == other.mChars;

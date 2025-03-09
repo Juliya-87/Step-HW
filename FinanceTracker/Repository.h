@@ -1,74 +1,108 @@
 #pragma once
+#include <functional>
 #include <vector>
 
 #include "MyString.h"
 #include "FileStorageManager.h"
 
-template <is_serializable T>
+template <typename T>
+concept is_model_based = requires { typename T::key_type; }&& std::derived_from<T, Model<typename T::key_type>>;
+
+template <is_model_based T>
 class Repository
 {
 public:
 	virtual ~Repository() = default;
 
-	const std::vector<std::unique_ptr<T>>& GetAll()
+	std::vector<std::reference_wrapper<T>> GetAll()
 	{
 		EnsureInitialized();
 
-		return mItems;
+		std::vector<std::reference_wrapper<T>> result;
+		result.reserve(mItemsMap.size());
+
+		for (const std::unique_ptr<T>& item : mItemsMap | std::views::values)
+		{
+			result.push_back(*item);
+		}
+
+		return result;
+	}
+
+	std::optional<std::reference_wrapper<T>> GetByKey(const typename T::key_type& key)
+	{
+		EnsureInitialized();
+
+		const auto it = mItemsMap.find(key);
+
+		if (it != mItemsMap.end())
+		{
+			return *it->second;
+		}
+
+		return std::nullopt;
+	}
+
+	std::vector<std::reference_wrapper<T>> GetByPredicate(const std::function<bool(const T&)>& predicate)
+	{
+		EnsureInitialized();
+
+		std::vector<std::reference_wrapper<T>> result;
+
+		for (const std::unique_ptr<T>& item : mItemsMap | std::views::values)
+		{
+			if (predicate(*item))
+			{
+				result.push_back(*item);
+			}
+		}
+
+		return result;
 	}
 
 	void Add(std::unique_ptr<T> item)
 	{
 		EnsureInitialized();
 
-		for (const auto& vectorItem : mItems)
+		const auto it = mItemsMap.find(item->GetKey());
+
+		if (it != mItemsMap.end())
 		{
-			if (*vectorItem == *item)
-			{
-				throw std::runtime_error("Item already exists");
-			}
+			throw std::runtime_error("Item already exists");
 		}
 
-		mItems.push_back(std::move(item));
+		mItemsMap.emplace(item->GetKey(), std::move(item));
 	}
 
-	void Update(T* item)
+	void Update(const T& item)
 	{
 		EnsureInitialized();
 
-		for (auto& vectorItem : mItems)
-		{
-			if (*vectorItem == *item)
-			{
-				if (vectorItem.get() == item)
-				{
-					return;
-				}
+		const auto it = mItemsMap.find(item.GetKey());
 
-				*vectorItem = *item;
-				return;
-			}
+		if (it == mItemsMap.end())
+		{
+			throw std::runtime_error("Item not found in repository");
 		}
 
-		throw std::runtime_error("Item not found in repository");
+		if (it->second.get() == &item)
+		{
+			return;
+		}
+
+		*it->second = item;
 	}
 
-	bool Delete(const T* item)
+	bool Delete(const typename T::key_type& key)
 	{
 		EnsureInitialized();
 
-		if (IsItemUsedInOtherRepository(item))
-		{
-			return false;
-		}
+		const auto it = mItemsMap.find(key);
 
-		auto it = std::find_if(mItems.begin(), mItems.end(),
-			[&](const std::unique_ptr<T>& vectorItem) { return *vectorItem == *item; });
-
-		if (it != mItems.end())
+		if (it != mItemsMap.end() && CanDeleteItem(*it->second))
 		{
-			mDeletedItems.push_back(std::move(*it));
-			mItems.erase(it);
+			mDeletedItems.push_back(std::move(it->second));
+			mItemsMap.erase(it);
 			return true;
 		}
 
@@ -77,27 +111,26 @@ public:
 
 	virtual void Save()
 	{
-		if (!isInitialized)
+		if (!mIsInitialized)
 		{
 			return;
 		}
 
-		mStorageManager->Save(mTableName, mItems);
+		mStorageManager->Save(mTableName, GetAll());
 		mDeletedItems.clear();
 	}
 
 protected:
-	Repository(const std::shared_ptr<StorageManager<T>>& storageManager) : mStorageManager(storageManager)
+	Repository(const MyString& tableName, const std::shared_ptr<StorageManager<T>>& storageManager)
+		: mTableName(tableName), mStorageManager(storageManager)
 	{
 	}
 
-	virtual MyString GetTableName() = 0;
-
-	virtual void AfterDeserialized(T* item)
+	virtual void InitializeLoadedItem(T& item)
 	{
 	}
 
-	virtual bool IsItemUsedInOtherRepository(const T* item)
+	virtual bool CanDeleteItem(const T& item)
 	{
 		return false;
 	}
@@ -105,25 +138,24 @@ protected:
 private:
 	void EnsureInitialized()
 	{
-		if (isInitialized)
-		{
-			return;
-		}
+		std::call_once(mInitializedFlag, [this]()
+			{
+				auto items = mStorageManager->Load(mTableName);
 
-		mTableName = GetTableName();
-		mItems = mStorageManager->Load(mTableName);
+				for (std::unique_ptr<T>& item : items)
+				{
+					InitializeLoadedItem(*item);
+					mItemsMap.emplace(item->GetKey(), std::move(item));
+				}
 
-		for (const auto& item : mItems)
-		{
-			AfterDeserialized(item.get());
-		}
-
-		isInitialized = true;
+				mIsInitialized = true;
+			});
 	}
 
-	std::shared_ptr<StorageManager<T>> mStorageManager;
 	MyString mTableName;
-	std::vector<std::unique_ptr<T>> mItems;
+	std::shared_ptr<StorageManager<T>> mStorageManager;
+	std::unordered_map<typename T::key_type, std::unique_ptr<T>> mItemsMap;
 	std::vector<std::unique_ptr<T>> mDeletedItems;
-	bool isInitialized = false;
+	std::once_flag mInitializedFlag;
+	bool mIsInitialized = false;
 };

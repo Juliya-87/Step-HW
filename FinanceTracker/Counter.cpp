@@ -9,11 +9,6 @@ Counter::Counter(const MyString& name) : mName(name)
 	mValue = 0;
 }
 
-bool Counter::operator==(const Counter& other) const
-{
-	return mName == other.mName;
-}
-
 int Counter::GetNextValue()
 {
 	mValue++;
@@ -21,6 +16,11 @@ int Counter::GetNextValue()
 }
 
 const MyString& Counter::GetName() const
+{
+	return mName;
+}
+
+MyString Counter::GetKey() const
 {
 	return mName;
 }

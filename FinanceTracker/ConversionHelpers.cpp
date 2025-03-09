@@ -11,23 +11,23 @@ static constexpr size_t TIME_BUFFER_SIZE = 50;
 static constexpr size_t DOUBLE_BUFFER_SIZE = 30;
 static constexpr size_t INT_BUFFER_SIZE = 12;
 
-MyString ToString(const time_t time, const char* format)
+MyString ToString(const time_t time, const MyString& format)
 {
 	tm timeInfo;
 	char buffer[TIME_BUFFER_SIZE];
 
 	(void)localtime_s(&timeInfo, &time);
-	(void)strftime(buffer, TIME_BUFFER_SIZE, format, &timeInfo);
+	(void)strftime(buffer, TIME_BUFFER_SIZE, format.GetCStr(), &timeInfo);
 
 	return {buffer};
 }
 
-time_t StrToTime(const MyString& str, const char* format)
+time_t StrToTime(const MyString& str, const MyString& format)
 {
 	tm timeInfo;
 
 	istringstream ss(str.GetCStr());
-	ss >> get_time(&timeInfo, format);
+	ss >> get_time(&timeInfo, format.GetCStr());
 
 	return mktime(&timeInfo);
 }

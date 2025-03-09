@@ -8,8 +8,8 @@ using namespace std;
 
 FileStorageTransactionHandler::FileStorageTransactionHandler(const shared_ptr<Settings>& settings)
 	: mDataBaseDirectory(settings->GetDataBaseDirectory()),
-	mTempDirectory(mDataBaseDirectory + "\\" + TEMP_DIRECTORY),
-	mTransactionDirectory(mDataBaseDirectory + "\\" + TRANSACTION_DIRECTORY)
+	mTempDirectory(mDataBaseDirectory + filesystem::path::preferred_separator + TEMP_DIRECTORY),
+	mTransactionDirectory(mDataBaseDirectory + filesystem::path::preferred_separator + TRANSACTION_DIRECTORY)
 {
 }
 

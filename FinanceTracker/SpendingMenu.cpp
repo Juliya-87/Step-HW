@@ -47,21 +47,22 @@ void SpendingMenu::ShowMenu() const
 
 void SpendingMenu::List() const
 {
-	const auto& transactions = mSpendingTransactionRepository->GetAll();
+	const auto transactions = mSpendingTransactionRepository->GetAll();
 
-	if (transactions.empty()) {
+	if (transactions.empty())
+	{
 		Console::WriteLine("No spending transactions available.");
 		return;
 	}
 
-	for (const auto& transaction : transactions)
+	for (const SpendingTransaction& transaction : transactions | views::transform(&reference_wrapper<SpendingTransaction>::get))
 	{
-		Console::WriteLine("ID: ", transaction->GetId(),
-			", Account: ", transaction->GetAccount()->GetName(),
-			", Amount: ", ToString(transaction->GetAmount(), 2),
-			", Category: ", transaction->GetCategory()->GetName(),
-			", Notes: ", transaction->GetNotes(),
-			", Time: ", ToString(transaction->GetTransactionTime()));
+		Console::WriteLine("ID: ", transaction.GetId(),
+			", Account: ", transaction.GetAccount().GetName(),
+			", Amount: ", ToString(transaction.GetAmount(), 2),
+			", Category: ", transaction.GetCategory().GetName(),
+			", Notes: ", transaction.GetNotes(),
+			", Time: ", ToString(transaction.GetTransactionTime()));
 	}
 }
 
@@ -72,9 +73,9 @@ void SpendingMenu::Add() const
 	int categoryId;
 	MyString notes;
 	Console::WriteLine("Choose account for the transaction:");
-	for (const auto& account : mAccountRepository->GetAll())
+	for (const Account& account : mAccountRepository->GetAll() | views::transform(&reference_wrapper<Account>::get))
 	{
-		Console::WriteLine(account->GetId(), ". ", account->GetName());
+		Console::WriteLine(account.GetId(), ". ", account.GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(accountId);
@@ -86,12 +87,12 @@ void SpendingMenu::Add() const
 		return;
 	}
 
-	Account* account = optionalAccount.value();
+	Account& account = optionalAccount.value();
 
 	Console::WriteLine("Choose category for the transaction:");
-	for (const auto& category : mCategoryRepository->GetAll())
+	for (const Category& category : mCategoryRepository->GetAll() | views::transform(&reference_wrapper<Category>::get))
 	{
-		Console::WriteLine(category->GetId(), ". ", category->GetName());
+		Console::WriteLine(category.GetId(), ". ", category.GetName());
 	}
 	Console::Write("Your choice: ");
 	Console::ReadLine(categoryId);
@@ -103,7 +104,7 @@ void SpendingMenu::Add() const
 		return;
 	}
 
-	Category* category = optionalCategory.value();
+	Category& category = optionalCategory.value();
 
 	Console::Write("Enter spending amount: ");
 	Console::ReadLine(amount);
@@ -116,9 +117,9 @@ void SpendingMenu::Add() const
 	auto newTransaction = make_unique<SpendingTransaction>(id, amount, account, category, notes);
 	mSpendingTransactionRepository->Add(std::move(newTransaction));
 
-	account->DecreaseBalance(amount);
+	account.DecreaseBalance(amount);
 	mAccountRepository->Update(account);
-	
+
 	mSpendingTransactionRepository->Save();
 	mAccountRepository->Save();
 
@@ -140,14 +141,14 @@ void SpendingMenu::Delete() const
 		return;
 	}
 
-	const SpendingTransaction* transaction = optionalTransaction.value();
+	const SpendingTransaction& transaction = optionalTransaction.value();
 
 	const auto storageTransaction = mStorageTransactionManager->BeginTransaction();
 
-	mSpendingTransactionRepository->Delete(transaction);
+	mSpendingTransactionRepository->Delete(transaction.GetId());
 
-	Account* account = transaction->GetAccount();
-	account->IncreaseBalance(transaction->GetAmount());
+	Account& account = transaction.GetAccount();
+	account.IncreaseBalance(transaction.GetAmount());
 	mAccountRepository->Update(account);
 
 	mSpendingTransactionRepository->Save();

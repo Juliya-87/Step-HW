@@ -32,10 +32,10 @@ void Report::Export(const ReportingPeriod period) const
 
 	for (const auto& reportRow : reportData->GetRows())
 	{
-		FileRow* fileRow = fileData->CreateRow();
+		FileRow& fileRow = fileData->CreateRow();
 		for (const auto& reportCell : reportRow->GetCells())
 		{
-			fileRow->AddCell(reportCell->GetValue());
+			fileRow.AddCell(reportCell->GetValue());
 		}
 	}
 
@@ -44,8 +44,10 @@ void Report::Export(const ReportingPeriod period) const
 	Console::WriteLine("Report successfully exported to: ", fullFileName);
 }
 
-Report::Report(const shared_ptr<ReportDataSource>& reportDataSource, const shared_ptr<FileHandler>& csvFileHandler, const shared_ptr<Settings>& settings)
-	: mReportDataSource(reportDataSource), mFileHandler(csvFileHandler), mSettings(settings)
+Report::Report(const MyString& reportName, const shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository,
+	const shared_ptr<FileHandler>& fileHandler, const shared_ptr<Settings>& settings)
+	: mReportName(reportName), mSpendingTransactionRepository(spendingTransactionRepository),
+	mFileHandler(fileHandler), mSettings(settings)
 {
 }
 
@@ -67,10 +69,10 @@ MyString Report::GetFullFileName() const
 	const time_t now = time(nullptr);
 
 	MyString fullFileName(mSettings->GetReportsBaseDirectory());
-	fullFileName.Append("\\");
-	fullFileName.Append(GetFileName());
+	fullFileName.Append(1, filesystem::path::preferred_separator);
+	fullFileName.Append(mReportName);
 	fullFileName.Append(" ");
-	fullFileName.Append(ToString(now, "%Y-%m-%d %H%M%S"));
+	fullFileName.Append(ToString(now, TIME_FORMAT));
 	fullFileName.Append(mFileHandler->GetExtension());
 
 	return fullFileName;

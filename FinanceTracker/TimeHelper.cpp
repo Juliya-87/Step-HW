@@ -19,7 +19,8 @@ time_t NormalizeTime(tm& timeInfo)
 	return mktime(&timeInfo);
 }
 
-time_t AddDays(const time_t& time, const int days) {
+time_t AddDays(const time_t& time, const int days)
+{
 	return time + (static_cast<long long>(days) * 86400); // 86400 seconds in a day
 }
 

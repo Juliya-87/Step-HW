@@ -13,7 +13,7 @@ public:
 	void ShowMenu() const;
 
 private:
-	static void PrintReport(const Report* report);
+	static void PrintReport(const Report& report);
 
 	std::shared_ptr<SpendingReport> mSpendingReport;
 	std::shared_ptr<CategoryReport> mCategoryReport;

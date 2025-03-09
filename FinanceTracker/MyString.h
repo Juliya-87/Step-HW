@@ -16,6 +16,7 @@ public:
     MyString& operator=(MyString&& other) noexcept;
     MyString operator+(const MyString& other) const;
     MyString operator+(const char* str) const;
+    MyString operator+(char ch) const;
     bool operator==(const MyString& other) const;
     char& operator[](size_t pos);
     const char& operator[](size_t pos) const;
@@ -46,7 +47,8 @@ struct std::hash<MyString> {
 	{
 		size_t hashValue = 0;
 		const char* chars = str.GetCStr();
-		for (size_t i = 0; i < str.GetLength(); ++i) {
+		for (size_t i = 0; i < str.GetLength(); ++i)
+        {
 			hashValue = hashValue * 31 + std::hash<char>()(chars[i]);
 		}
 		return hashValue;

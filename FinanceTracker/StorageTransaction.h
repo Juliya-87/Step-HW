@@ -6,13 +6,12 @@ class StorageTransaction final
 {
 public:
 	StorageTransaction(const std::shared_ptr<StorageTransactionHandler>& storageTransactionHandler);
+	~StorageTransaction();
 
 	bool GetIsActive() const;
 
 	void Commit();
 	void Rollback();
-
-	~StorageTransaction();
 
 private:
 	std::shared_ptr<StorageTransactionHandler> mStorageTransactionHandler;

@@ -43,16 +43,17 @@ void CategoriesMenu::ShowMenu() const
 
 void CategoriesMenu::List() const
 {
-	const auto& categories = mCategoryRepository->GetAll();
+	const auto categories = mCategoryRepository->GetAll();
 
-	if (categories.empty()) {
+	if (categories.empty())
+	{
 		Console::WriteLine("No categories available.");
 		return;
 	}
 
-	for (const auto& category : categories)
+	for (const Category& category : categories | views::transform(&reference_wrapper<Category>::get))
 	{
-		Console::WriteLine("ID: ", category->GetId(), ", Name: ", category->GetName());
+		Console::WriteLine("ID: ", category.GetId(), ", Name: ", category.GetName());
 	}
 }
 
@@ -91,8 +92,8 @@ void CategoriesMenu::Rename() const
 	Console::Write("Enter new name: ");
 	Console::ReadLine(newName);
 
-	Category* category = optionalCategory.value();
-	category->Rename(newName);
+	Category& category = optionalCategory.value();
+	category.Rename(newName);
 	mCategoryRepository->Update(category);
 	mCategoryRepository->Save();
 
@@ -112,8 +113,8 @@ void CategoriesMenu::Delete() const
 		return;
 	}
 
-	const Category* category = optionalCategory.value();
-	if (mCategoryRepository->Delete(category))
+	const Category& category = optionalCategory.value();
+	if (mCategoryRepository->Delete(category.GetId()))
 	{
 		mCategoryRepository->Save();
 		Console::WriteLine("Category deleted!");

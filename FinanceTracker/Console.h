@@ -54,10 +54,12 @@ public:
 	{
 		std::ios_base&(*alignment)(std::ios_base& iosBase) = isLeftAligned ? std::left : std::right;
 
-		if (width) {
+		if (width)
+		{
 			std::cout << std::setw(width) << alignment << value;
 		}
-		else {
+		else
+		{
 			std::cout << alignment << value;
 		}
 

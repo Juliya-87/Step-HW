@@ -11,6 +11,6 @@ class StorageManager
 public:
 	virtual ~StorageManager() = default;
 
-	virtual void Save(const MyString& tableName, const std::vector<std::unique_ptr<T>>& items) = 0;
+	virtual void Save(const MyString& tableName, const std::vector<std::reference_wrapper<T>>& items) = 0;
 	virtual std::vector<std::unique_ptr<T>> Load(const MyString& tableName) = 0;
 };

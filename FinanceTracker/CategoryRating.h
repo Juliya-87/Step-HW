@@ -4,10 +4,9 @@
 class CategoryRating final : public Report
 {
 public:
-	CategoryRating(const std::shared_ptr<ReportDataSource>& reportDataSource, const std::shared_ptr<FileHandler>& csvFileHandler, const std::shared_ptr<Settings>& settings);
+	CategoryRating(const std::shared_ptr<SpendingTransactionRepository>& spendingTransactionRepository, const std::shared_ptr<FileHandler>& fileHandler, const std::shared_ptr<Settings>& settings);
 
 protected:
-	MyString GetFileName() const override;
 	std::unique_ptr<ReportData> GetReportData(ReportingPeriod period) const override;
 
 private:

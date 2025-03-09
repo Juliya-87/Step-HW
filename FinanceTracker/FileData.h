@@ -11,8 +11,8 @@ public:
 	size_t GetSize() const;
 
 	bool IsEmpty() const;
-	const FileRow* At(size_t pos) const;
-	FileRow* CreateRow();
+	const FileRow& At(size_t pos) const;
+	FileRow& CreateRow();
 	void AddRow(std::unique_ptr<FileRow> row);
 
 private:

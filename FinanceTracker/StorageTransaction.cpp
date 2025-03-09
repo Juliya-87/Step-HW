@@ -9,6 +9,11 @@ StorageTransaction::StorageTransaction(const shared_ptr<StorageTransactionHandle
 {
 }
 
+StorageTransaction::~StorageTransaction()
+{
+	Rollback();
+}
+
 bool StorageTransaction::GetIsActive() const
 {
 	return mIsActive;
@@ -30,9 +35,4 @@ void StorageTransaction::Rollback()
 		mStorageTransactionHandler->RollbackTransaction();
 		mIsActive = false;
 	}
-}
-
-StorageTransaction::~StorageTransaction()
-{
-	Rollback();
 }

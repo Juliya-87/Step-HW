@@ -158,7 +158,6 @@
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="ReportCell.cpp" />
     <ClCompile Include="ReportData.cpp" />
-    <ClCompile Include="ReportDataSource.cpp" />
     <ClCompile Include="ReportingPeriod.h" />
     <ClCompile Include="ReportRow.cpp" />
     <ClCompile Include="ReportsMenu.cpp" />
@@ -196,6 +195,7 @@
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="FileHelper.h" />
     <ClInclude Include="FileRow.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="StorageTransaction.h" />
     <ClInclude Include="StorageTransactionManager.h" />
     <ClInclude Include="FileStorageTransactionHandler.h" />
@@ -204,12 +204,11 @@
     <ClInclude Include="IncomeMenu.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="ModelWithId.h" />
-    <ClInclude Include="ModelRepository.h" />
+    <ClInclude Include="ModelWithIdRepository.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="ReportCell.h" />
     <ClInclude Include="ReportData.h" />
-    <ClInclude Include="ReportDataSource.h" />
     <ClInclude Include="ReportRow.h" />
     <ClInclude Include="ReportsMenu.h" />
     <ClInclude Include="Repository.h" />

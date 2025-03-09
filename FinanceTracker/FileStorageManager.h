@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 #include <ranges>
 
 #include "CsvFileHandler.h"
@@ -15,26 +16,26 @@ public:
 	{
 	}
 
-	void Save(const MyString& tableName, const std::vector<std::unique_ptr<T>>& items) override
+	void Save(const MyString& tableName, const std::vector<std::reference_wrapper<T>>& items) override
 	{
 		const MyString fileName = GetFileName(tableName);
 		const auto data = std::make_unique<FileData>();
 		auto sample = std::make_unique<T>();
 
 		auto headerMap = sample->ToMap();
-		FileRow* header = data->CreateRow();
-		for (const auto& fieldName : headerMap | std::views::keys)
+		FileRow& header = data->CreateRow();
+		for (const MyString& fieldName : headerMap | std::views::keys)
 		{
-			header->AddCell(fieldName);
+			header.AddCell(fieldName);
 		}
 
-		for (const auto& obj : items)
+		for (const T& obj : items | std::views::transform(&std::reference_wrapper<T>::get))
 		{
-			auto map = obj->ToMap();
-			FileRow* row = data->CreateRow();
-			for (const auto& fieldValue : map | std::views::values)
+			auto map = obj.ToMap();
+			FileRow& row = data->CreateRow();
+			for (const MyString& fieldValue : map | std::views::values)
 			{
-				row->AddCell(fieldValue);
+				row.AddCell(fieldValue);
 			}
 		}
 
@@ -50,8 +51,8 @@ public:
 			return {};
 		}
 
-		const FileRow* headers = data->At(0);
-		if (headers->IsEmpty())
+		const FileRow& headers = data->At(0);
+		if (headers.IsEmpty())
 		{
 			return {};
 		}
@@ -59,7 +60,7 @@ public:
 		std::vector<std::unique_ptr<T>> items;
 		for (size_t rowIndex = 1; rowIndex < data->GetSize(); rowIndex++)
 		{
-			const FileRow* values = data->At(rowIndex);
+			const FileRow& values = data->At(rowIndex);
 			auto map = GetMap(headers, values);
 			if (map.empty())
 			{
@@ -78,16 +79,16 @@ private:
 	MyString GetFileName(const MyString& tableName) const
 	{
 		MyString fileName(mSettings->GetDataBaseDirectory());
-		fileName.Append("\\");
+		fileName.Append(1, std::filesystem::path::preferred_separator);
 		fileName.Append(tableName);
 		fileName.Append(mFileHandler->GetExtension());
 		return fileName;
 	}
 
-	static std::unordered_map<MyString, MyString> GetMap(const FileRow* header, const FileRow* values)
+	static std::unordered_map<MyString, MyString> GetMap(const FileRow& header, const FileRow& values)
 	{
-		auto& headerCells = header->GetCells();
-		auto& valuesCells = values->GetCells();
+		const auto& headerCells = header.GetCells();
+		const auto& valuesCells = values.GetCells();
 
 		if (headerCells.size() != valuesCells.size())
 		{
