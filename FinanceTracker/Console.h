@@ -11,7 +11,7 @@ class Console
 public:
 	static void ReadLine(int& value)
 	{
-		constexpr int maxSize = 20;
+		constexpr std::streamsize maxSize = 20;
 		char line[maxSize];
 		std::cin.getline(line, maxSize - 1);
 
@@ -21,7 +21,7 @@ public:
 
 	static void ReadLine(double& value)
 	{
-		constexpr int maxSize = 20;
+		constexpr std::streamsize maxSize = 20;
 		char line[maxSize];
 		std::cin.getline(line, maxSize - 1);
 
@@ -29,10 +29,10 @@ public:
 		lineStream >> value;
 	}
 
-	static void ReadLine(MyString& value, const std::streamsize maxSize = DEFAULT_MAX_SIZE)
+	static void ReadLine(MyString& value, const unsigned int maxSize = DEFAULT_MAX_SIZE)
 	{
-		const auto line = std::make_unique<char[]>(maxSize + 1);
-		std::cin.getline(line.get(), maxSize + 1);
+		const auto line = std::make_unique<char[]>(maxSize);
+		std::cin.getline(line.get(), maxSize);
 
 		value.Assign(line.get());
 	}
@@ -72,6 +72,6 @@ public:
 	}
 
 private:
-	static constexpr std::streamsize DEFAULT_MAX_SIZE = 50;
+	static constexpr unsigned int DEFAULT_MAX_SIZE = 50;
 };
 

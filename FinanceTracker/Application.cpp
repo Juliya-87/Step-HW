@@ -16,7 +16,7 @@ void Application::Run()
 	}
 	catch (const exception& e)
 	{
-		Console::WriteLine("Error occured: ", e.what());
+		Console::WriteLine("Error occurred: ", e.what());
 	}
 	catch (...)
 	{
