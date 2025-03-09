@@ -132,7 +132,7 @@ protected:
 
 	virtual bool CanDeleteItem(const T& item)
 	{
-		return false;
+		return true;
 	}
 
 private:
